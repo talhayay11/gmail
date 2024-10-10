@@ -2,41 +2,155 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gmail</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-  <nav class="layout__navbar">
-    <div class="layout__navbar-left">
+  <nav class="mail__navbar">
+    <div class="mail__navbar-left">
       <i class="fa-solid fa-bars"></i>
-      <img src="images\gmail-icon.png" alt="Gmail Logo" class="layout__navbar-logo">
-      <span>Gmail</span>
+      <img src="images\gmail-icon.png" alt="Gmail Logo" class="mail__navbar-left-logo">
+      <span class="mail__navbar-left-text">Gmail</span>
     </div>
 
-    <div class="layout__navbar-search">
-      <i class="fa-solid fa-magnifying-glass layout__navbar-search-box--search"></i>
-      <input type="text" placeholder="Search mail" class="layout__navbar-search-box">
-      <i class="fa-solid fa-sliders layout__navbar-search-box--slider"></i> 
+    <div class="mail__navbar-search">
+      <i class="fa-solid fa-magnifying-glass mail__navbar-search-box--search"></i>
+      <input type="text" placeholder="Search mail" class="mail__navbar-search-box">
+      <i class="fa-solid fa-sliders mail__navbar-search-box--slider"></i> 
     </div>
 
-    <div class="layout__navbar-right">
-      <i class="fa-regular fa-circle-question layout__navbar-right-icon"></i>
-      <i class="fa-solid fa-gear layout__navbar-right-icon"></i>
-      <i class="fa-solid fa-table-cells layout__navbar-right-icon"></i>
-      <img src="images\profile-pic.png" alt="profile Pic" class="layout__navbar-right-pic">
+    <div class="mail__navbar-right">
+      <i class="fa-regular fa-circle-question mail__navbar-right-icon"></i>
+      <i class="fa-solid fa-gear mail__navbar-right-icon"></i>
+      <i class="fa-solid fa-table-cells mail__navbar-right-icon"></i>
+      <img src="images\profile-pic.png" alt="Profile Pic" class="mail__navbar-right-pic">
     </div>
   </nav>
 
-    <div class="layout__main">
-      <div class="layout__sidebar">
+    <div class="mail__main">
+      <div class="mail__sidebar">
+        <div class="mail__sidebar-compose">
+          <i class="fa-solid fa-pencil mail__sidebar-compose-pen"></i>
+          <span class="mail__sidebar-compose-text">Compose</span>
+        </div>
+
+        <div class="mail__sidebar-side">
+          <ul class="mail__sidebar-side-box">
+            <li class="mail__sidebar-side-box-usage">
+              <i class="fa-solid fa-inbox mail__sidebar-side-box-icon"></i>
+              <span class="mail__sidebar-side-box-text">Inbox</span>
+            </li>
+
+            <li class="mail__sidebar-side-box-usage">
+              <i class="fa-regular fa-star mail__sidebar-side-box-icon"></i>
+              <span class="mail__sidebar-side-box-text">Starred</span>
+            </li>
+
+            <li class="mail__sidebar-side-box-usage">
+              <i class="fa-regular fa-clock mail__sidebar-side-box-icon"></i>
+              <span class="mail__sidebar-side-box-text">Snoozed</span>
+            </li>
+
+            <li class="mail__sidebar-side-box-usage">
+              <i class="fa-regular fa-paper-plane mail__sidebar-side-box-icon"></i>
+              <span class="mail__sidebar-side-box-text">Sent</span>
+            </li>
+
+            <li class="mail__sidebar-side-box-usage">
+              <i class="fa-regular fa-file mail__sidebar-side-box-icon"></i>
+              <span class="mail__sidebar-side-box-text">Drafts</span>
+            </li>
+
+            <li class="mail__sidebar-side-box-usage">
+              <i class="fa-solid fa-angle-down mail__sidebar-side-box-icon"></i>
+              <span class="mail__sidebar-side-box-text">More</span>
+            </li>
+          </ul>
+
+          <div class="mail__sidebar-side-down">
+            <div class="mail__sidebar-side-down-title">Labels
+              <i class="fa-solid fa-plus mail__sidebar-side-down-title-icon"></i>
+            </div>
+
+            <ul class="mail__sidebar-side-down-box">
+              <li class="mail__sidebar-side-down-box-usage">
+                <div class="mail__sidebar-side-down-box-icon mail__sidebar-side-down-box-icon--first"></div>
+                <span class="mail__sidebar-side-down-box-text">Categories</span>
+              </li>
+  
+              <li class="mail__sidebar-side-down-box-usage">
+                <div class="mail__sidebar-side-down-box-icon mail__sidebar-side-down-box-icon--second"></div>
+                <span class="mail__sidebar-side-down-box-text">Team</span>
+              </li>
+  
+              <li class="mail__sidebar-side-down-box-usage">
+                <div class="mail__sidebar-side-down-box-icon mail__sidebar-side-down-box-icon--third"></div>
+                <span class="mail__sidebar-side-down-box-text">News</span>
+              </li>
+  
+              <li class="mail__sidebar-side-down-box-usage">
+                <div class="mail__sidebar-side-down-box-icon mail__sidebar-side-down-box-icon--fourth"></div>
+                <span class="mail__sidebar-side-down-box-text">Work</span>
+              </li>
+  
+              <li class="mail__sidebar-side-down-box-usage">
+                <div class="mail__sidebar-side-down-box-icon mail__sidebar-side-down-box-icon--fifth"></div>
+                <span class="mail__sidebar-side-down-box-text">Personal</span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
 
-      <div class="layout__content">
+      <div class="mail__content">
+       <div class="mail__content-top">
+        <div class="mail__content-top-left">
+        <div class="mail__content-top-left-select">
+         <input type="checkbox" class="mail__content-top-left-select-checkbox">
+         <i class="fa-solid fa-caret-down"></i>
+        </div>
+
+         <i class="fa-solid fa-arrow-rotate-right"></i>
+         <i class="fa-solid fa-ellipsis-vertical"></i>
+        </div>
+
+        <div class="mail__content-top-right">
+          <span class="mail__content-top-right-number">1-16 of 16</span>
+          <i class="fa-solid fa-angle-left"></i>
+          <i class="fa-solid fa-angle-right"></i>
+        </div>
+       </div>
+
+       <div class="mail__list">
+        <div class="mail__item unread">
+          <input type="checkbox" class="mail__checkbox">
+          <span class="mail__star">&#9733;</span>
+          <span class="mail__sender">Delta Enterprises</span>
+          <span class="mail__subject">Delta Weekly News: Learn about important safety tips before you fly</span>
+          <span class="mail__date">Jan 26</span>
+        </div>
+        
+        <div class="mail__item">
+          <input type="checkbox" class="mail__checkbox">
+          <span class="mail__star">&#9733;</span>
+          <span class="mail__sender">Fashion Forward</span>
+          <span class="mail__subject">See what's Trending at Fashion Forward! Style Inspiration and Trends</span>
+          <span class="mail__date">12/12/23</span>
+        </div>
+        <!-- Diğer mail öğeleri buraya eklenebilir -->
+      </div>
       </div>
 
-      <div class="layout__right">
+      <div class="mail__right">
+       <img src="images\calendar-icon.png" alt="Calender" class="mail__right-pic">
+       <img src="images\note-icon.png" alt="Note" class="mail__right-pic">
+       <i class="fa-solid fa-user mail__right-icon" style="color: #74C0FC;"></i>
+       <hr class="mail__right-divider">
+       <i class="fa-solid fa-plus mail__right-icon"></i>
       </div>
     </div>
 
