@@ -1,6 +1,7 @@
 $moon-white: #eaf1fb;
 $mā-white: #f6f7fb;
 $white: #ffffff;
+$carbon: #333333;
 $carte-blanche: #ededfe;
 $thames-dusk: #64676c;
 $black-oak: #4f4f4f;
@@ -9,6 +10,8 @@ $rich-green: #1e8e3e;
 $lemon-chrome: #f9ab01;
 $deep-sky-blue: #1a73e8;
 $chilled-chilly: #ea4335;
+$bleu-de-france: #2f80ed;
+$cotton-ball: #f2f5fc;
 
 $font-size-10: 0.625rem;
 $font-size-12: 0.75rem;
@@ -21,7 +24,10 @@ $font-size-19: 1.188rem;
 $font-weight-400: 400;
 $font-weight-500: 500;
 $font-weight-600: 600;
+$font-weight-700: 700;
 
+
+$line-height-11: 11px;
 $line-height-15: 15px;
 $line-height-17: 17px;
 $line-height-20: 20px;
@@ -251,18 +257,23 @@ $font-family-roboto: 'Roboto', sans-serif;
   }
  }
 
+ 
  &__content {
   width: 100%;
   height: 100%;
   height: 796px;
   border-radius: 15px;
   flex-direction: column;
+  position: relative;
   display: flex;
   background-color: $white;
 
   &-top {
+   width: 100%;
+   max-width: 96px;
    max-height: 22px;
    flex-direction: row;
+   color: $carbon;
    display: flex;
    padding: 13px 25px 0 18px;
 
@@ -284,16 +295,178 @@ $font-family-roboto: 'Roboto', sans-serif;
      }
     }
    }
-
+  
    &-right {
     max-width: 133px;
     max-height: 22px;
     display: flex;
+    top: 13px;
+    right: 25px;
     gap: 28px;
-    padding-left: 866px;
+    position: absolute;
+    justify-content: end;
 
     &-number {
      white-space: nowrap;
+    }
+   }
+  }
+
+  &-tab {
+   max-width: 627px;
+   max-height: 33px;
+   color: $black-oak;
+   display: flex;
+   flex-direction: row;
+   margin: 30px 0 0 8px;
+
+   &-primary {
+    max-width: 209px;
+    padding: 0 127px 18px 8px;
+    gap: 16px;
+    display: flex;
+    background-color: $white;
+    border: none;
+    cursor: pointer;
+    position: relative;
+
+    &:focus,
+    &:active {
+     color: $bleu-de-france;
+     outline: none;
+  
+     &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background-color: $bleu-de-france;
+     }
+    }
+
+    &-text {
+     font-size: $font-size-13;
+     line-height: $line-height-15;
+     font-weight: $font-weight-600;
+     font-family: $font-family-roboto;
+    }
+
+    &-icon {
+     padding-top: 7px;
+     max-height: 17px;
+    }
+   }
+
+   &-promotions {
+    max-width: 209px;
+    padding: 0 89px 18px 21.5px;
+    gap: 13px;
+    display: flex;
+    background-color: $white;
+    position: relative;
+    border: none;
+    cursor: pointer;
+
+    &:focus,
+    &:active {
+     color: $bleu-de-france;
+     outline: none;
+  
+     &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background-color: $bleu-de-france;
+     }
+    }
+   }
+
+   &-social {
+    max-width: 209px;
+    padding: 0 120px 18px 21.5px;
+    gap: 14px;
+    display: flex;
+    background-color: $white;
+    position: relative;
+    border: none;
+    cursor: pointer;
+
+    &:focus,
+    &:active {
+     color: $bleu-de-france;
+     outline: none;
+  
+     &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background-color: $bleu-de-france;
+     }
+    }
+   }
+  }
+
+  &-list {
+   display: flex;
+   flex-direction: column;
+   padding: 0 17px 0 0;
+
+   &-item {
+    gap: 15px;
+    display: flex;
+    position: relative;
+    max-height: 35px;
+    padding: 9.25px 0;
+
+    &.unread {
+     font-weight: $font-weight-700;
+     background-color: $white !important;
+    }
+
+    &.read {
+      font-weight: $font-weight-400;
+     background-color: $cotton-ball !important;
+    }
+
+    &-checkbox {
+     margin: 2px 0 0 15px;
+     width: 13px;
+     height: 13px;
+    }
+
+    &-star {
+     width: 10px;
+     height: 9.5px;
+     padding-top: 7px;
+    }
+
+    &-sender {
+     font-size: $font-size-13;
+     line-height: $line-height-15;
+     font-family: $font-family-roboto;
+    }
+
+    &-subject {
+     font-size: $font-size-13;
+     line-height: $line-height-15;
+     font-family: $font-family-roboto;
+    }
+
+    &-date {
+     font-size: $font-size-10;
+     line-height: $line-height-11;
+     font-family: $font-family-roboto;
+     position: absolute;
+     padding-top: 3px;
+     right: 80px;
     }
    }
   }
