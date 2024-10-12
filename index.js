@@ -22,18 +22,19 @@ function MailComponent() {
   // Başlangıçta 'primary' sekmesi aktif
   const [activeTab, setActiveTab] = useState('primary');
   const [mails, setMails] = useState(mailData);
+  const [popup, setPopup] = useState(null);
 
   // Aktif sekmeye göre mail listesini güncelle
   const getActiveMails = () => {
     return mails[activeTab];
   };
   
-
   const markAsRead = (id) => {
     const updatedMails = mails[activeTab].map(mail =>
       mail.id === id ? { ...mail, isRead: true } : mail
     );
     setMails({ ...mails, [activeTab]: updatedMails });
+    setPopup(id);
   };
 
   return (
@@ -99,6 +100,16 @@ function MailComponent() {
           </div>
         ))}
       </div>
+
+      {popup && (
+            <div className="mail__popup show">
+              <h4>From: {popup.sender}</h4>
+              <p><strong>Subject:</strong> {popup.subject}</p>
+              <p><strong>Date:</strong> {popup.date}</p>
+              <p>{popup.content}</p>
+              <button onClick={() => setPopup(null)}>Close</button>
+            </div>
+            )}
     </div>
   );
 }

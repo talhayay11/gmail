@@ -497,6 +497,60 @@ $font-family-roboto: 'Roboto', sans-serif;
    background-color: $carte-blanche;
   }
  }
+
+ /* Popup kutusu */
+.mail__popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 1000;
+  animation: slideIn 0.3s ease;
+}
+
+.mail__popup.show {
+  display: block; /* Göster */
+}
+
+/* Popup başlık */
+.mail__popup h4 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+}
+
+/* Popup içeriği */
+.mail__popup p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Close butonu */
+.mail__popup button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Popup animasyonu */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 }
 
 html, body {
