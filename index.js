@@ -23,23 +23,112 @@ function MailComponent() {
   const [activeTab, setActiveTab] = useState('primary');
   const [mails, setMails] = useState(mailData);
   const [popup, setPopup] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   // Aktif sekmeye göre mail listesini güncelle
   const getActiveMails = () => {
     return mails[activeTab];
   };
+
+  const openComposePopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closeComposePopup = () => {
+    setIsPopupOpen(false);
+  };
   
+  // Tıklanan mail'i okundu olarak işaretle ve popup'ı göster
   const markAsRead = (id) => {
     const updatedMails = mails[activeTab].map(mail =>
       mail.id === id ? { ...mail, isRead: true } : mail
     );
     setMails({ ...mails, [activeTab]: updatedMails });
-    setPopup(id);
+
+    // Tıklanan mail'in bilgilerini popup için ayarla
+    const selectedMail = mails[activeTab].find(mail => mail.id === id);
+    setPopup(selectedMail);
   };
 
   return (
+    <div className="mail__main">
+  <div className="mail__sidebar">
+      <button className="mail__sidebar-compose" onClick={openComposePopup}>
+        <i className="fa-solid fa-pencil mail__sidebar-compose-pen"></i>
+        <span className="mail__sidebar-compose-text">Compose</span>
+      </button>
+
+      <div className="mail__sidebar-side">
+        <ul className="mail__sidebar-side-box">
+          <li className="mail__sidebar-side-box-usage">
+            <i className="fa-solid fa-inbox mail__sidebar-side-box-icon"></i>
+            <span className="mail__sidebar-side-box-text">Inbox</span>
+          </li>
+
+          <li className="mail__sidebar-side-box-usage">
+            <i className="fa-regular fa-star mail__sidebar-side-box-icon"></i>
+            <span className="mail__sidebar-side-box-text">Starred</span>
+          </li>
+
+          <li className="mail__sidebar-side-box-usage">
+            <i className="fa-regular fa-clock mail__sidebar-side-box-icon"></i>
+            <span className="mail__sidebar-side-box-text">Snoozed</span>
+          </li>
+
+          <li className="mail__sidebar-side-box-usage">
+            <i className="fa-regular fa-paper-plane mail__sidebar-side-box-icon"></i>
+            <span className="mail__sidebar-side-box-text">Sent</span>
+          </li>
+
+          <li className="mail__sidebar-side-box-usage">
+            <i className="fa-regular fa-file mail__sidebar-side-box-icon"></i>
+            <span className="mail__sidebar-side-box-text">Drafts</span>
+          </li>
+
+          <li className="mail__sidebar-side-box-usage">
+            <i className="fa-solid fa-angle-down mail__sidebar-side-box-icon"></i>
+            <span className="mail__sidebar-side-box-text">More</span>
+          </li>
+        </ul>
+
+        <div className="mail__sidebar-side-down">
+          <div className="mail__sidebar-side-down-title">
+            Labels
+            <i className="fa-solid fa-plus mail__sidebar-side-down-title-icon"></i>
+          </div>
+
+          <ul className="mail__sidebar-side-down-box">
+            <li className="mail__sidebar-side-down-box-usage">
+              <div className="mail__sidebar-side-down-box-icon mail__sidebar-side-down-box-icon--first"></div>
+              <span className="mail__sidebar-side-down-box-text">Categories</span>
+            </li>
+
+            <li className="mail__sidebar-side-down-box-usage">
+              <div className="mail__sidebar-side-down-box-icon mail__sidebar-side-down-box-icon--second"></div>
+              <span className="mail__sidebar-side-down-box-text">Team</span>
+            </li>
+
+            <li className="mail__sidebar-side-down-box-usage">
+              <div className="mail__sidebar-side-down-box-icon mail__sidebar-side-down-box-icon--third"></div>
+              <span className="mail__sidebar-side-down-box-text">News</span>
+            </li>
+
+            <li className="mail__sidebar-side-down-box-usage">
+              <div className="mail__sidebar-side-down-box-icon mail__sidebar-side-down-box-icon--fourth"></div>
+              <span className="mail__sidebar-side-down-box-text">Work</span>
+            </li>
+
+            <li className="mail__sidebar-side-down-box-usage">
+              <div className="mail__sidebar-side-down-box-icon mail__sidebar-side-down-box-icon--fifth"></div>
+              <span className="mail__sidebar-side-down-box-text">Personal</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>    
+
     <div className="mail__content">
-            {/* Üst kısım */}
+      {/* Üst kısım */}
       <div className="mail__content-top">
         <div className="mail__content-top-left">
           <div className="mail__content-top-left-select">
@@ -57,6 +146,7 @@ function MailComponent() {
           <i className="fa-solid fa-angle-right"></i>
         </div>
       </div>
+
       {/* Tablar */}
       <div className="mail__content-tab">
         <button 
@@ -99,20 +189,109 @@ function MailComponent() {
             <span className="mail__content-list-item-date">{mail.date}</span>
           </div>
         ))}
-      </div>
 
-      {popup && (
-            <div className="mail__popup show">
-              <h4>From: {popup.sender}</h4>
-              <p><strong>Subject:</strong> {popup.subject}</p>
-              <p><strong>Date:</strong> {popup.date}</p>
-              <p>{popup.content}</p>
-              <button onClick={() => setPopup(null)}>Close</button>
+     {isPopupOpen && (
+        <div className="mail__sidebar-compose-popup">
+          <div className="mail__sidebar-compose-popup-header">
+            <h4 className="mail__sidebar-compose-popup-header-text">New Message</h4>
+            <div className="mail__sidebar-compose-popup-header-right">
+              <button className="mail__sidebar-compose-popup-header-button" onClick={() => alert('Minimize clicked')}>_</button>
+              <button className="mail__sidebar-compose-popup-header-button" onClick={closeComposePopup}>X</button>
             </div>
-            )}
+          </div>
+          
+          <div className="mail__sidebar-compose-popup-body">
+            <div className="mail__sidebar-compose-popup-body-from">
+              <label className="mail__sidebar-compose-popup-body-from-text">From</label>
+              <input className="mail__sidebar-compose-popup-body-from-input" type="text" placeholder="sender" readOnly />
+            </div>
+
+            <div className="mail__sidebar-compose-popup-body-to">
+              <label className="mail__sidebar-compose-popup-body-to-text">To</label>
+              <input className="mail__sidebar-compose-popup-body-to-input" type="text" placeholder="who" />
+            </div>
+            
+            <div className="mail__sidebar-compose-popup-body-subject">
+              <label className="mail__sidebar-compose-popup-body-subject-text">Subject</label>
+              <input className="mail__sidebar-compose-popup-body-subject-input" type="text" placeholder="" />
+            </div>
+
+            <div className="mail__sidebar-compose-popup-body-text">
+              <textarea className="mail__sidebar-compose-popup-body-text-inside" placeholder=""></textarea>
+            </div>
+          </div>
+
+          <div className="mail__sidebar-compose-popup-footer">
+            <button className="mail__sidebar-compose-popup-footer-button">Send
+            <button class="fa-solid fa-caret-down fa-xs mail__sidebar-compose-popup-footer-button-icon"></button>
+            </button>
+
+            <div className="mail__sidebar-compose-popup-footer-icons">
+              <i className="fa fa-paperclip fa-xs mail__sidebar-compose-popup-footer-icons-icon"></i>
+              <i className="fa fa-image fa-xs mail__sidebar-compose-popup-footer-icons-icon"></i>
+              <i className="fa fa-smile fa-xs mail__sidebar-compose-popup-footer-icons-icon"></i>
+              <i class="fa-brands fa-google-drive fa-xs mail__sidebar-compose-popup-footer-icons-icon"></i>
+              <i class="fa-regular fa-image fa-xs mail__sidebar-compose-popup-footer-icons-icon"></i>
+              <i class="fa-solid fa-lock fa-xs mail__sidebar-compose-popup-footer-icons-icon"></i>
+              <i class="fa-solid fa-pen fa-xs mail__sidebar-compose-popup-footer-icons-icon"></i>
+              <i class="fa-solid fa-ellipsis-vertical fa-xs mail__sidebar-compose-popup-footer-icons-icon"></i>
+              <i class="fa-solid fa-trash-can fa-xs mail__sidebar-compose-popup-footer-icons-icon--right"></i>
+            </div>
+          </div>
+        </div>
+      )}
+      </div>
+    </div>
     </div>
   );
 }
 
+function ComposePopup({ onClose }) {
+  const [subject, setSubject] = useState("");
+
+  return (
+    <div className="mail__sidebar-compose-popup">
+    <div className="mail__sidebar-compose-popup-header">
+      <h4 className="mail__sidebar-compose-popup-header-text">New Message</h4>
+      <div className="mail__sidebar-compose-popup-header-right">
+        <button className="mail__sidebar-compose-popup-header-button" onClick={() => alert('Minimize clicked')}>_</button>
+        <button className="mail__sidebar-compose-popup-header-button" onClick={closeComposePopup}>X</button>
+      </div>
+    </div>
+    
+    <div className="mail__sidebar-compose-popup-body">
+      <div className="mail__sidebar-compose-popup-body-from">
+        <label className="mail__sidebar-compose-popup-body-from-text">From</label>
+        <input className="mail__sidebar-compose-popup-body-from-input" type="text" placeholder="youremail@example.com" readOnly />
+      </div>
+
+      <div className="mail__sidebar-compose-popup-body-to">
+        <label className="mail__sidebar-compose-popup-body-to-text">To</label>
+        <input className="mail__sidebar-compose-popup-body-to-input" type="text" placeholder="Recipient's email" />
+      </div>
+      
+      <div className="mail__sidebar-compose-popup-body-subject">
+        <label className="mail__sidebar-compose-popup-body-subject-text">Subject</label>
+        <input className="mail__sidebar-compose-popup-body-subject-input" type="text" placeholder="Subject" />
+      </div>
+
+      <div className="mail__sidebar-compose-popup-body-text">
+        <textarea className="mail__sidebar-compose-popup-body-text-inside" placeholder="Message content..."></textarea>
+      </div>
+    </div>
+
+    <div className="mail__sidebar-compose-popup-footer">
+      <button className="mail__sidebar-compose-popup-footer-button">Send</button>
+
+      <div className="mail__sidebar-compose-popup-footer-icons">
+        <i className="fa fa-paperclip mail__sidebar-compose-popup-footer-icon"></i>
+        <i className="fa fa-image mail__sidebar-compose-popup-footer-icon"></i>
+        <i className="fa fa-smile mail__sidebar-compose-popup-footer-icon"></i>
+      </div>
+    </div>
+  </div>
+  );
+}
+
 // React bileşenini render et
-ReactDOM.render(<MailComponent/>, document.getElementById('root'));
+ReactDOM.render(<MailComponent />, document.getElementById('root'));
