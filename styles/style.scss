@@ -17,6 +17,7 @@ $cotton-ball: #f2f5fc;
 $chef-s-hat: #f3f5f6;
 $fantasia: #747789;
 $dead-blue-eyes: #0e57cb;
+$christmas-silver: #e0e0e0;
 
 $font-size-10: 0.625rem;
 $font-size-12: 0.75rem;
@@ -60,6 +61,12 @@ $font-family-roboto: 'Roboto', sans-serif;
    gap: 9px;
    margin: 34px 86.5px 18px 21px;
 
+   &-menu {
+    display: flex;
+    background: none;
+    border: none;
+   }
+
    &-logo {
     padding-left: 9px;
    }
@@ -87,6 +94,7 @@ $font-family-roboto: 'Roboto', sans-serif;
     width: 970px;
     height: 44px;
     border: none;
+    outline: none;
     border-radius: 20px;
     padding-left: 20px;
 
@@ -205,7 +213,9 @@ $font-family-roboto: 'Roboto', sans-serif;
        line-height: $line-height-14;
        font-weight: $font-weight-400;
        font-family: $font-family-roboto;
+       padding-left: 4px;
        border: none;
+       outline: none;
       }
      }
 
@@ -226,7 +236,9 @@ $font-family-roboto: 'Roboto', sans-serif;
        line-height: $line-height-14;
        font-weight: $font-weight-400;
        font-family: $font-family-roboto;
+       padding-left: 4px;
        border: none;
+       outline: none;
       }
      }
 
@@ -250,7 +262,9 @@ $font-family-roboto: 'Roboto', sans-serif;
        line-height: $line-height-14;
        font-weight: $font-weight-400;
        font-family: $font-family-roboto;
+       padding-left: 4px;
        border: none;
+       outline: none;
       }
      }
 
@@ -259,9 +273,11 @@ $font-family-roboto: 'Roboto', sans-serif;
       height: 280px;
 
       &-inside {
-       border: none;
        width: 100%;
        height: 100%;
+       padding-left: 4px;
+       border: none;
+       outline: none;
       } 
      }
     }
@@ -282,7 +298,27 @@ $font-family-roboto: 'Roboto', sans-serif;
       border-radius: 200px;
       cursor: pointer;
       display: flex;
-      gap: 24px;
+      gap: 12px;
+      max-width: 84px;
+
+      &-text {
+       font-size: $font-size-12;
+       line-height: $line-height-14;
+       font-weight: $font-weight-500;
+       font-family: $font-family-roboto;
+       max-width: 28px;
+       max-height: 14px;
+
+       &::after {
+        content: "";
+        position: absolute;
+        margin: 0 0 0 10px;
+        opacity: 0.5;
+        height: 20px;
+        width: 0.2px; 
+        background-color: $shadowed-steel; 
+       }
+      }
 
       &-icon {
         display: flex;
@@ -439,6 +475,7 @@ $font-family-roboto: 'Roboto', sans-serif;
    flex-direction: row;
    color: $carbon;
    display: flex;
+   margin-bottom: 10px;
    padding: 13px 25px 0 18px;
 
    &-left {
@@ -482,7 +519,7 @@ $font-family-roboto: 'Roboto', sans-serif;
    color: $black-oak;
    display: flex;
    flex-direction: row;
-   margin: 30px 0 0 8px;
+   margin: 20px 0 0 8px;
 
    &-primary {
     max-width: 209px;
@@ -493,22 +530,6 @@ $font-family-roboto: 'Roboto', sans-serif;
     border: none;
     cursor: pointer;
     position: relative;
-
-    &:focus,
-    &:active {
-     color: $bleu-de-france;
-     outline: none;
-  
-     &::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 2px;
-      background-color: $bleu-de-france;
-     }
-    }
 
     &-text {
      font-size: $font-size-13;
@@ -532,22 +553,6 @@ $font-family-roboto: 'Roboto', sans-serif;
     position: relative;
     border: none;
     cursor: pointer;
-
-    &:focus,
-    &:active {
-     color: $bleu-de-france;
-     outline: none;
-  
-     &::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 2px;
-      background-color: $bleu-de-france;
-     }
-    }
    }
 
    &-social {
@@ -559,36 +564,24 @@ $font-family-roboto: 'Roboto', sans-serif;
     position: relative;
     border: none;
     cursor: pointer;
-
-    &:focus,
-    &:active {
-     color: $bleu-de-france;
-     outline: none;
-  
-     &::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 2px;
-      background-color: $bleu-de-france;
-     }
-    }
    }
   }
 
   &-list {
    display: flex;
    flex-direction: column;
-   padding: 0 17px 0 0;
+   margin: 0 17px 0 0;
+   border-bottom: 1px solid $christmas-silver;
 
    &-item {
     gap: 15px;
     display: flex;
     position: relative;
+    border-top: 1px solid $christmas-silver;
     max-height: 35px;
     padding: 9.25px 0;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 
     &.unread {
      font-weight: $font-weight-700;
@@ -631,6 +624,45 @@ $font-family-roboto: 'Roboto', sans-serif;
      position: absolute;
      padding-top: 3px;
      right: 80px;
+    }
+
+    &-left {
+     display: none;
+     position: absolute;
+ 
+    &-icon {
+      cursor: pointer;
+     }
+    }
+
+    &-icons {
+     display: none;
+     position: absolute;
+     right: 20px;
+     gap: 10px;
+
+     &-icon {
+      cursor: pointer;
+     }
+    }
+
+    &:hover {
+     transform: scale(1.001);
+     box-shadow: 0 4px 8px;
+  
+     .mail__content-list-item-checkbox,
+     .mail__content-list-item-star {
+      font-weight: $font-weight-700;
+     }
+  
+     .mail__content-list-item-date {
+      display: none;
+     }
+  
+     .mail__content-list-item-left,
+     .mail__content-list-item-icons {
+      display: flex;
+     }
     }
    }
   }
