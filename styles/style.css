@@ -73,6 +73,7 @@
   background-color: #f6f7fb;
   max-width: 228px;
   display: flex;
+  z-index: 1;
   flex-direction: column;
 }
 .mail__sidebar-compose {
@@ -259,8 +260,8 @@
 }
 .mail__sidebar-side {
   max-width: 213px;
-  max-height: 363px;
   display: flex;
+  cursor: pointer;
   flex-direction: column;
 }
 .mail__sidebar-side-box {
@@ -270,12 +271,45 @@
   margin: 0;
   padding: 0;
 }
+.mail__sidebar-side-box-extra {
+  border-radius: 0 17px 17px 0;
+  width: 213px;
+  height: 28px;
+  display: flex;
+  gap: 20px;
+  flex-direction: row;
+}
+.mail__sidebar-side-box-extra:hover {
+  background-color: #c5c6c9;
+}
+.mail__sidebar-side-box-extra-icon {
+  display: flex;
+}
+.mail__sidebar-side-box-texts {
+  font-size: 0.813rem;
+  line-height: 15px;
+  font-weight: 400;
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  cursor: pointer;
+  padding-top: 6px;
+}
+.mail__sidebar-side-box-icons {
+  display: flex;
+  cursor: pointer;
+  max-width: 14px;
+  padding: 6px 0 0 23px;
+}
 .mail__sidebar-side-box-usage {
   width: 213px;
   height: 28px;
   gap: 20px;
+  border-radius: 0 17px 17px 0;
   display: flex;
   flex-direction: row;
+}
+.mail__sidebar-side-box-usage:hover {
+  background-color: #c5c6c9;
 }
 .mail__sidebar-side-box-text {
   font-size: 0.813rem;
@@ -283,11 +317,14 @@
   font-weight: 400;
   font-family: "Roboto", sans-serif;
   display: flex;
+  cursor: pointer;
+  padding-top: 6px;
 }
 .mail__sidebar-side-box-icon {
   display: flex;
+  cursor: pointer;
   max-width: 14px;
-  padding-left: 23px;
+  padding: 6px 0 0 23px;
 }
 .mail__sidebar-side-down {
   display: flex;
@@ -321,6 +358,7 @@
   height: 28px;
   gap: 20px;
   display: flex;
+  cursor: pointer;
   flex-direction: row;
 }
 .mail__sidebar-side-down-box-text {
@@ -329,11 +367,13 @@
   font-weight: 400;
   font-family: "Roboto", sans-serif;
   display: flex;
+  cursor: pointer;
 }
 .mail__sidebar-side-down-box-icon {
   display: flex;
   width: 14px;
   height: 11px;
+  margin-top: 2px;
   clip-path: polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%);
 }
 .mail__sidebar-side-down-box-icon--first {
@@ -356,9 +396,11 @@
   height: 100%;
   height: 796px;
   border-radius: 15px;
+  overflow: visible;
   flex-direction: column;
   position: relative;
   display: flex;
+  z-index: 2;
   background-color: #ffffff;
 }
 .mail__content-top {
@@ -398,7 +440,16 @@
   justify-content: end;
 }
 .mail__content-top-right-number {
+  font-size: 0.625rem;
+  line-height: 11px;
+  font-weight: 500;
+  font-family: "Roboto", sans-serif;
   white-space: nowrap;
+  padding-top: 5px;
+  color: #818488;
+}
+.mail__content-top-right-angle {
+  color: #bdbdbd;
 }
 .mail__content-tab {
   max-width: 627px;
@@ -468,19 +519,33 @@
   font-weight: 700;
   background-color: #ffffff !important;
 }
+.mail__content-list-item.unread .mail__content-list-item-checkbox {
+  background-color: #333333;
+}
+.mail__content-list-item.unread .mail__content-list-item-star {
+  color: #4f4f4f;
+}
 .mail__content-list-item.read {
   font-weight: 400;
   background-color: #f2f5fc !important;
+}
+.mail__content-list-item.read .mail__content-list-item-checkbox {
+  color: #bdbdbd;
+}
+.mail__content-list-item.read .mail__content-list-item-star {
+  color: #bdbdbd;
 }
 .mail__content-list-item-checkbox {
   margin: 2px 0 0 15px;
   width: 13px;
   height: 13px;
+  background-color: #bdbdbd;
 }
 .mail__content-list-item-star {
   width: 10px;
   height: 9.5px;
   padding-top: 7px;
+  color: #bdbdbd;
 }
 .mail__content-list-item-sender {
   font-size: 0.813rem;
@@ -505,6 +570,7 @@
   position: absolute;
 }
 .mail__content-list-item-left-icon {
+  padding-left: 5px;
   cursor: pointer;
 }
 .mail__content-list-item-icons {
@@ -520,9 +586,11 @@
   transform: scale(1.001);
   box-shadow: 0 4px 8px;
 }
-.mail__content-list-item:hover .mail__content-list-item-checkbox,
+.mail__content-list-item:hover .mail__content-list-item-checkbox {
+  color: #333333;
+}
 .mail__content-list-item:hover .mail__content-list-item-star {
-  font-weight: 700;
+  color: #4f4f4f;
 }
 .mail__content-list-item:hover .mail__content-list-item-date {
   display: none;

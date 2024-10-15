@@ -1,4 +1,4 @@
-const { useState } = React;
+const { useState, useEffect } = React;
 
 // Farklı mail listeleri
 const mailData = {
@@ -25,13 +25,54 @@ function MailComponent() {
   const [mails, setMails] = useState(mailData);
   const [popup, setPopup] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [visibleMailsCount, setVisibleMailsCount] = useState(0);
   const [toValue, setToValue] = useState(''); // To kısmı için state
   const [subjectValue, setSubjectValue] = useState(''); // Subject kısmı için state
+  const [sidebarActive, setSidebarActive] = useState('inbox');
+  const [draggedMailId, setDraggedMailId] = useState(null);
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
+
+  const handleDrop = (e, droppedOnMailId) => {
+    const draggedMailId = e.dataTransfer.getData("mailId");
+    if (!draggedMailId) return;
+  
+    // Sürüklenen ve bırakılan mailleri bul
+    const draggedMailIndex = mails[activeTab].findIndex(mail => mail.id === parseInt(draggedMailId));
+    const droppedOnMailIndex = mails[activeTab].findIndex(mail => mail.id === droppedOnMailId);
+  
+    if (draggedMailIndex === -1 || droppedOnMailIndex === -1) return;
+  
+    // Maillerin yerini değiştir
+    const updatedMails = [...mails[activeTab]];
+    const [draggedMail] = updatedMails.splice(draggedMailIndex, 1);
+    updatedMails.splice(droppedOnMailIndex, 0, draggedMail);
+  
+    // Mailleri güncelle
+    setMails({ ...mails, [activeTab]: updatedMails });
+    setDraggedMailId(null);
+  };
+
+  const handleDragStart = (e, id) => {
+    e.dataTransfer.setData("mailId", id); // Sürüklenen öğenin id'sini set ediyoruz
+  };
+
+  const toggleMore = () => {
+    setIsMoreOpen(!isMoreOpen);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault(); // Varsayılan olayları engelle
+  };
 
   // Aktif sekmeye göre mail listesini güncelle
   const getActiveMails = () => {
     return mails[activeTab];
   };
+
+  useEffect(() => {
+    const activeMails = getActiveMails();
+    setVisibleMailsCount(activeMails.length); // Güncel mail sayısını ayarla
+  }, [activeTab, mails]); // 'activeTab' veya 'mails' değiştiğinde tetiklenir
 
   const openComposePopup = () => {
     setIsPopupOpen(true);
@@ -58,10 +99,17 @@ function MailComponent() {
       ...prevState,
       sent: [...prevState.sent, newMail]
     }));
-
     // Popup'ı kapat ve inputları temizle
     closeComposePopup();
   };
+  
+  const deleteMail = (id) => {
+    const updatedMails = mails[activeTab].filter(mail => mail.id !== id);
+    setMails((prevMails) => ({
+      ...prevMails,
+      [activeTab]: updatedMails
+    }));
+    };
 
   // Tıklanan mail'i okundu olarak işaretle ve popup'ı göster
   const markAsRead = (id) => {
@@ -85,9 +133,13 @@ function MailComponent() {
 
       <div className="mail__sidebar-side">
         <ul className="mail__sidebar-side-box">
-          <li className="mail__sidebar-side-box-usage" onClick={() => setActiveTab('primary')}>
+          <li className={`mail__sidebar-side-box-usage ${sidebarActive === 'inbox' ? 'active' : ''}`} 
+              style={sidebarActive === 'inbox' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}} 
+              onClick={() => { setActiveTab('primary'); setSidebarActive('inbox'); }}
+              >
+
             <i className="fa-solid fa-inbox mail__sidebar-side-box-icon"></i>
-            <span className="mail__sidebar-side-box-text">Inbox</span>
+            <span className="mail__sidebar-side-box-text" style={sidebarActive === 'inbox' ? { fontWeight: '700' } : {}}>Inbox</span>
           </li>
 
           <li className="mail__sidebar-side-box-usage">
@@ -100,9 +152,13 @@ function MailComponent() {
             <span className="mail__sidebar-side-box-text">Snoozed</span>
           </li>
 
-          <li className="mail__sidebar-side-box-usage"  onClick={() => setActiveTab('sent')}>
+          <li className={`mail__sidebar-side-box-usage ${sidebarActive === 'sent' ? 'active' : ''}`} 
+              style={sidebarActive === 'sent' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}} 
+              onClick={() => { setActiveTab('sent'); setSidebarActive('sent'); }}
+            >
+
             <i className="fa-regular fa-paper-plane mail__sidebar-side-box-icon"></i>
-            <span className="mail__sidebar-side-box-text">Sent</span>
+            <span className="mail__sidebar-side-box-text" style={sidebarActive === 'sent' ? { fontWeight: '700' } : {}}>Sent</span>
           </li>
 
           <li className="mail__sidebar-side-box-usage">
@@ -110,10 +166,24 @@ function MailComponent() {
             <span className="mail__sidebar-side-box-text">Drafts</span>
           </li>
 
-          <li className="mail__sidebar-side-box-usage">
-            <i className="fa-solid fa-angle-down mail__sidebar-side-box-icon"></i>
-            <span className="mail__sidebar-side-box-text">More</span>
+          <li className="mail__sidebar-side-box-usage" onClick={toggleMore}>
+          <i className={`fa-solid ${isMoreOpen ? 'fa-angle-up' : 'fa-angle-down'} mail__sidebar-side-box-icon`}></i>
+          <span className="mail__sidebar-side-box-text">{isMoreOpen ? 'Less' : 'More'}</span>
           </li>
+
+          {isMoreOpen && (
+            <div className="mail__sidebar-side-box">
+          <li className="mail__sidebar-side-box-extra">
+           <i className="fa-regular fa-message mail__sidebar-side-box-icons"></i>
+           <span className="mail__sidebar-side-box-texts">message</span>
+           </li>
+
+           <li className="mail__sidebar-side-box-extra">
+        <i className="fa-solid fa-circle-exclamation mail__sidebar-side-box-icons"></i>
+        <span className="mail__sidebar-side-box-texts">spam</span>
+      </li>
+      </div>
+          )}
         </ul>
 
         <div className="mail__sidebar-side-down">
@@ -165,9 +235,10 @@ function MailComponent() {
         </div>
         
         <div className="mail__content-top-right">
-          <span className="mail__content-top-right-number">1-1 of 1</span>
-          <i className="fa-solid fa-angle-left"></i>
-          <i className="fa-solid fa-angle-right"></i>
+        <span className="mail__content-top-right-number">
+              1-{visibleMailsCount} of {visibleMailsCount}</span>
+              <i className="fa-solid fa-angle-left mail__content-top-right-angle"></i>
+          <i className="fa-solid fa-angle-right mail__content-top-right-angle"></i>
         </div>
       </div>
 
@@ -262,11 +333,16 @@ function MailComponent() {
 
       {/* Mail listesi */}
       <div className="mail__content-list">
-        {getActiveMails().map((mail) => (
+      {getActiveMails() && Array.isArray(getActiveMails()) && getActiveMails().length > 0 && getActiveMails().map((mail) => (
+       mail?.id ? (          
           <div
           key={mail.id} 
           className={`mail__content-list-item ${mail.isRead ? 'read' : 'unread'}`} 
-          onClick={() => markAsRead(mail.id)}  // Mail tıklandığında "read" olur
+          onClick={() => markAsRead(mail.id)} 
+          draggable // Öğenin sürüklenebilir olduğunu belirtir
+          onDragStart={(e) => handleDragStart(e, mail.id)} // Sürükleme başlangıcında çalışır
+          onDragOver={(e) => handleDragOver(e)} // Sürüklerken diğer öğeler üzerinden geçtiğinde çalışır
+          onDrop={(e) => handleDrop(e, mail.id)} // Bıraktığınızda çalışır
         >
             <input type="checkbox" className="mail__content-list-item-checkbox" />
             <i className="fa-regular fa-star fa-2xs mail__content-list-item-star"></i>
@@ -275,16 +351,18 @@ function MailComponent() {
             <span className="mail__content-list-item-date">{mail.date}</span>
                 {/* İkon kutusu */}
         <div className="mail__content-list-item-left">
-          <i class="fa-solid fa-ellipsis-vertical mail__content-list-item-left-icon"></i>
+          <i className="fa-solid fa-ellipsis-vertical mail__content-list-item-left-icon"  // `draggable` özelliği doğru yazıldı
+          onDragStart={() => handleDragStart(mail.id)}></i>
           </div>
 
           <div className="mail__content-list-item-icons">
            <i className="fa-solid fa-box-archive mail__content-list-item-icons-icon"></i>
-           <i className="fa-solid fa-trash-can mail__content-list-item-icons-icon"></i>
+           <i className="fa-solid fa-trash-can mail__content-list-item-icons-icon" onClick={(e) => {e.stopPropagation(); deleteMail(mail.id);}}></i>
            <i className="fa-regular fa-envelope mail__content-list-item-icons-icon"></i>
            <i className="fa-regular fa-clock mail__content-list-item-icons-icon"></i>
           </div>
          </div>
+        ) : null
         ))}
 
      {isPopupOpen && (
