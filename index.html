@@ -13,7 +13,7 @@
 <body>
  <nav class="mail__navbar">
   <div class="mail__navbar-left">
-   <i class="fa-solid fa-bars mail__navbar-left-menu"></i>
+   <i class="fa-solid fa-bars mail__navbar-left-menu" onclick="toggleSidebar()"></i>
    <img src="images\gmail-icon.png" alt="Gmail Logo" class="mail__navbar-left-logo">
    <span class="mail__navbar-left-text">Gmail</span>
   </div>
@@ -34,18 +34,17 @@
 
  <div class="mail__main">
 
-  <div class="mail__content">
+  <div class="mail__main-content">
    <div id="root"></div>
   </div>
 
-  <div class="mail__right">
-   <img src="images\calendar-icon.png" alt="Calender" class="mail__right-pic">
-   <img src="images\note-icon.png" alt="Note" class="mail__right-pic">
-   <i class="fa-solid fa-user mail__right-icon" style="color: #74C0FC;"></i>
-   <hr class="mail__right-divider">
-   <i class="fa-solid fa-plus mail__right-icon"></i>
+  <div class="mail__main-right">
+   <img src="images\calendar-icon.png" alt="Calender" class="mail__main-right-pic">
+   <img src="images\note-icon.png" alt="Note" class="mail__main-right-pic">
+   <i class="fa-solid fa-user mail__main-right-icon"></i>
+   <hr class="mail__main-right-divider">
+   <i class="fa-solid fa-plus mail__main-right-icon"></i>
   </div>
- 
 
  <script src="https://unpkg.com/react/umd/react.development.js" crossorigin></script>
  <script src="https://unpkg.com/react-dom/umd/react-dom.development.js" crossorigin></script>

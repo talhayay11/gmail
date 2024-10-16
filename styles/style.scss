@@ -16,6 +16,10 @@ $shadowed-steel: #4a4a4a;
 $cotton-ball: #f2f5fc;
 $chef-s-hat: #f3f5f6;
 $fantasia: #747789;
+$maya-blue: #74c0fcff;
+$snow-tiger: #dadce0;
+$cerebral-grey: #cccccc;
+$cannon-barrel: #3c4043;
 $shining-silver: #c5c6c9;
 $mission-control: #818488;
 $noghrei-silver: #bdbdbd;
@@ -67,6 +71,7 @@ $font-family-roboto: 'Roboto', sans-serif;
     display: flex;
     background: none;
     border: none;
+    cursor: pointer;
    }
 
    &-logo {
@@ -126,14 +131,100 @@ $font-family-roboto: 'Roboto', sans-serif;
 
  &__main {
   display: flex;
- }
+  width: 100%;
 
- &__sidebar {
+ &-sidebar {
   background-color: $mā-white;
   max-width: 228px;
   display: flex;
-  z-index: 1;
+  z-index: 10;
   flex-direction: column;
+
+  &.collapsed {
+   width: 65px;
+
+   .mail__main-sidebar-compose {
+    width: 31px;
+    margin: 0 8px 14px 8px;
+    padding-right: 30px;
+
+    &-text {
+     display: none;
+    }
+
+    &-pen {
+      margin-right: 3px;
+    }
+   }
+  
+   .mail__main-sidebar-side-box {
+
+    &-usage {
+      width: 30px;
+      margin-left: 20px;
+      border-radius: 400px;
+    }
+
+    &-icon {
+      padding: 5px 0 0 7px;
+    }
+    
+    &-text {
+     display: none;
+    }
+
+    &-extra {
+      width: 30px;
+      margin-left: 20px;
+      border-radius: 400px;
+    }
+
+    &-icons {
+      padding: 5px 0 0 6px;
+    }
+
+    &-texts {
+      display: none;
+    }
+   }
+
+   .mail__main-sidebar-side-down {
+
+    &-title {
+     
+      &-text {
+        display: none;
+      }
+    }
+
+    &-icon {
+      padding: 0 0 0 3px;
+    }
+    
+    &-box {
+
+     &-icons {
+      padding: 3px 0 0 3px;
+      margin: 6px 0 0 7px;
+     }
+
+     &-usage {
+      width: 30px;
+      border-radius: 400px;
+      margin: 0 0 0 18px;
+     }
+  
+     &-icon {
+      padding: 3px 0 0 3px;
+      margin: 6px 0 0 7px;
+     }
+      
+     &-text {
+      display: none;
+     }  
+    }
+   }
+  }
 
   &-compose {
    margin: 0 93.5px 14px 7.5px;
@@ -144,6 +235,7 @@ $font-family-roboto: 'Roboto', sans-serif;
    flex-direction: row;
    align-items: center;
    border: none;
+   cursor: pointer;
    gap: 15px;
    max-width: 124px;
    max-height: 50px;
@@ -205,10 +297,10 @@ $font-family-roboto: 'Roboto', sans-serif;
      &-from {
 
       &-text {
-        font-size: $font-size-12;
-        line-height: $line-height-14;
-        font-weight: $font-weight-400;
-        font-family: $font-family-roboto;
+       font-size: $font-size-12;
+       line-height: $line-height-14;
+       font-weight: $font-weight-400;
+       font-family: $font-family-roboto;
       }
 
       &-input {
@@ -226,12 +318,12 @@ $font-family-roboto: 'Roboto', sans-serif;
       padding: 14px 0 24px 0;
 
       &-text {
-        font-size: $font-size-12;
-        line-height: $line-height-14;
-        font-weight: $font-weight-400;
-        font-family: $font-family-roboto;
-        max-width: 15px;
-        max-height: 14px;
+       font-size: $font-size-12;
+       line-height: $line-height-14;
+       font-weight: $font-weight-400;
+       font-family: $font-family-roboto;
+       max-width: 15px;
+       max-height: 14px;
       }
 
       &-input {
@@ -429,7 +521,7 @@ $font-family-roboto: 'Roboto', sans-serif;
    &-down {
     display: flex;
     flex-direction: column;
-    padding: 26px 0 0 23px;
+    padding: 26px 0 0 0;
 
     &-title {
      font-size: $font-size-15;
@@ -439,15 +531,15 @@ $font-family-roboto: 'Roboto', sans-serif;
      max-height: 20px;
      display: flex;
      flex-direction: row;
-     margin: 0 0 18px 0;
-
-     &-icon {
-      display: flex;
-      justify-content: end;
-      padding:4px 0 4px 119px;
-     }
+     margin: 0 0 18px 23px;
     }
 
+    &-icon {
+     display: flex;
+     justify-content: end;
+     padding:4px 0 4px 119px;
+    }
+    
     &-box {
      list-style: none;
      flex-direction: column;
@@ -459,9 +551,14 @@ $font-family-roboto: 'Roboto', sans-serif;
       width: 213px;
       height: 28px;
       gap: 20px;
+      border-radius: 0 17px 17px 0;
       display: flex;
       cursor: pointer;
       flex-direction: row;
+
+      &:hover {
+       background-color: $shining-silver;
+      }
      }
   
      &-text {
@@ -469,15 +566,16 @@ $font-family-roboto: 'Roboto', sans-serif;
       line-height: $line-height-15;
       font-weight: $font-weight-400;
       font-family: $font-family-roboto;
-      display: flex;
+      padding-top: 6px;
       cursor: pointer;
+      display: flex;
      }
   
      &-icon {
       display: flex;
       width: 14px;
       height: 11px;
-      margin-top: 2px;
+      margin: 8px 0 0 23px;
       clip-path: polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%);
 
       &--first {
@@ -504,14 +602,12 @@ $font-family-roboto: 'Roboto', sans-serif;
    }
   }
  }
-
  
- &__content {
+ &-content {
   width: 100%;
   height: 100%;
   height: 796px;
   border-radius: 15px;
-  overflow: visible;
   flex-direction: column;
   position: relative;
   display: flex;
@@ -558,10 +654,10 @@ $font-family-roboto: 'Roboto', sans-serif;
     justify-content: end;
 
     &-number {
-      font-size: $font-size-10;
-      line-height: $line-height-11;
-      font-weight: $font-weight-500;
-      font-family: $font-family-roboto;
+     font-size: $font-size-10;
+     line-height: $line-height-11;
+     font-weight: $font-weight-500;
+     font-family: $font-family-roboto;
      white-space: nowrap;
      padding-top: 5px;
      color: $mission-control;
@@ -590,6 +686,12 @@ $font-family-roboto: 'Roboto', sans-serif;
     border: none;
     cursor: pointer;
     position: relative;
+
+    /*&:focus,
+    &:active {
+     border-bottom: 2px solid #2f80ed;
+     color: #2f80ed;
+    }*/
 
     &-text {
      font-size: $font-size-13;
@@ -726,9 +828,9 @@ $font-family-roboto: 'Roboto', sans-serif;
     }
 
     &:hover {
-     transform: scale(1.001);
-     box-shadow: 0 4px 8px;
-  
+     box-shadow: inset 1px 0 0 $snow-tiger, inset -1px 0 0 $snow-tiger, 0 1px 2px 0 $cannon-barrel, 0 1px 3px 1px $cannon-barrel;
+     z-index: 2;
+
      .mail__content-list-item-checkbox {
       color: $carbon;
      }
@@ -750,7 +852,7 @@ $font-family-roboto: 'Roboto', sans-serif;
   }
  }
 
- &__right {
+ &-right {
   max-width: 47px;
   background-color: $mā-white;
   display: flex;
@@ -766,6 +868,7 @@ $font-family-roboto: 'Roboto', sans-serif;
   &-icon {
    padding: 0 15.5px;
    width: 16px;
+   color: $maya-blue;
   }
 
   &-divider {
@@ -776,6 +879,40 @@ $font-family-roboto: 'Roboto', sans-serif;
   }
  }
 }
+}
+
+.add-item-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+
+  input[type="text"] {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid $cerebral-grey;
+  }
+
+  input[type="color"] {
+    width: 50px;
+    height: 30px;
+    border: none;
+  }
+
+  label {
+    font-size: 14px;
+    margin-top: 5px;
+  }
+}
+
+.mail__main-sidebar-side-down-box-icons {
+  display: flex;
+  width: 14px;
+  height: 11px;
+  margin: 8px 0 0 23px;
+  clip-path: polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%);
+ }
 
 html, body {
  margin: 0;
