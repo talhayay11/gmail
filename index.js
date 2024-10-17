@@ -37,22 +37,18 @@ function MailComponent() {
   const draggedMailId = e.dataTransfer.getData("mailId");
   if (!draggedMailId) return;
   
-  // Sürüklenen ve bırakılan mailleri bul
   const draggedMailIndex = mails[activeTab].findIndex(mail => mail.id === parseInt(draggedMailId));
   const droppedOnMailIndex = mails[activeTab].findIndex(mail => mail.id === droppedOnMailId);
   if (draggedMailIndex === -1 || droppedOnMailIndex === -1) return;
   
-  // Maillerin yerini değiştir
   const updatedMails = [...mails[activeTab]];
   const [draggedMail] = updatedMails.splice(draggedMailIndex, 1);
   updatedMails.splice(droppedOnMailIndex, 0, draggedMail);
   
-    // Mailleri güncelle
   setMails({ ...mails, [activeTab]: updatedMails });
   setDraggedMailId(null);
  };
 
-  // Yeni öğe ekleme fonksiyonu
  const addNewItem = () => {
   if (isFormVisible) {
    const newItem = {
@@ -79,18 +75,17 @@ function MailComponent() {
  };
 
  const handleDragOver = (e) => {
-  e.preventDefault(); // Varsayılan olayları engelle
+  e.preventDefault();
  };
 
-  // Aktif sekmeye göre mail listesini güncelle
  const getActiveMails = () => {
   return mails[activeTab];
  };
 
  useEffect(() => {
   const activeMails = getActiveMails();
-  setVisibleMailsCount(activeMails.length); // Güncel mail sayısını ayarla
-  }, [activeTab, mails]); // 'activeTab' veya 'mails' değiştiğinde tetiklenir
+  setVisibleMailsCount(activeMails.length);
+  }, [activeTab, mails]);
 
  const openComposePopup = () => {
   setIsPopupOpen(true);
@@ -98,26 +93,23 @@ function MailComponent() {
 
  const closeComposePopup = () => {
   setIsPopupOpen(false);
-  setToValue(''); // Popup kapatıldığında inputları temizle
+  setToValue('');
   setSubjectValue('');
  };
   
-  // Mail gönderme işlemi
  const handleSend = () => {
   const newMail = {
-   id: mails.sent.length + 1, // Unique ID
+   id: mails.sent.length + 1,
    sender: `receiver: ${toValue}`,
    subject: subjectValue,
-   date: new Date().toLocaleDateString(), // Şu anki tarih
+   date: new Date().toLocaleDateString(),
    isRead: false
   };
 
-    // Yeni maili sent kategorisine ekle
   setMails(prevState => ({
    ...prevState,
    sent: [...prevState.sent, newMail]
   }));
-    // Popup'ı kapat ve inputları temizle
   closeComposePopup();
  };
   
@@ -129,14 +121,11 @@ function MailComponent() {
   }));
  };
 
-  // Tıklanan mail'i okundu olarak işaretle ve popup'ı göster
  const markAsRead = (id) => {
   const updatedMails = mails[activeTab].map(mail =>
    mail.id === id ? { ...mail, isRead: true } : mail
   );
   setMails({ ...mails, [activeTab]: updatedMails });
-
-    // Tıklanan mail'in bilgilerini popup için ayarla
   const selectedMail = mails[activeTab].find(mail => mail.id === id);
   setPopup(selectedMail);
  };
@@ -285,7 +274,6 @@ function MailComponent() {
      </div>
     </div>
 
-        {/* Tablar */}
     {activeTab === 'primary' && (
      <div className="mail__main-content-tab">
       <button className={`mail__main-content-tab-primary ${activeTab === 'primary' ? 'active' : ''}`} 
@@ -366,15 +354,15 @@ function MailComponent() {
 
     <div className="mail__main-content-list">
      {getActiveMails() && Array.isArray(getActiveMails()) && getActiveMails().length > 0 && getActiveMails().map((mail) => (
-       mail?.id ? (          
+       mail?.id ? (
         <div
          key={mail.id} 
          className={`mail__main-content-list-item ${mail.isRead ? 'read' : 'unread'}`} 
          onClick={() => markAsRead(mail.id)} 
-         draggable // Öğenin sürüklenebilir olduğunu belirtir
-         onDragStart={(e) => handleDragStart(e, mail.id)} // Sürükleme başlangıcında çalışır
-         onDragOver={(e) => handleDragOver(e)} // Sürüklerken diğer öğeler üzerinden geçtiğinde çalışır
-         onDrop={(e) => handleDrop(e, mail.id)} // Bıraktığınızda çalışır
+         draggable
+         onDragStart={(e) => handleDragStart(e, mail.id)}
+         onDragOver={(e) => handleDragOver(e)}
+         onDrop={(e) => handleDrop(e, mail.id)}
         >
          <input type="checkbox" className="mail__main-content-list-item-checkbox" />
          <i className="fa-regular fa-star fa-2xs mail__main-content-list-item-star"></i>
@@ -383,7 +371,7 @@ function MailComponent() {
          <span className="mail__main-content-list-item-date">{mail.date}</span>
          
          <div className="mail__main-content-list-item-left">
-          <i className="fa-solid fa-ellipsis-vertical mail__main-content-list-item-left-icon"  // `draggable` özelliği doğru yazıldı
+          <i className="fa-solid fa-ellipsis-vertical mail__main-content-list-item-left-icon"
           onDragStart={() => handleDragStart(mail.id)}></i>
          </div>
 

@@ -656,17 +656,17 @@
   box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 #3c4043, 0 1px 3px 1px #3c4043;
   z-index: 2;
 }
-.mail__main-content-list-item:hover .mail__content-list-item-checkbox {
+.mail__main-content-list-item:hover .mail__main-content-list-item-checkbox {
   color: #333333;
 }
-.mail__main-content-list-item:hover .mail__content-list-item-star {
+.mail__main-content-list-item:hover .mail__main-content-list-item-star {
   color: #4f4f4f;
 }
-.mail__main-content-list-item:hover .mail__content-list-item-date {
+.mail__main-content-list-item:hover .mail__main-content-list-item-date {
   display: none;
 }
-.mail__main-content-list-item:hover .mail__content-list-item-left,
-.mail__main-content-list-item:hover .mail__content-list-item-icons {
+.mail__main-content-list-item:hover .mail__main-content-list-item-left,
+.mail__main-content-list-item:hover .mail__main-content-list-item-icons {
   display: flex;
 }
 .mail__main-right {

@@ -828,23 +828,23 @@ $font-family-roboto: 'Roboto', sans-serif;
     }
 
     &:hover {
-     box-shadow: inset 1px 0 0 $snow-tiger, inset -1px 0 0 $snow-tiger, 0 1px 2px 0 $cannon-barrel, 0 1px 3px 1px $cannon-barrel;
-     z-index: 2;
+      box-shadow: inset 1px 0 0 $snow-tiger, inset -1px 0 0 $snow-tiger, 0 1px 2px 0 $cannon-barrel, 0 1px 3px 1px $cannon-barrel;
+      z-index: 2;
 
-     .mail__content-list-item-checkbox {
+     .mail__main-content-list-item-checkbox {
       color: $carbon;
      }
 
-     .mail__content-list-item-star {
+     .mail__main-content-list-item-star {
       color: $black-oak;
      }
   
-     .mail__content-list-item-date {
+     .mail__main-content-list-item-date {
       display: none;
      }
   
-     .mail__content-list-item-left,
-     .mail__content-list-item-icons {
+     .mail__main-content-list-item-left,
+     .mail__main-content-list-item-icons {
       display: flex;
      }
     }
