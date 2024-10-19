@@ -25,6 +25,7 @@ $mission-control: #818488;
 $noghrei-silver: #bdbdbd;
 $dead-blue-eyes: #0e57cb;
 $christmas-silver: #e0e0e0;
+$suzu-grey: #9da0a4;
 
 $font-size-10: 0.625rem;
 $font-size-12: 0.75rem;
@@ -496,7 +497,7 @@ $font-family-roboto: 'Roboto', sans-serif;
      flex-direction: row;
 
      &:hover {
-      background-color: $shining-silver;
+      background-color: $snow-tiger;
      }
     }
     
@@ -557,7 +558,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       flex-direction: row;
 
       &:hover {
-       background-color: $shining-silver;
+       background-color: $snow-tiger;
       }
      }
   
@@ -810,9 +811,10 @@ $font-family-roboto: 'Roboto', sans-serif;
      display: none;
      position: absolute;
  
-    &-icon {
-      padding-left: 5px;
+     &-icon {
+      padding:7.3px 0 0 4px;
       cursor: pointer;
+      color: $suzu-grey;
      }
     }
 
@@ -828,7 +830,7 @@ $font-family-roboto: 'Roboto', sans-serif;
     }
 
     &:hover {
-      box-shadow: inset 1px 0 0 $snow-tiger, inset -1px 0 0 $snow-tiger, 0 1px 2px 0 $cannon-barrel, 0 1px 3px 1px $cannon-barrel;
+      box-shadow: inset 1px 0 0 $snow-tiger, inset -1px 0 0 $snow-tiger, 0 1px 2px 0 $snow-tiger, 0 1px 3px 1px $snow-tiger;
       z-index: 2;
 
      .mail__main-content-list-item-checkbox {

@@ -371,7 +371,7 @@ function MailComponent() {
          <span className="mail__main-content-list-item-date">{mail.date}</span>
          
          <div className="mail__main-content-list-item-left">
-          <i className="fa-solid fa-ellipsis-vertical mail__main-content-list-item-left-icon"
+          <i className="fa-solid fa-grip-vertical fa-xs mail__main-content-list-item-left-icon"
           onDragStart={() => handleDragStart(mail.id)}></i>
          </div>
 
