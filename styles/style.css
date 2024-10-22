@@ -463,7 +463,7 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px #1a1a1a;
   background-color: #f6f7fb;
-  width: 150px;
+  width: 250px;
   height: 150px;
   padding: 15px;
   gap: 15px;
@@ -495,6 +495,7 @@
 .mail__main-sidebar-side-down-form label {
   font-size: 0.938rem;
   color: #3c4043;
+  font-family: "Roboto", sans-serif;
   font-weight: 600;
 }
 .mail__main-sidebar-side-down .mail__main-sidebar-side-down-box-icons {
@@ -621,46 +622,66 @@
   gap: 15px;
   display: flex;
   position: relative;
-  border-top: 1px solid #e0e0e0;
   max-height: 35px;
   padding: 9.25px 0;
   cursor: pointer;
+  border-top: 1px solid #e0e0e0;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .mail__main-content-list-item.unread {
   font-weight: 700;
   background-color: #ffffff;
 }
-.mail__main-content-list-item.unread .mail__content-list-item-checkbox {
-  background-color: #333333;
+.mail__main-content-list-item.unread .mail__main-content-list-item-checkbox {
+  border: 1px solid #333333;
 }
-.mail__main-content-list-item.unread .mail__content-list-item-star {
+.mail__main-content-list-item.unread .mail__main-content-list-item-star {
   color: #4f4f4f;
 }
 .mail__main-content-list-item.read {
   font-weight: 400;
   background-color: #f2f5fc;
 }
-.mail__main-content-list-item.read .mail__content-list-item-checkbox {
+.mail__main-content-list-item.read .mail__main-content-list-item-checkbox {
   color: #bdbdbd;
 }
-.mail__main-content-list-item.read .mail__content-list-item-star {
+.mail__main-content-list-item.read .mail__main-content-list-item-star {
   color: #bdbdbd;
 }
 .mail__main-content-list-item.read .mail__main-content-list-item-description {
   font-weight: 400;
 }
+.mail__main-content-list-item:has(.mail__main-content-list-item-checkbox:checked) {
+  background-color: #c2dbff;
+}
 .mail__main-content-list-item-checkbox {
-  margin: 2px 0 0 15px;
   width: 13px;
   height: 13px;
-  background-color: #bdbdbd;
+  border: none;
+  cursor: pointer;
+  margin: 2px 0 0 15px;
+  border: 1px solid #bdbdbd;
+}
+.mail__main-content-list-item-checkbox:hover::before {
+  content: "";
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  z-index: -1;
+  outline: none;
+  margin-left: 6px;
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #dadce0;
 }
 .mail__main-content-list-item-star {
   width: 10px;
   height: 9.5px;
   padding-top: 7px;
-  color: #bdbdbd;
+  position: relative;
+  display: inline-block;
+  z-index: 1;
 }
 .mail__main-content-list-item-middle {
   flex: 1;
@@ -731,7 +752,7 @@
   z-index: 2;
 }
 .mail__main-content-list-item:hover .mail__main-content-list-item-checkbox {
-  color: #333333;
+  border: 1px solid #333333;
 }
 .mail__main-content-list-item:hover .mail__main-content-list-item-star {
   color: #4f4f4f;
@@ -821,25 +842,22 @@
   font-weight: bold;
 }
 .mail__main-content-detail-subject-title {
-  align-self: flex-start;
   font-size: 1.125rem;
   line-height: 25px;
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
-  margin-left: 57px;
+  align-self: flex-start;
   margin-bottom: 10px;
-  top: 74px;
+  margin-left: 57px;
   left: 57px;
+  top: 74px;
 }
 .mail__main-content-detail-subject-icons {
   position: absolute;
-  right: 25px;
+  right: 23px;
   top: 80px;
   display: flex;
-  gap: 10px;
-}
-.mail__main-content-detail-subject-icons i {
-  margin-left: 10px;
+  gap: 20px;
 }
 .mail__main-content-detail-subject-date {
   font-size: 0.625rem;
@@ -895,16 +913,17 @@
   gap: 20px;
 }
 .mail__main-content-detail-subject-divider {
-  width: 100%;
-  margin-top: 30px;
+  width: 90%;
+  margin: 30px 30px 0 0;
   color: #eceff1;
 }
 .mail__main-content-detail-subject-description {
-  margin: 12px 95px 33px 57px;
-  max-width: 973px;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 0.875rem;
+  line-height: 19px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
   width: 100%;
+  margin: 12px 95px 33px 57px;
 }
 .mail__main-right {
   max-width: 47px;

@@ -27,6 +27,7 @@ $noghrei-silver: #bdbdbd;
 $dead-blue-eyes: #0e57cb;
 $christmas-silver: #e0e0e0;
 $suzu-grey: #9da0a4;
+$dithered-sky: #c2dbff;
 $bái-sè-white: #eceff1;
 
 $font-size-10: 0.625rem;
@@ -46,6 +47,7 @@ $line-height-11: 11px;
 $line-height-14: 14px;
 $line-height-15: 15px;
 $line-height-17: 17px;
+$line-height-19: 19px;
 $line-height-20: 20px;
 $line-height-25: 25px;
 
@@ -609,7 +611,7 @@ $font-family-roboto: 'Roboto', sans-serif;
      border-radius: 10px;
      box-shadow: 0 4px 8px $black-10;
      background-color: $mā-white;
-     width: 150px;
+     width: 250px;
      height: 150px;
      padding: 15px;
      gap: 15px;
@@ -645,6 +647,7 @@ $font-family-roboto: 'Roboto', sans-serif;
      label {
       font-size: $font-size-15;
       color: $cannon-barrel;
+      font-family: $font-family-roboto;
       font-weight: $font-weight-600;
      }
     }
@@ -790,21 +793,21 @@ $font-family-roboto: 'Roboto', sans-serif;
     gap: 15px;
     display: flex;
     position: relative;
-    border-top: 1px solid $christmas-silver;
     max-height: 35px;
     padding: 9.25px 0;
     cursor: pointer;
+    border-top: 1px solid $christmas-silver;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-
+    
     &.unread {
      font-weight: $font-weight-700;
      background-color: $white;
 
-     .mail__content-list-item-checkbox {
-      background-color: $carbon;
+     .mail__main-content-list-item-checkbox {
+      border: 1px solid $carbon;
      }
 
-     .mail__content-list-item-star {
+     .mail__main-content-list-item-star {
       color: $black-oak;
      }
     }
@@ -813,11 +816,11 @@ $font-family-roboto: 'Roboto', sans-serif;
      font-weight: $font-weight-400;
      background-color: $cotton-ball;
 
-     .mail__content-list-item-checkbox {
+     .mail__main-content-list-item-checkbox {
       color: $noghrei-silver;
      }
 
-     .mail__content-list-item-star {
+     .mail__main-content-list-item-star {
       color: $noghrei-silver;
      }
 
@@ -826,33 +829,64 @@ $font-family-roboto: 'Roboto', sans-serif;
      }
     }
 
+    &:has(.mail__main-content-list-item-checkbox:checked) {
+     background-color: $dithered-sky;
+    }
+
     &-checkbox {
-     margin: 2px 0 0 15px;
      width: 13px;
      height: 13px;
-     background-color: $noghrei-silver;
+     border: none;
+     cursor: pointer;
+     margin: 2px 0 0 15px;
+     border: 1px solid $noghrei-silver;
+
+     &:hover::before {
+      content: '';
+      top: 50%;
+      width: 30px;
+      height: 30px;
+      z-index: -1;
+      outline: none;
+      margin-left: 6px;
+      position: absolute;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background-color: $snow-tiger;
+     }
     }
 
     &-star {
      width: 10px;
      height: 9.5px;
      padding-top: 7px;
-     color: $noghrei-silver;
+     position: relative;
+     display: inline-block;
+     z-index: 1;
+   
+     //&:hover {
+      //border-radius: 50%;
+      //background-color: $noghrei-silver;
+      //width: 15px;
+      //height: 13px;
+      //margin-left: -4px;
+      //padding-left: 2px;
+     //}
     }
 
     &-middle {
-      flex: 1;
-      display: inline-block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      min-width: 0;
+     flex: 1;
+     display: inline-block;
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     min-width: 0;
     }
 
     &-space {
-      flex-shrink: 0;
-      width: 20px;
-      right: 90px;
+     flex-shrink: 0;
+     width: 20px;
+     right: 90px;
     }
 
     &-sender {
@@ -915,11 +949,11 @@ $font-family-roboto: 'Roboto', sans-serif;
     }
 
     &:hover {
-      box-shadow: inset 1px 0 0 $snow-tiger, inset -1px 0 0 $snow-tiger, 0 1px 2px 0 $snow-tiger, 0 1px 3px 1px $snow-tiger;
-      z-index: 2;
+     box-shadow: inset 1px 0 0 $snow-tiger, inset -1px 0 0 $snow-tiger, 0 1px 2px 0 $snow-tiger, 0 1px 3px 1px $snow-tiger;
+     z-index: 2;
 
      .mail__main-content-list-item-checkbox {
-      color: $carbon;
+      border: 1px solid $carbon;
      }
 
      .mail__main-content-list-item-star {
@@ -1006,155 +1040,152 @@ $font-family-roboto: 'Roboto', sans-serif;
       background-color: $black-oak;
 
       &-inner {
-        width: 12px;
-        height: 10px;
-        clip-path: inherit;
-        margin: 2px 0 0 2px;
-        z-index: 2;
-        background-color: $white;
+       width: 12px;
+       height: 10px;
+       clip-path: inherit;
+       margin: 2px 0 0 2px;
+       z-index: 2;
+       background-color: $white;
       }
      }
     }
    }
   
-   &-subject {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    font-size: 20px;
-    font-weight: bold;
+    &-subject {
+     display: flex;
+     justify-content: space-between;
+     flex-direction: column;
+     font-size: 20px;
+     font-weight: bold;
 
-    &-title {
-     align-self: flex-start;
-     font-size: $font-size-18;
-     line-height: $line-height-25;
-     font-family: $font-family-open;
-     font-weight: $font-weight-400;
-     margin-left: 57px;
-     margin-bottom: 10px;
-     top: 74px;
-     left: 57px;
-    }
+     &-title {
+      font-size: $font-size-18;
+      line-height: $line-height-25;
+      font-family: $font-family-open;
+      font-weight: $font-weight-400;
+      align-self: flex-start;
+      margin-bottom: 10px;
+      margin-left: 57px;
+      left: 57px;
+      top: 74px;
+     }
   
-    &-icons {
+     &-icons {
       position: absolute;
-      right: 25px;
+      right: 23px;
       top: 80px;
       display: flex;
-      gap: 10px;
-      
-      i {
-        margin-left: 10px;
-      }
-    }
+      gap: 20px;
+     }
 
-    &-date {
+     &-date {
       font-size: $font-size-10;
       line-height: $line-height-11;
       font-family: $font-family-roboto;
       font-weight: $font-weight-500;
       max-width: 106px;
       max-height: 12px;
-    }
+     }
    
-    &-header {
-     display: flex;
-     justify-content: space-between;
-     margin-top: 10px;
-
-     &-left {
+     &-header {
       display: flex;
-      flex-direction: row;
-      max-width: 334px;
-      max-height: 41px;
-      margin-left: 10px;
+      justify-content: space-between;
+      margin-top: 10px;
 
-      &-pic {
+      &-left {
+       display: flex;
+       flex-direction: row;
+       max-width: 334px;
+       max-height: 41px;
+       margin-left: 10px;
+
+       &-pic {
         width: 41px;
-      }
+       }
 
-      &-person {
+       &-person {
         display: flex;
         flex-direction: column;
 
-       &-sender {
-        font-size: $font-size-15;
-        line-height: $line-height-17;
-        font-family: $font-family-roboto;
-        font-weight: $font-weight-700;
-        align-self: flex-start;
-        margin-left: 8px;
-       }
+        &-sender {
+         font-size: $font-size-15;
+         line-height: $line-height-17;
+         font-family: $font-family-roboto;
+         font-weight: $font-weight-700;
+         align-self: flex-start;
+         margin-left: 8px;
+        }
 
-       &-to {
-        display: flex;
-        font-size: $font-size-12;
-        line-height: $line-height-14;
-        font-family: $font-family-roboto;
-        font-weight: $font-weight-500;
-        margin: 4px 0 0 8px;
-        gap: 10px;
-        color: $mission-control;
+        &-to {
+         display: flex;
+         font-size: $font-size-12;
+         line-height: $line-height-14;
+         font-family: $font-family-roboto;
+         font-weight: $font-weight-500;
+         margin: 4px 0 0 8px;
+         gap: 10px;
+         color: $mission-control;
 
-        &-sign {
+         &-sign {
           color: $black-oak;
+         }
         }
        }
       }
-     }
 
-     &-right {
-      display: flex;
-      align-items: center;
-      gap: 20px;
+      &-right {
+       display: flex;
+       align-items: center;
+       gap: 20px;
+      }
      }
-    }
   
-    &-divider {
-     width: 100%;
-     margin-top: 30px;
-     color: $bái-sè-white;
-    }
+     &-divider {
+      width: 90%;
+      margin: 30px 30px 0 0;
+      color: $bái-sè-white;
+     }
   
-    &-description {
-     margin: 12px 95px 33px 57px;
-     max-width: 973px;
-     font-size: 14px;
-     line-height: 1.5;
-     width: 100%;
+     &-description {
+      font-size: $font-size-14;
+      line-height: $line-height-19;
+      font-family: $font-family-roboto;
+      font-weight: $font-weight-400;
+      width: 100%;
+      margin: 12px 95px 33px 57px;
+     }
     }
    }
   }
+
+  &-right {
+   max-width: 47px;
+   background-color: $mā-white;
+   display: flex;
+   flex-direction: column;
+   padding: 27px 0;
+   gap: 32px;
+
+   &-pic {
+    padding: 0 15.5px;
+    width: 16px;
+    color: $maya-blue;
+   }
+
+   &-icon {
+    padding: 0 15.5px;
+    width: 16px;
+    color: $shadowed-steel;
+   }
+
+   &-divider {
+    width: 23px;
+    height: 2px;
+    border: 2px;
+    background-color: $carte-blanche;
+   }
+  }
  }
-
- &-right {
-  max-width: 47px;
-  background-color: $mā-white;
-  display: flex;
-  flex-direction: column;
-  padding: 27px 0;
-  gap: 32px;
-
-  &-pic {
-   padding: 0 15.5px;
-   width: 16px;
-   color: $maya-blue;
-  }
-
-  &-icon {
-   padding: 0 15.5px;
-   width: 16px;
-   color: $shadowed-steel;
-  }
-
-  &-divider {
-   width: 23px;
-   height: 2px;
-   border: 2px;
-   background-color: $carte-blanche;
-  }
- }
-}
 }
 
 html, body {

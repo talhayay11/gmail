@@ -14,6 +14,7 @@ const mailData = {
     { id: 6, sender: 'Social App', subject: 'You have new friend requests!', description: 'Connect with more friends on Social App.', date: '12/09/23', isRead: false, to: 'to me' },
     { id: 7, sender: 'Community Forum', subject: 'Join the latest discussions', description: 'Share your thoughts and participate in community discussions.', date: '12/08/23', isRead: false, to: 'to me' }
    ],
+   starred: [],
    sent: []
   };
 
@@ -35,6 +36,7 @@ function MailComponent() {
  const [descriptionValue, setDescriptionValue] = useState('');
  const [selectedMail, setSelectedMail] = useState(null);
  const [isMailView, setIsMailView] = useState(false);
+ const [starredMails, setStarredMails] = useState([]);
  const formRef = useRef(null);
  const buttonRef = useRef(null);
  const handleDrop = (e, droppedOnMailId) => {
@@ -52,6 +54,25 @@ function MailComponent() {
   setMails({ ...mails, [activeTab]: updatedMails });
   setDraggedMailId(null);
  };
+
+ const handleStarClick = (mailId) => {
+  let mailToStar = mails[activeTab].find((mail) => mail.id === mailId) || starredMails.find((mail) => mail.id === mailId);
+  if (!mailToStar) return;
+
+  const updatedMail = { ...mailToStar, isStarred: !mailToStar.isStarred };
+  const updatedOriginalMails = Object.keys(mails).reduce((acc, tab) => {
+    acc[tab] = mails[tab].map((mail) => mail.id === mailId ? updatedMail : mail);
+    return acc;
+  }, {});
+
+  setMails(updatedOriginalMails);
+
+  const updatedStarredMails = updatedMail.isStarred
+    ? [...starredMails, updatedMail]
+    : starredMails.filter((mail) => mail.id !== mailId);
+  
+  setStarredMails(updatedStarredMails);
+};
 
  const addNewItem = () => {
   if (isFormVisible) {
@@ -103,12 +124,16 @@ function MailComponent() {
  };
 
  const handleMailClick = (mailId) => {
-  const selectedMail = mails[activeTab].find(mail => mail.id === mailId);
+  const selectedMail = mails[activeTab].find((mail) => mail.id === mailId) || starredMails.find((mail) => mail.id === mailId);
   setSelectedMail(selectedMail);
   setIsMailView(true);
  };
 
+
  const getActiveMails = () => {
+  if (activeTab === 'starred') {
+    return starredMails.filter(mail => mail.isStarred);
+  }
   return mails[activeTab];
  };
 
@@ -145,21 +170,42 @@ function MailComponent() {
  };
   
  const deleteMail = (id) => {
-  const updatedMails = mails[activeTab].filter(mail => mail.id !== id);
-  setMails((prevMails) => ({
-   ...prevMails,
-   [activeTab]: updatedMails
-  }));
- };
+  const updatedOriginalMails = Object.keys(mails).reduce((acc, tab) => {
+    acc[tab] = mails[tab].filter(mail => mail.id !== id);
+    return acc;
+  }, {});
+  setMails(updatedOriginalMails);
+
+  const updatedStarredMails = starredMails.filter(mail => mail.id !== id);
+  setStarredMails(updatedStarredMails);
+};
 
  const markAsRead = (id) => {
-  const updatedMails = mails[activeTab].map(mail =>
-   mail.id === id ? { ...mail, isRead: true } : mail
+  const updatedOriginalMails = Object.keys(mails).reduce((acc, tab) => {
+    acc[tab] = mails[tab].map((mail) => mail.id === id ? { ...mail, isRead: true } : mail);
+    return acc;
+  }, {});
+
+  setMails(updatedOriginalMails);
+  const updatedStarredMails = starredMails.map((mail) =>
+    mail.id === id ? { ...mail, isRead: true } : mail
   );
-  setMails({ ...mails, [activeTab]: updatedMails });
+  setStarredMails(updatedStarredMails);
   const selectedMail = mails[activeTab].find(mail => mail.id === id);
   setPopup(selectedMail);
- };
+};
+
+const handleCheckboxClick = (e, id) => {
+  e.stopPropagation();
+  
+  const mailItem = document.getElementById(`mail-item-${id}`);
+  
+  if (e.target.checked) {
+    mailItem.classList.add('selected');
+  } else {
+    mailItem.classList.remove('selected');
+  }
+};
 
  return (
   <div className="mail__main">
@@ -179,9 +225,12 @@ function MailComponent() {
        <span className="mail__main-sidebar-side-box-text" style={sidebarActive === 'inbox' ? { fontWeight: '700' } : {}}>Inbox</span>
       </li>
 
-      <li className="mail__main-sidebar-side-box-usage">
+      <li className={`mail__main-sidebar-side-box-usage ${sidebarActive === 'starred' ? 'active' : ''}`}
+       style={sidebarActive === 'starred' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}}
+       onClick={() => { setActiveTab('starred'); setSidebarActive('starred') }}>
+
        <i className="fa-regular fa-star mail__main-sidebar-side-box-icon"></i>
-       <span className="mail__main-sidebar-side-box-text">Starred</span>
+       <span className="mail__main-sidebar-side-box-text" style={sidebarActive === 'starred' ? { fontWeight: '700' } : {}}>Starred</span>
       </li>
 
       <li className="mail__main-sidebar-side-box-usage">
@@ -308,31 +357,30 @@ function MailComponent() {
      </div>
     </div>
 
-     <div className="mail__main-content-tab">
-      <button className={`mail__main-content-tab-primary ${activeTab === 'primary' ? 'active' : ''}`} 
-       onClick={() => setActiveTab('primary')}
-       style={activeTab === 'primary' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}
-      >
-       <i className="fa-solid fa-inbox"></i>
-       <span className="mail__main-content-tab-primary-text">Primary</span>
-      </button>
+     {activeTab !== 'sent' && activeTab !== 'starred' && (
+  <div className="mail__main-content-tab">
+    <button className={`mail__main-content-tab-primary ${activeTab === 'primary' ? 'active' : ''}`} 
+      onClick={() => setActiveTab('primary')} 
+      style={activeTab === 'primary' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}>
+      <i className="fa-solid fa-inbox"></i>
+      <span className="mail__main-content-tab-primary-text">Primary</span>
+    </button>
 
-      <button className={`mail__main-content-tab-promotions ${activeTab === 'promotions' ? 'active' : ''}`} 
-       onClick={() => setActiveTab('promotions')}
-       style={activeTab === 'promotions' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}
-      >
-       <i className="fa-solid fa-tag fa-lg mail__main-content-tab-primary-icon"></i>
-       <span className="mail__main-content-tab-primary-text">Promotions</span>
-      </button>
+    <button className={`mail__main-content-tab-promotions ${activeTab === 'promotions' ? 'active' : ''}`} 
+      onClick={() => setActiveTab('promotions')} 
+      style={activeTab === 'promotions' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}>
+      <i className="fa-solid fa-tag fa-lg mail__main-content-tab-primary-icon"></i>
+      <span className="mail__main-content-tab-primary-text">Promotions</span>
+    </button>
 
-      <button className={`mail__main-content-tab-social ${activeTab === 'social' ? 'active' : ''}`} 
-       onClick={() => setActiveTab('social')}
-       style={activeTab === 'social' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}
-      >
-       <i className="fa-solid fa-user-group fa-sm mail__main-content-tab-primary-icon"></i>
-       <span className="mail__main-content-tab-primary-text">Social</span>
-      </button>
+    <button className={`mail__main-content-tab-social ${activeTab === 'social' ? 'active' : ''}`} 
+      onClick={() => setActiveTab('social')} 
+      style={activeTab === 'social' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}>
+      <i className="fa-solid fa-user-group fa-sm mail__main-content-tab-primary-icon"></i>
+      <span className="mail__main-content-tab-primary-text">Social</span>
+     </button>
      </div>
+     )}
      </>
     )}
     
@@ -352,8 +400,11 @@ function MailComponent() {
          onDragOver={(e) => handleDragOver(e)}
          onDrop={(e) => handleDrop(e, mail.id)}
         >
-         <input type="checkbox" className="mail__main-content-list-item-checkbox"/>
-         <i className="fa-regular fa-star fa-2xs mail__main-content-list-item-star"></i>
+         <input type="checkbox" className="mail__main-content-list-item-checkbox" onClick={(e) => e.stopPropagation()}/>
+         <i className={`mail__main-content-list-item-star ${mail.isStarred ? 'fa-solid fa-star fa-2xs' : 'fa-regular fa-star fa-2xs'}`} 
+          style={{ color: mail.isStarred ? '#FFD43B' : 'inherit' }} 
+          onClick={(e) => {e.stopPropagation();  handleStarClick(mail.id); }}></i>
+
          <span className="mail__main-content-list-item-sender">{mail.sender}</span>
          <div className="mail__main-content-list-item-middle">
           <span className="mail__main-content-list-item-subject">{mail.subject} - </span>
@@ -376,6 +427,8 @@ function MailComponent() {
         </div>
        ) : null
       ))}
+     </div>
+    )}
 
      {isPopupOpen && (
       <div className="mail__main-sidebar-compose-popup">
@@ -434,8 +487,6 @@ function MailComponent() {
         </div>
        </div>
       )}
-    </div>
-    )}
 
    {isMailView && selectedMail && (
     <div className="mail__main-content-detail">
