@@ -21,6 +21,9 @@ const mailData = {
 function MailComponent() {
  const [activeTab, setActiveTab] = useState('primary');
  const [mails, setMails] = useState(mailData);
+ const [filteredMails, setFilteredMails] = useState(null);
+ const [searchValue, setSearchValue] = useState('');
+ const [isSearchClicked, setIsSearchClicked] = useState(false);
  const [popup, setPopup] = useState(null);
  const [isPopupOpen, setIsPopupOpen] = useState(false);
  const [visibleMailsCount, setVisibleMailsCount] = useState(0);
@@ -39,6 +42,7 @@ function MailComponent() {
  const [starredMails, setStarredMails] = useState([]);
  const formRef = useRef(null);
  const buttonRef = useRef(null);
+
  const handleDrop = (e, droppedOnMailId) => {
   const draggedMailId = e.dataTransfer.getData("mailId");
   if (!draggedMailId) return;
@@ -54,6 +58,26 @@ function MailComponent() {
   setMails({ ...mails, [activeTab]: updatedMails });
   setDraggedMailId(null);
  };
+
+   const handleSearchChange = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchValue(value);
+
+    if (value) {
+      const filtered = Object.keys(mails).reduce((acc, tab) => {
+        acc[tab] = mails[tab].filter((mail) =>
+          mail.sender.toLowerCase().includes(value) ||
+          mail.subject.toLowerCase().includes(value) ||
+          mail.description.toLowerCase().includes(value)
+        );
+        return acc;
+      }, {});
+      setFilteredMails(filtered);
+    } else {
+      setFilteredMails(null);
+    }
+  };
+
 
  const handleStarClick = (mailId) => {
   let mailToStar = mails[activeTab].find((mail) => mail.id === mailId) || starredMails.find((mail) => mail.id === mailId);
@@ -129,13 +153,38 @@ function MailComponent() {
   setIsMailView(true);
  };
 
+ const handleSearchClick = () => {
+  setIsSearchClicked(true);
+ };
+
+ const handleClickOutside = (event) => {
+  if (!event.target.closest('.mail__navbar-search')) {
+    setIsSearchClicked(false);
+  }
+ };
+
+ useEffect(() => {
+  document.addEventListener('mousedown', handleClickOutside);
+
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+}, []);
 
  const getActiveMails = () => {
   if (activeTab === 'starred') {
+    if (searchValue) {
+      return starredMails.filter((mail) =>
+        mail.sender.toLowerCase().includes(searchValue) ||
+        mail.subject.toLowerCase().includes(searchValue) ||
+        mail.description.toLowerCase().includes(searchValue)
+      );
+    }
     return starredMails.filter(mail => mail.isStarred);
   }
-  return mails[activeTab];
- };
+  const currentMails = filteredMails ? filteredMails[activeTab] : mails[activeTab];
+  return currentMails;
+};
 
  useEffect(() => {
   const activeMails = getActiveMails();
@@ -208,6 +257,29 @@ const handleCheckboxClick = (e, id) => {
 };
 
  return (
+  <div className="mail">
+  <nav className="mail__navbar">
+  <div className="mail__navbar-left">
+    <i className="fa-solid fa-bars mail__navbar-left-menu" onClick={toggleSidebar}></i>
+    <img src="images/gmail-icon.png" alt="Gmail Logo" className="mail__navbar-left-logo" />
+    <span className="mail__navbar-left-text">Gmail</span>
+  </div>
+
+  <div className={`mail__navbar-search ${isSearchClicked ? 'active' : ''}`} onClick={handleSearchClick}>
+    <i className="fa-solid fa-magnifying-glass mail__navbar-search-box--search"></i>
+    <input type="text" placeholder="Search mail" className="mail__navbar-search-box"
+     value={searchValue} onChange={handleSearchChange}/>
+    <i className="fa-solid fa-sliders mail__navbar-search-box--slider"></i>
+  </div>
+
+  <div className="mail__navbar-right">
+    <i className="fa-regular fa-circle-question mail__navbar-right-icon"></i>
+    <i className="fa-solid fa-gear mail__navbar-right-icon"></i>
+    <i className="fa-solid fa-table-cells mail__navbar-right-icon"></i>
+    <img src="images/profile-pic.png" alt="Profile Pic" className="mail__navbar-right-pic" />
+  </div>
+</nav>
+
   <div className="mail__main">
    <div className="mail__main-sidebar">
     <button className="mail__main-sidebar-compose" onClick={openComposePopup}>
@@ -557,8 +629,10 @@ const handleCheckboxClick = (e, id) => {
     <i className="fa-solid fa-plus mail__main-right-icon"></i>
    </div>
   </div>
+  </div>
  );
 }
+
 
 function ComposePopup({ onClose }) {
  const [subject, setSubject] = useState("");
