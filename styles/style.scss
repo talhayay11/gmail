@@ -20,6 +20,7 @@ $snow-tiger: #dadce0;
 $cerebral-grey: #cccccc;
 $cannon-barrel: #3c4043;
 $suzu-grey: #9da0a4;
+$anti-flash-white: #f1f3f4;
 $dithered-sky: #c2dbff;
 $bái-sè-white: #eceff1;
 $bleu-de-france: #2f80ed;
@@ -29,6 +30,9 @@ $dead-blue-eyes: #0e57cb;
 $noghrei-silver: #bdbdbd;
 $mission-control: #818488;
 $christmas-silver: #e0e0e0;
+$grey-of-darkness: #a1a3a3;
+$placebo-blue: #ecf2fc;
+$trolley-grey: #828282;
 
 $font-size-10: 0.625rem;
 $font-size-12: 0.75rem;
@@ -272,20 +276,27 @@ $font-family-roboto: 'Roboto', sans-serif;
     }
 
     &-popup {
-     position: fixed;
-     bottom: 15px;
+     z-index: 10;
      right: 10px;
+     bottom: 15px;
+     position: fixed;
      max-width: 485px;
      max-height: 497px;
+     border-radius: 5px;
      background-color: $white;
      box-shadow: 0 4px 15px $black;
-     border-radius: 5px;
-     z-index: 10;
+
+     &.minimized {
+      height: 40px;
+      width: 485px;
+      overflow: hidden;
+     }
   
      &-header {
       display: flex;
-      justify-content: space-between;
+      cursor: pointer;
       padding: 10px 16px 9px 16px;
+      justify-content: space-between;
       background-color: $cotton-ball;
   
       &-text {
@@ -294,17 +305,29 @@ $font-family-roboto: 'Roboto', sans-serif;
        font-weight: $font-weight-500;
        font-family: $font-family-roboto;
        color: $shadowed-steel;
+       padding-top: 3px;
        max-width: 79px;
        max-height: 14px;
        margin: 0;
       }
   
       &-button {
-       border: none;
-       background: none;
-       color: $shadowed-steel;
-       cursor: pointer;
-       font-size: 12px;
+
+       &-down {
+        border: none;
+        background: none;
+        color: $shadowed-steel;
+        cursor: pointer;
+        font-size: 12px;
+       }
+
+       &-close {
+        border: none;
+        background: none;
+        color: $shadowed-steel;
+        cursor: pointer;
+        font-size: 12px;
+       }
       }
      }
 
@@ -318,9 +341,10 @@ $font-family-roboto: 'Roboto', sans-serif;
         line-height: $line-height-14;
         font-weight: $font-weight-400;
         font-family: $font-family-roboto;
+        color: $shadowed-steel;
        }
 
-       &-input {
+       /*&-input {
         font-size: $font-size-12;
         line-height: $line-height-14;
         font-weight: $font-weight-400;
@@ -328,7 +352,7 @@ $font-family-roboto: 'Roboto', sans-serif;
         padding-left: 4px;
         border: none;
         outline: none;
-       }
+       }*/
       }
 
       &-to {
@@ -407,6 +431,7 @@ $font-family-roboto: 'Roboto', sans-serif;
        color: $white;
        border: none;
        padding: 7px 10px 7px 15px;
+       margin-right: 17px;
        border-radius: 200px;
        cursor: pointer;
        display: flex;
@@ -447,9 +472,11 @@ $font-family-roboto: 'Roboto', sans-serif;
        gap: 14px;
 
        &-icon {
+        color: $shadowed-steel;
 
         &--right {
-         padding-left: 135px;
+         padding-left: 125px;
+         cursor: pointer;
         }
        }
       }
@@ -617,21 +644,94 @@ $font-family-roboto: 'Roboto', sans-serif;
       }
      }
 
+     &-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: $black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+     }
+
      &-form {
       display: flex;
       flex-direction: column;
       border-radius: 10px;
       box-shadow: 0 4px 8px $black-10;
-      background-color: $mā-white;
-      width: 250px;
-      height: 150px;
+      background-color: $white;
+      width: 500px;
+      height: 350px;
       padding: 15px;
       gap: 15px;
-      z-index: 10;
+      z-index: 1001;
+
+      &-title {
+        font-size: $font-size-19;
+        line-height: $line-height-25;
+        font-weight: $font-weight-600;
+        font-family: $font-family-open;
+      }
+
+      &-button {
+        display: flex;
+        flex-direction: row;
+        margin-left: 280px;
+        gap: 10px;
+
+       &-add {
+        width: 100px;
+        height: 50px;
+        border: none;
+        display: flex;
+        white-space: nowrap;
+        cursor: not-allowed;
+        padding: 17px 22px;
+        border-radius: 300px;
+        justify-content: end;
+        color: $grey-of-darkness;
+        background-color: $anti-flash-white;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+         box-shadow: 0 2px 4px 2px $black;
+        }
+
+        &.active {
+         background-color: $dead-blue-eyes;
+         cursor: pointer;
+         color: $white;
+        }
+
+        &.disabled {
+         background-color: $anti-flash-white;
+        }
+       }
+
+       &-cancel {
+        width: 100px;
+        height: 50px;
+        border: none;
+        display: flex;
+        padding: 17px 30px;
+        border-radius: 300px;
+        justify-content: end;
+        color: $grey-of-darkness;
+        background-color: $white;
+        transition: background-color 0.3s ease;
+       
+        &:hover {
+         background-color: $placebo-blue !important;
+        }
+       }
+      }
 
       input[type="text"] {
        padding: 10px;
-       border-radius: 8px;
+       margin: 5px 0 10px 0;
        border: 1px solid $cerebral-grey;
        font-size: $font-size-14;
        transition: border-color 0.3s ease;
@@ -707,6 +807,37 @@ $font-family-roboto: 'Roboto', sans-serif;
       display: flex;
       gap: 7px;
 
+      &-dropdown-menu {
+       display: flex;
+       position: absolute;
+       background-color: $white;
+       border-radius: 5px;
+       flex-direction: column;
+       list-style-type: none;
+       padding: 10px;
+       margin-top: 5px;
+       width: 150px;
+       z-index: 1000;
+       margin-top: 25px;
+       gap: 4px;
+       box-shadow: 0 2px 4px 2px $black;
+      
+       li {
+        font-size: $font-size-13;
+        line-height: $line-height-14;
+        font-weight: $font-weight-400;
+        font-family: $font-family-roboto;
+        padding: 8px 12px;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+       }
+      
+       li:hover {
+        background-color: $snow-tiger;
+       }
+      }
+
       &-checkbox {
        margin: 3px 0 0 0;
        width: 13px;
@@ -764,11 +895,18 @@ $font-family-roboto: 'Roboto', sans-serif;
       line-height: $line-height-15;
       font-weight: $font-weight-600;
       font-family: $font-family-roboto;
+      color: $black-oak;
+      outline: none;
+     }
+
+     &-pr {
+      color: $trolley-grey;
      }
 
      &-icon {
       padding-top: 7px;
       max-height: 17px;
+      color: $trolley-grey;
      }
     }
 
@@ -906,6 +1044,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       line-height: $line-height-15;
       font-family: $font-family-roboto;
       min-width: 150px;
+      margin-top: 3px;
      }
 
      &-subject {
@@ -943,7 +1082,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       position: absolute;
  
       &-icon {
-       padding:7.3px 0 0 4px;
+       padding: 8.5px 0 0 4px;
        cursor: pointer;
        color: $suzu-grey;
       }
@@ -990,6 +1129,7 @@ $font-family-roboto: 'Roboto', sans-serif;
     &-back {
      padding-right: 48px;
      max-height: 14px;
+     cursor: pointer;
     }
 
     &-top {

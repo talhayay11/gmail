@@ -40,8 +40,130 @@ function MailComponent() {
  const [selectedMail, setSelectedMail] = useState(null);
  const [isMailView, setIsMailView] = useState(false);
  const [starredMails, setStarredMails] = useState([]);
+ const [isPopupMinimized, setIsPopupMinimized] = useState(false);
  const formRef = useRef(null);
  const buttonRef = useRef(null);
+ const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+ const [selectedOption, setSelectedOption] = useState('');
+ const [selectedMails, setSelectedMails] = useState([]);
+
+ const [checkboxState, setCheckboxState] = useState({
+  all: false,
+  none: false,
+  read: false,
+  unread: false,
+  starred: false,
+  unstarred: false
+ });
+
+ const handleOptionSelect = (option) => {
+  setSelectedOption(option);
+
+  const activeMails = getActiveMails();
+  switch (option) {
+    case 'all':
+      setCheckboxState({
+        all: true,
+        none: false,
+        read: false,
+        unread: false,
+        starred: false,
+        unstarred: false,
+      });
+      setSelectedMails(activeMails.map(mail => mail.id));
+      break;
+
+    case 'none':
+      setCheckboxState({
+        all: false,
+        none: true,
+        read: false,
+        unread: false,
+        starred: false,
+        unstarred: false,
+      });
+      setSelectedMails([]);
+      break;
+
+    case 'read':
+      setCheckboxState({
+        all: false,
+        none: false,
+        read: true,
+        unread: false,
+        starred: false,
+        unstarred: false,
+      });
+      setSelectedMails(activeMails.filter(mail => mail.isRead).map(mail => mail.id));
+      break;
+
+    case 'unread':
+      setCheckboxState({
+        all: false,
+        none: false,
+        read: false,
+        unread: true,
+        starred: false,
+        unstarred: false,
+      });
+      setSelectedMails(activeMails.filter(mail => !mail.isRead).map(mail => mail.id));
+      break;
+
+    case 'starred':
+      setCheckboxState({
+        all: false,
+        none: false,
+        read: false,
+        unread: false,
+        starred: true,
+        unstarred: false,
+      });
+      setSelectedMails(activeMails.filter(mail => mail.isStarred).map(mail => mail.id));
+      break;
+
+    case 'unstarred':
+      setCheckboxState({
+        all: false,
+        none: false,
+        read: false,
+        unread: false,
+        starred: false,
+        unstarred: true,
+      });
+      setSelectedMails(activeMails.filter(mail => !mail.isStarred).map(mail => mail.id));
+      break;
+
+    default:
+      break;
+  }
+  setIsDropdownOpen(false);
+};
+
+ const toggleDropdown = () => {
+  setIsDropdownOpen(!isDropdownOpen);
+ };
+
+ const handleTopCheckboxChange = () => {
+  const activeMails = getActiveMails();
+  if (selectedMails.length === activeMails.length) {
+    setSelectedMails([]);
+  } else {
+    setSelectedMails(activeMails.map(mail => mail.id));
+  }
+};
+
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (!event.target.closest('.mail__main-content-top-left-select-dropdown-menu') && !event.target.closest('.mail__main-content-top-left-select')) {
+      setIsDropdownOpen(false);
+    }
+  };
+  document.addEventListener('mousedown', handleClickOutside);
+
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+}, []);
 
  const handleDrop = (e, droppedOnMailId) => {
   const draggedMailId = e.dataTransfer.getData("mailId");
@@ -78,6 +200,9 @@ function MailComponent() {
     }
   };
 
+  const toggleMinimizePopup = () => {
+    setIsPopupMinimized(!isPopupMinimized);
+  };
 
  const handleStarClick = (mailId) => {
   let mailToStar = mails[activeTab].find((mail) => mail.id === mailId) || starredMails.find((mail) => mail.id === mailId);
@@ -215,6 +340,7 @@ function MailComponent() {
    ...prevState,
    sent: [...prevState.sent, newMail]
   }));
+  setDescriptionValue('');
   closeComposePopup();
  };
   
@@ -246,14 +372,13 @@ function MailComponent() {
 
 const handleCheckboxClick = (e, id) => {
   e.stopPropagation();
-  
-  const mailItem = document.getElementById(`mail-item-${id}`);
-  
-  if (e.target.checked) {
-    mailItem.classList.add('selected');
-  } else {
-    mailItem.classList.remove('selected');
-  }
+  setSelectedMails((prevSelectedMails) => {
+    if (prevSelectedMails.includes(id)) {
+      return prevSelectedMails.filter((mailId) => mailId !== id);
+    } else {
+      return [...prevSelectedMails, id];
+    }
+  });
 };
 
  return (
@@ -349,7 +474,11 @@ const handleCheckboxClick = (e, id) => {
        <i className="fa-solid fa-plus mail__main-sidebar-side-down-icon" onClick={addNewItem} ref={buttonRef}></i>
        
        {isFormVisible && (
+         <div className="mail__main-sidebar-side-down-overlay">
           <div className="mail__main-sidebar-side-down-form" ref={formRef}>
+          <h3 className="mail__main-sidebar-side-down-form-title">Add New Label</h3>
+
+          <label>Add Text:</label>
             <input
               type="text"
               placeholder="New item text"
@@ -362,6 +491,21 @@ const handleCheckboxClick = (e, id) => {
               value={newIconColor}
               onChange={(e) => setNewIconColor(e.target.value)}
             />
+
+          <div className="mail__main-sidebar-side-down-form-button">
+          <button
+        className="mail__main-sidebar-side-down-form-button-cancel"
+        onClick={() => setIsFormVisible(false)}
+       >
+        Cancel
+       </button>
+            <button className={`mail__main-sidebar-side-down-form-button-add ${newItemText ? 'active' : 'disabled'}`}
+          onClick={addNewItem}
+        disabled={!newItemText}>Add Item</button>
+
+
+       </div>
+          </div>
           </div>
         )}
       </div>
@@ -414,14 +558,25 @@ const handleCheckboxClick = (e, id) => {
     <div className="mail__main-content-top">
      <div className="mail__main-content-top-left">
       <div className="mail__main-content-top-left-select">
-        <input type="checkbox" className="mail__main-content-top-left-select-checkbox"/>
-        <i className="fa-solid fa-caret-down"></i>
+        <input type="checkbox" className="mail__main-content-top-left-select-checkbox" onChange={handleTopCheckboxChange}/>
+        <i className="fa-solid fa-caret-down mail__main-content-top-left-select-down" onClick={toggleDropdown}></i>
       </div>
 
       <i className="fa-solid fa-arrow-rotate-right"></i>
       <i className="fa-solid fa-ellipsis-vertical"></i>
      </div>
-        
+
+     {isDropdownOpen && (
+  <ul className="mail__main-content-top-left-select-dropdown-menu">
+    <li onClick={() => handleOptionSelect('all')}>All</li>
+    <li onClick={() => handleOptionSelect('none')}>None</li>
+    <li onClick={() => handleOptionSelect('read')}>Read</li>
+    <li onClick={() => handleOptionSelect('unread')}>Unread</li>
+    <li onClick={() => handleOptionSelect('starred')}>Starred</li>
+    <li onClick={() => handleOptionSelect('unstarred')}>Unstarred</li>
+  </ul>
+)}
+
      <div className="mail__main-content-top-right">
       <span className="mail__main-content-top-right-number">1-{visibleMailsCount} of {visibleMailsCount}</span>
       <i className="fa-solid fa-angle-left mail__main-content-top-right-angle"></i>
@@ -434,22 +589,34 @@ const handleCheckboxClick = (e, id) => {
     <button className={`mail__main-content-tab-primary ${activeTab === 'primary' ? 'active' : ''}`} 
       onClick={() => setActiveTab('primary')} 
       style={activeTab === 'primary' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}>
-      <i className="fa-solid fa-inbox"></i>
-      <span className="mail__main-content-tab-primary-text">Primary</span>
+
+      <i className={`fa-solid fa-inbox mail__main-content-tab-primary-pr`}
+       style={activeTab === 'primary' ? { color: '#2f80ed' } : {}}></i>
+
+      <span className={`mail__main-content-tab-primary-text`}
+       style={activeTab === 'primary' ? {  color: '#2f80ed' } : {}}>Primary</span>
     </button>
 
     <button className={`mail__main-content-tab-promotions ${activeTab === 'promotions' ? 'active' : ''}`} 
       onClick={() => setActiveTab('promotions')} 
       style={activeTab === 'promotions' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}>
-      <i className="fa-solid fa-tag fa-lg mail__main-content-tab-primary-icon"></i>
-      <span className="mail__main-content-tab-primary-text">Promotions</span>
+
+      <i className={`fa-solid fa-tag fa-lg mail__main-content-tab-primary-icon`}
+       style={activeTab === 'promotions' ? { color: '#2f80ed' } : {}}></i>
+
+      <span className={`mail__main-content-tab-primary-text`}
+       style={activeTab === 'promotions' ? { color: '#2f80ed' } : {}}>Promotions</span>
     </button>
 
     <button className={`mail__main-content-tab-social ${activeTab === 'social' ? 'active' : ''}`} 
       onClick={() => setActiveTab('social')} 
       style={activeTab === 'social' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}>
-      <i className="fa-solid fa-user-group fa-sm mail__main-content-tab-primary-icon"></i>
-      <span className="mail__main-content-tab-primary-text">Social</span>
+
+      <i className={`fa-solid fa-user-group fa-sm mail__main-content-tab-primary-icon`}
+       style={activeTab === 'social' ? { color: '#2f80ed' } : {}}></i>
+       
+      <span className={`mail__main-content-tab-primary-text`}
+       style={activeTab === 'social' ? { color: '#2f80ed' } : {}}>Social</span>
      </button>
      </div>
      )}
@@ -472,7 +639,12 @@ const handleCheckboxClick = (e, id) => {
          onDragOver={(e) => handleDragOver(e)}
          onDrop={(e) => handleDrop(e, mail.id)}
         >
-         <input type="checkbox" className="mail__main-content-list-item-checkbox" onClick={(e) => e.stopPropagation()}/>
+         <input type="checkbox" className="mail__main-content-list-item-checkbox" checked={selectedMails.includes(mail.id)}
+            onClick={(e) => {
+              e.stopPropagation(); 
+              handleCheckboxClick(e, mail.id);
+            }} 
+          onChange={(e) => {}}/>
          <i className={`mail__main-content-list-item-star ${mail.isStarred ? 'fa-solid fa-star fa-2xs' : 'fa-regular fa-star fa-2xs'}`} 
           style={{ color: mail.isStarred ? '#FFD43B' : 'inherit' }} 
           onClick={(e) => {e.stopPropagation();  handleStarClick(mail.id); }}></i>
@@ -503,19 +675,20 @@ const handleCheckboxClick = (e, id) => {
     )}
 
      {isPopupOpen && (
-      <div className="mail__main-sidebar-compose-popup">
+      <div className={`mail__main-sidebar-compose-popup ${isPopupMinimized ? 'minimized' : ''}`}>
        <div className="mail__main-sidebar-compose-popup-header">
         <span className="mail__main-sidebar-compose-popup-header-text">New Message</span>
         <div className="mail__main-sidebar-compose-popup-header-right">
-         <button className="mail__main-sidebar-compose-popup-header-button" onClick={closeComposePopup}>_</button>
-         <button className="mail__main-sidebar-compose-popup-header-button" onClick={closeComposePopup}>X</button>
+         <button className="fa-solid fa-minus mail__main-sidebar-compose-popup-header-button-down" onClick={toggleMinimizePopup}></button>
+         <button className="mail__main-sidebar-compose-popup-header-button-close" onClick={closeComposePopup}>X</button>
         </div>
        </div>
           
+       {!isPopupMinimized && (
        <div className="mail__main-sidebar-compose-popup-body">
         <div className="mail__main-sidebar-compose-popup-body-from">
-         <label className="mail__main-sidebar-compose-popup-body-from-text">From</label>
-         <input className="mail__main-sidebar-compose-popup-body-from-input" type="text" placeholder="sender"/>
+         <label className="mail__main-sidebar-compose-popup-body-from-text">From John Doe &lt;supercoolman@gmail.com&gt;</label>
+         {/* <input className="mail__main-sidebar-compose-popup-body-from-input" type="text" placeholder="sender"/> */}
         </div>
 
         <div className="mail__main-sidebar-compose-popup-body-to">
@@ -537,7 +710,7 @@ const handleCheckboxClick = (e, id) => {
           value={descriptionValue}
           onChange={(e) => setDescriptionValue(e.target.value)}></textarea>
          </div>
-        </div>
+        
 
         <div className="mail__main-sidebar-compose-popup-footer">
          <div className="mail__main-sidebar-compose-popup-footer-button" onClick={handleSend}>
@@ -554,9 +727,11 @@ const handleCheckboxClick = (e, id) => {
           <i className="fa-solid fa-lock fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
           <i className="fa-solid fa-pen fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
           <i className="fa-solid fa-ellipsis-vertical fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
-          <i className="fa-solid fa-trash-can fa-xs mail__main-sidebar-compose-popup-footer-icons-icon--right"></i>
+          <i className="fa-solid fa-trash-can fa-xs mail__main-sidebar-compose-popup-footer-icons-icon--right" onClick={closeComposePopup}></i>
          </div>
         </div>
+        </div>
+        )}
        </div>
       )}
 
@@ -632,7 +807,6 @@ const handleCheckboxClick = (e, id) => {
   </div>
  );
 }
-
 
 function ComposePopup({ onClose }) {
  const [subject, setSubject] = useState("");
