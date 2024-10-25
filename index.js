@@ -318,6 +318,7 @@ useEffect(() => {
 
  const openComposePopup = () => {
   setIsPopupOpen(true);
+  setIsPopupMinimized(false);
  };
 
  const closeComposePopup = () => {
