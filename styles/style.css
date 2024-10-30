@@ -101,6 +101,9 @@
 .mail__main-sidebar.collapsed .mail__main-sidebar-compose-pen {
   margin-right: 3px;
 }
+.mail__main-sidebar.collapsed .mail__main-content-detail-top-third-delete--side {
+  margin: 6px 0 0 7px;
+}
 .mail__main-sidebar.collapsed .mail__main-sidebar-side-box-usage {
   width: 30px;
   margin-left: 20px;
@@ -143,6 +146,9 @@
   margin: 6px 0 0 7px;
 }
 .mail__main-sidebar.collapsed .mail__main-sidebar-side-down-box-text {
+  display: none;
+}
+.mail__main-sidebar.collapsed .mail__main-content-detail-top-third-delete--down {
   display: none;
 }
 .mail__main-sidebar-compose {
@@ -364,6 +370,15 @@
   margin: 0;
   padding: 0;
 }
+.mail__main-sidebar-side-box-unread-count {
+  display: flex;
+  padding: 6px 0 0 80px;
+  font-size: 0.813rem;
+  line-height: 15px;
+  font-weight: 400;
+  font-family: "Roboto", sans-serif;
+  margin-left: 8px;
+}
 .mail__main-sidebar-side-box-extra {
   border-radius: 0 17px 17px 0;
   width: 213px;
@@ -371,6 +386,9 @@
   display: flex;
   gap: 20px;
   flex-direction: row;
+}
+.mail__main-sidebar-side-box-extra-cat {
+  display: flex;
 }
 .mail__main-sidebar-side-box-extra:hover {
   background-color: #c5c6c9;
@@ -808,7 +826,7 @@
 .mail__main-content-list-item-star {
   width: 10px;
   height: 9.5px;
-  padding-top: 7px;
+  padding-top: 9px;
   position: relative;
   display: inline-block;
   z-index: 1;
@@ -908,6 +926,7 @@
   max-height: 14px;
   margin-bottom: 41px;
   display: flex;
+  cursor: pointer;
   white-space: nowrap;
   flex-direction: row;
 }
@@ -957,6 +976,12 @@
   margin-top: 1px;
   clip-path: polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%);
   background-color: #4f4f4f;
+}
+.mail__main-content-detail-top-third-delete--side {
+  margin: 6px 0 0 6px;
+}
+.mail__main-content-detail-top-third-delete--down {
+  margin: 12px 0 0 12px;
 }
 .mail__main-content-detail-top-third-delete-inner {
   width: 12px;
@@ -1042,6 +1067,7 @@
 .mail__main-content-detail-subject-header-right {
   display: flex;
   align-items: center;
+  cursor: pointer;
   gap: 20px;
 }
 .mail__main-content-detail-subject-divider {

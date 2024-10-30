@@ -47,6 +47,17 @@ function MailComponent() {
  const [selectedOption, setSelectedOption] = useState('');
  const [selectedMails, setSelectedMails] = useState([]);
 
+ const [unreadCount, setUnreadCount] = useState(0);
+
+useEffect(() => {
+  const countUnreadMails = () => {
+    const unread = mails.primary.filter((mail) => !mail.isRead).length;
+    setUnreadCount(unread);
+  };
+
+  countUnreadMails();
+}, [mails.primary]);
+
  const [checkboxState, setCheckboxState] = useState({
   all: false,
   none: false,
@@ -221,6 +232,10 @@ useEffect(() => {
     : starredMails.filter((mail) => mail.id !== mailId);
   
   setStarredMails(updatedStarredMails);
+
+  if (selectedMail?.id === mailId) {
+    setSelectedMail(updatedMail);
+  }
 };
 
  const addNewItem = () => {
@@ -274,6 +289,11 @@ useEffect(() => {
 
  const handleMailClick = (mailId) => {
   const selectedMail = mails[activeTab].find((mail) => mail.id === mailId) || starredMails.find((mail) => mail.id === mailId);
+  
+  if (activeTab === 'sent' && selectedMail) {
+    selectedMail.sender = `John Doe <supercoolman@gmail.com>`;
+  }
+  
   setSelectedMail(selectedMail);
   setIsMailView(true);
  };
@@ -334,7 +354,8 @@ useEffect(() => {
    subject: subjectValue,
    description: descriptionValue,
    date: new Date().toLocaleDateString(),
-   isRead: false
+   isRead: false,
+   to: `Receiver: ${toValue}`
   };
 
   setMails(prevState => ({
@@ -344,6 +365,22 @@ useEffect(() => {
   setDescriptionValue('');
   closeComposePopup();
  };
+
+ const handleToggleRead = (mailId) => {
+  const updatedOriginalMails = Object.keys(mails).reduce((acc, tab) => {
+    acc[tab] = mails[tab].map((mail) =>
+      mail.id === mailId ? { ...mail, isRead: !mail.isRead } : mail
+    );
+    return acc;
+  }, {});
+
+  setMails(updatedOriginalMails);
+
+  if (selectedMail?.id === mailId) {
+    setSelectedMail({ ...selectedMail, isRead: !selectedMail.isRead });
+  }
+};
+
   
  const deleteMail = (id) => {
   const updatedOriginalMails = Object.keys(mails).reduce((acc, tab) => {
@@ -417,15 +454,23 @@ const handleCheckboxClick = (e, id) => {
      <ul className="mail__main-sidebar-side-box">
       <li className={`mail__main-sidebar-side-box-usage ${sidebarActive === 'inbox' ? 'active' : ''}`} 
        style={sidebarActive === 'inbox' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}} 
-       onClick={() => { setActiveTab('primary'); setSidebarActive('inbox'); }}>
+       onClick={() => { setActiveTab('primary');
+         setSidebarActive('inbox');
+         setIsMailView(false);
+         }}>
 
        <i className="fa-solid fa-inbox mail__main-sidebar-side-box-icon"></i>
        <span className="mail__main-sidebar-side-box-text" style={sidebarActive === 'inbox' ? { fontWeight: '700' } : {}}>Inbox</span>
+       {unreadCount > 0 && (
+     <span className="mail__main-sidebar-side-box-unread-count">{unreadCount}</span>
+   )}
       </li>
 
       <li className={`mail__main-sidebar-side-box-usage ${sidebarActive === 'starred' ? 'active' : ''}`}
        style={sidebarActive === 'starred' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}}
-       onClick={() => { setActiveTab('starred'); setSidebarActive('starred') }}>
+       onClick={() => { setActiveTab('starred');
+         setSidebarActive('starred');
+         setIsMailView(false); }}>
 
        <i className="fa-regular fa-star mail__main-sidebar-side-box-icon"></i>
        <span className="mail__main-sidebar-side-box-text" style={sidebarActive === 'starred' ? { fontWeight: '700' } : {}}>Starred</span>
@@ -438,7 +483,9 @@ const handleCheckboxClick = (e, id) => {
 
       <li className={`mail__main-sidebar-side-box-usage ${sidebarActive === 'sent' ? 'active' : ''}`} 
        style={sidebarActive === 'sent' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}} 
-       onClick={() => { setActiveTab('sent'); setSidebarActive('sent'); }}>
+       onClick={() => { setActiveTab('sent');
+       setSidebarActive('sent');
+       setIsMailView(false); }}>
 
        <i className="fa-regular fa-paper-plane mail__main-sidebar-side-box-icon"></i>
        <span className="mail__main-sidebar-side-box-text" style={sidebarActive === 'sent' ? { fontWeight: '700' } : {}}>Sent</span>
@@ -457,13 +504,56 @@ const handleCheckboxClick = (e, id) => {
       {isMoreOpen && (
        <div className="mail__main-sidebar-side-box">
         <li className="mail__main-sidebar-side-box-extra">
+        <i className="fa-solid fa-file-import mail__main-sidebar-side-box-icons"></i>
+         <span className="mail__main-sidebar-side-box-texts">Important</span>
+        </li>
+
+        <li className="mail__main-sidebar-side-box-extra">
          <i className="fa-regular fa-message mail__main-sidebar-side-box-icons"></i>
-         <span className="mail__main-sidebar-side-box-texts">message</span>
+         <span className="mail__main-sidebar-side-box-texts">Chats</span>
+        </li>
+
+        <li className="mail__main-sidebar-side-box-extra">
+        <i className="fa-solid fa-paper-plane mail__main-sidebar-side-box-icons"></i>
+         <span className="mail__main-sidebar-side-box-texts">Scheduled</span>
+        </li>
+
+        <li className="mail__main-sidebar-side-box-extra">
+         <i className="fa-solid fa-envelope mail__main-sidebar-side-box-icons"></i>
+         <span className="mail__main-sidebar-side-box-texts">All Mail</span>
         </li>
 
         <li className="mail__main-sidebar-side-box-extra">
          <i className="fa-solid fa-circle-exclamation mail__main-sidebar-side-box-icons"></i>
-         <span className="mail__main-sidebar-side-box-texts">spam</span>
+         <span className="mail__main-sidebar-side-box-texts">Spam</span>
+        </li>
+
+        <li className="mail__main-sidebar-side-box-extra">
+         <i className="fa-solid fa-trash-can mail__main-sidebar-side-box-icons"></i>
+         <span className="mail__main-sidebar-side-box-texts">Bin</span>
+        </li>
+
+        <li className="mail__main-sidebar-side-box-extra">
+         <div className="mail__main-sidebar-side-box-extra-cat">
+          <i className="fa-solid fa-caret-right fa-2xs mail__main-content-detail-top-third-delete--down"></i>
+          <div className="mail__main-content-detail-top-third-delete mail__main-content-detail-top-third-delete--side">
+           <div className="mail__main-content-detail-top-third-delete-inner"></div>
+          </div>
+         </div>
+
+         <span className="mail__main-sidebar-side-box-texts">Categories</span>
+        </li>
+
+        <li className="mail__main-sidebar-side-box-extra">
+         <i className="fa-solid fa-gear mail__main-sidebar-side-box-icons"></i>
+         <span className="mail__main-sidebar-side-box-texts">Manage labels</span>
+        </li>
+
+        <li className={`mail__main-sidebar-side-box-extra ${newItemText ? 'active' : 'disabled'}`}
+          onClick={addNewItem}
+          disabled={!newItemText}>
+         <i className="fa-solid fa-plus mail__main-sidebar-side-box-icons"></i>
+         <span className="mail__main-sidebar-side-box-texts">Create new label</span>
         </li>
        </div>
       )}
@@ -666,8 +756,14 @@ const handleCheckboxClick = (e, id) => {
          <div className="mail__main-content-list-item-icons">
           <i className="fa-solid fa-box-archive mail__main-content-list-item-icons-icon"></i>
           <i className="fa-solid fa-trash-can mail__main-content-list-item-icons-icon" onClick={(e) => {e.stopPropagation(); deleteMail(mail.id);}}></i>
-          <i className="fa-regular fa-envelope mail__main-content-list-item-icons-icon"></i>
-          <i className="fa-regular fa-clock mail__main-content-list-item-icons-icon"></i>
+          <i
+          className={`mail__main-content-list-item-icons-icon ${mail.isRead ? 'fa-solid fa-envelope-open' : 'fa-regular fa-envelope'}`}
+          onClick={(e) => {
+          e.stopPropagation();
+          handleToggleRead(mail.id);
+       }}
+        ></i>          
+        <i className="fa-regular fa-clock mail__main-content-list-item-icons-icon"></i>
          </div>
         </div>
        ) : null
@@ -743,7 +839,7 @@ const handleCheckboxClick = (e, id) => {
        <div className="mail__main-content-detail-top-first">
         <i className="fa-regular fa-folder-open"></i>
         <i className="fa-solid fa-circle-exclamation"></i>
-        <i className="fa-solid fa-trash-can"></i>
+        <i className="fa-solid fa-trash-can" onClick={(e) => {e.stopPropagation(); deleteMail(selectedMail.id); setIsMailView(false)}}></i>
        </div>
       
        <div className="mail__main-content-detail-top-second">
@@ -783,7 +879,13 @@ const handleCheckboxClick = (e, id) => {
 
        <div className="mail__main-content-detail-subject-header-right">
         <span className="mail__main-content-detail-subject-date">{selectedMail.date}</span>
-        <i className="fa-regular fa-star fa-2xs"></i>
+        <i className={`mail__main-content-detail-subject-star ${selectedMail?.isStarred ? 'fa-solid fa-star fa-2xs' : 'fa-regular fa-star fa-2xs'}`}
+         style={{ color: selectedMail?.isStarred ? '#FFD43B' : 'inherit' }}
+         onClick={(e) => {
+         e.stopPropagation();
+         handleStarClick(selectedMail.id);
+        }}
+        ></i>        
         <i className="fa-solid fa-arrow-turn-up fa-rotate-270 fa-2xs"></i>
         <i className="fa-solid fa-ellipsis-vertical fa-2xs"></i>
        </div>
