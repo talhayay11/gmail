@@ -2,21 +2,24 @@ const { useState,  useRef , useEffect } = React;
 
 const mailData = {
   primary: [
-    { id: 1, sender: 'Delta Enterprises', subject: 'Learn about important safety tips', description: 'Ensure your safety by following these tips.', date: 'Jan 26', isRead: false, to: 'to me' },
-    { id: 2, sender: 'Fashion Forward', subject: "What's Trending at Fashion Forward!", description: 'Explore the latest fashion trends of the year.', date: '12/12/23', isRead: false, to: 'to me' },
-    { id: 3, sender: 'Tech Savvy', subject: 'Are you ready this year?', description: 'Prepare for the future with cutting-edge technology.', date: '12/12/23', isRead: false, to: 'to me' }
-   ],
-   promotions: [
-    { id: 4, sender: 'Promo Company', subject: 'Biggest Sale of the Year!', description: 'dfgdfgdfdgggg sdfsdf sdfsdfsd s d fsdf sdfsd fsd fsdf sdfsdf sdffsdfsdfsdfsdfsdf sdfsdfsdfsdfsdfsdfsdfssd sdfsdfsdfsd sdfsdfsdfsdfsdf s dfsdf sdfsd fsdf sd fs dfsd fsdf sdf sdgggggggggggdfg Don\'t miss out on our biggest sale!', date: '12/11/23', isRead: false, to: 'to me' },
-    { id: 5, sender: 'Deal Hub', subject: 'Exclusive Deals for You!', description: 'Find the best deals tailored just for you.', date: '12/10/23', isRead: false, to: 'to me' }
-   ],
-   social: [
-    { id: 6, sender: 'Social App', subject: 'You have new friend requests!', description: 'Connect with more friends on Social App.', date: '12/09/23', isRead: false, to: 'to me' },
-    { id: 7, sender: 'Community Forum', subject: 'Join the latest discussions', description: 'Share your thoughts and participate in community discussions.', date: '12/08/23', isRead: false, to: 'to me' }
-   ],
-   starred: [],
-   sent: []
-  };
+    { id: 1, sender: 'Acme Inc.', subject: 'Insights', description: 'The latest in industrial equipment and tools', date: 'Feb 26, 2024', time: '14:30', isRead: false, to: 'to me' },
+    { id: 2, sender: 'Travel Tales', subject: "Our latest Adventures and Destinations", description: 'Our latest Adventures and Destinations', date: 'March 26, 2024', time: '10:15', isRead: false, to: 'to me' },
+    { id: 3, sender: 'Delta Enterprises', subject: 'Delta Weekly News', description: 'Learn about important safety tips before you fly!', date: 'Jan 26, 2024', time: '09:45', isRead: false, to: 'to me' }
+  ],
+  promotions: [
+    { id: 4, sender: 'Epsilon Solutions', subject: 'Industry trends and best practices', description: 'Insights Industry trends and best practices', date: 'Jan 26, 2024', time: '16:20', isRead: false, to: 'to me' },
+    { id: 5, sender: 'Foodie Finds', subject: 'Recipe Ideas and Restaurant Reviews!', description: 'Our Complete list of Recipe Ideas and Restaurant Reviews!', date: 'Jan 26, 2024', time: '11:05', isRead: false, to: 'to me' },
+    { id: 6, sender: 'Company Name', subject: 'Lorem ipsum dolor sit amet consectetur.', description: 'Ac eget eu eget ullamcorper tellus sem scelerisque sit ante.', date: 'Jan 26, 2024', time: '13:50', isRead: false, to: 'to me' }
+  ],
+  social: [
+    { id: 7, sender: 'Fashion Forward', subject: 'See what\'s Trending at Fashion Forward!', description: 'Style Inspiration and Trends', date: 'Dec 12, 2023', time: '15:00', isRead: false, to: 'to me' },
+    { id: 8, sender: 'Tech Savvy', subject: 'Are you ready this year?', description: 'Check out our Popular Gadgets and Software from last year!', date: 'Dec 12, 2023', time: '17:30', isRead: false, to: 'to me' },
+    { id: 9, sender: 'Company Name', subject: 'Lorem ipsum dolor sit amet consectetur.', description: 'Ac eget eu eget ullamcorper tellus sem scelerisque sit ante.', date: 'Dec 12, 2023', time: '08:10', isRead: false, to: 'to me' }
+  ],
+  starred: [],
+  sent: [],
+  bin: []
+};
 
 function MailComponent() {
  const [activeTab, setActiveTab] = useState('primary');
@@ -57,6 +60,15 @@ useEffect(() => {
 
   countUnreadMails();
 }, [mails.primary]);
+
+const formatDate = (dateString, includeYear = false, timeString = '') => {
+  const options = includeYear
+    ? { year: 'numeric', month: 'short', day: 'numeric' }
+    : { month: 'short', day: 'numeric' };
+
+    const datePart = new Date(dateString).toLocaleDateString('en-US', options);
+    return timeString ? `${datePart}, ${timeString}` : datePart;
+};
 
  const [checkboxState, setCheckboxState] = useState({
   all: false,
@@ -326,6 +338,8 @@ useEffect(() => {
       );
     }
     return starredMails.filter(mail => mail.isStarred);
+  } else if (activeTab === 'bin') {
+    return mails.bin;
   }
   const currentMails = filteredMails ? filteredMails[activeTab] : mails[activeTab];
   return currentMails;
@@ -348,12 +362,14 @@ useEffect(() => {
  };
   
  const handleSend = () => {
+  const now = new Date();
   const newMail = {
-   id: mails.sent.length + 1,
+   id: Date.now(),
    sender: `receiver: ${toValue}`,
    subject: subjectValue,
-   description: descriptionValue,
-   date: new Date().toLocaleDateString(),
+   description: descriptionValue,    
+   date: now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+   time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
    isRead: false,
    to: `Receiver: ${toValue}`
   };
@@ -382,13 +398,27 @@ useEffect(() => {
 };
 
   
- const deleteMail = (id) => {
+const deleteMail = (id) => {
+  let deletedMail = null;
   const updatedOriginalMails = Object.keys(mails).reduce((acc, tab) => {
-    acc[tab] = mails[tab].filter(mail => mail.id !== id);
+    acc[tab] = mails[tab].filter(mail => {
+      if (mail.id === id) {
+        deletedMail = mail;
+        return false;
+      }
+      return true;
+    });
     return acc;
   }, {});
-  setMails(updatedOriginalMails);
 
+  if (activeTab === 'bin') {
+    setMails(updatedOriginalMails);
+  } else {
+  if (deletedMail) {
+    updatedOriginalMails.bin = [...mails.bin, deletedMail];
+  }
+  setMails(updatedOriginalMails);
+}
   const updatedStarredMails = starredMails.filter(mail => mail.id !== id);
   setStarredMails(updatedStarredMails);
 };
@@ -528,9 +558,15 @@ const handleCheckboxClick = (e, id) => {
          <span className="mail__main-sidebar-side-box-texts">Spam</span>
         </li>
 
-        <li className="mail__main-sidebar-side-box-extra">
+        <li className={`mail__main-sidebar-side-box-extra ${sidebarActive === 'bin' ? 'active' : ''}`}
+         style={sidebarActive === 'bin' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}}
+         onClick={() => { 
+          setActiveTab('bin'); 
+          setSidebarActive('bin'); 
+          setIsMailView(false);
+         }}>
          <i className="fa-solid fa-trash-can mail__main-sidebar-side-box-icons"></i>
-         <span className="mail__main-sidebar-side-box-texts">Bin</span>
+         <span className="mail__main-sidebar-side-box-texts" style={sidebarActive === 'bin' ? { fontWeight: '700' } : {}}>Bin</span>
         </li>
 
         <li className="mail__main-sidebar-side-box-extra">
@@ -675,7 +711,7 @@ const handleCheckboxClick = (e, id) => {
      </div>
     </div>
 
-     {activeTab !== 'sent' && activeTab !== 'starred' && (
+     {(activeTab === 'primary' || activeTab === 'promotions' || activeTab === 'social') && (
   <div className="mail__main-content-tab">
     <button className={`mail__main-content-tab-primary ${activeTab === 'primary' ? 'active' : ''}`} 
       onClick={() => setActiveTab('primary')} 
@@ -736,9 +772,14 @@ const handleCheckboxClick = (e, id) => {
               handleCheckboxClick(e, mail.id);
             }} 
           onChange={(e) => {}}/>
+
+        {activeTab === 'bin' ? (
+          <i className="fa-solid fa-trash-can" onClick={(e) => { e.stopPropagation(); deleteMail(mail.id); }}></i>
+        ) : (
          <i className={`mail__main-content-list-item-star ${mail.isStarred ? 'fa-solid fa-star fa-2xs' : 'fa-regular fa-star fa-2xs'}`} 
           style={{ color: mail.isStarred ? '#FFD43B' : 'inherit' }} 
           onClick={(e) => {e.stopPropagation();  handleStarClick(mail.id); }}></i>
+         )}
 
          <span className="mail__main-content-list-item-sender">{mail.sender}</span>
          <div className="mail__main-content-list-item-middle">
@@ -747,15 +788,25 @@ const handleCheckboxClick = (e, id) => {
          </div>
          
          <div className="mail__main-content-list-item-space"></div>
-         <span className="mail__main-content-list-item-date">{mail.date}</span>
+         <span className="mail__main-content-list-item-date">{formatDate(mail.date)}</span>
          <div className="mail__main-content-list-item-left">
           <i className="fa-solid fa-grip-vertical fa-xs mail__main-content-list-item-left-icon"
-          onDragStart={() => handleDragStart(mail.id)}></i>
+           onDragStart={() => handleDragStart(mail.id)}></i>
          </div>
 
          <div className="mail__main-content-list-item-icons">
-          <i className="fa-solid fa-box-archive mail__main-content-list-item-icons-icon"></i>
-          <i className="fa-solid fa-trash-can mail__main-content-list-item-icons-icon" onClick={(e) => {e.stopPropagation(); deleteMail(mail.id);}}></i>
+          <i className={`fa-solid fa-box-archive mail__main-content-list-item-icons-icon ${activeTab === 'bin' ? 'disabled' : ''}`} 
+           onClick={(e) => {
+            if (activeTab !== 'bin') {
+              e.stopPropagation();
+            }}}></i>
+
+          <i className={`fa-solid fa-trash-can mail__main-content-list-item-icons-icon ${activeTab === 'bin' ? 'disabled' : ''}`} 
+           onClick={(e) => {
+            if (activeTab !== 'bin') {
+              e.stopPropagation();
+              deleteMail(mail.id);
+            }}}></i>
           <i
           className={`mail__main-content-list-item-icons-icon ${mail.isRead ? 'fa-solid fa-envelope-open' : 'fa-regular fa-envelope'}`}
           onClick={(e) => {
@@ -836,28 +887,41 @@ const handleCheckboxClick = (e, id) => {
     <div className="mail__main-content-detail">
       <div className="mail__main-content-detail-top">
        <i className="fa-solid fa-arrow-left mail__main-content-detail-back" onClick={() => setIsMailView(false)}></i>
-       <div className="mail__main-content-detail-top-first">
+       {activeTab === 'bin' ? (
+    <>
+      <div className="mail__main-content-detail-top-bin">
+        <span className="mail__main-content-detail-top-bin-delete" onClick={(e) => { setIsMailView(false); e.stopPropagation(); deleteMail(selectedMail.id); }}>Delete Forever</span>
+        <span className="mail__main-content-detail-top-bin-divider"></span>
+        <div className="mail__main-content-detail-top-bin-icons">
+          <i className="fa-solid fa-circle-exclamation"></i>
+          <i className="fa-regular fa-envelope"></i>
+          <i className="fa-regular fa-folder"></i>
+          <i className="fa-solid fa-ellipsis-vertical"></i>
+        </div>
+      </div>
+    </>
+  ) : (
+    <>
+      <div className="mail__main-content-detail-top-first">
         <i className="fa-regular fa-folder-open"></i>
         <i className="fa-solid fa-circle-exclamation"></i>
-        <i className="fa-solid fa-trash-can" onClick={(e) => {e.stopPropagation(); deleteMail(selectedMail.id); setIsMailView(false)}}></i>
-       </div>
-      
-       <div className="mail__main-content-detail-top-second">
+        <i className="fa-solid fa-trash-can" onClick={() => {setIsMailView(false); deleteMail(selectedMail.id);}}></i>
+      </div>
+      <div className="mail__main-content-detail-top-second">
         <i className="fa-regular fa-envelope"></i>
         <i className="fa-regular fa-clock"></i>
         <i className="fa-regular fa-circle-check"></i>
-       </div>
-
-       <div className="mail__main-content-detail-top-third">
-        <i className="fa-regular fa-folder"></i>
-        
-        <div className="mail__main-content-detail-top-third-delete">
-         <div className="mail__main-content-detail-top-third-delete-inner"></div>
-        </div>
-
-        <i className="fa-solid fa-ellipsis-vertical"></i>
-       </div>
       </div>
+      <div className="mail__main-content-detail-top-third">
+        <i className="fa-regular fa-folder"></i>
+        <div className="mail__main-content-detail-top-third-delete">
+          <div className="mail__main-content-detail-top-third-delete-inner"></div>
+        </div>
+        <i className="fa-solid fa-ellipsis-vertical"></i>
+      </div>
+    </>
+  )}
+</div>
 
       <div className="mail__main-content-detail-subject">
        <span className="mail__main-content-detail-subject-title">{selectedMail.subject}</span>
@@ -878,7 +942,7 @@ const handleCheckboxClick = (e, id) => {
        </div>
 
        <div className="mail__main-content-detail-subject-header-right">
-        <span className="mail__main-content-detail-subject-date">{selectedMail.date}</span>
+        <span className="mail__main-content-detail-subject-date">{formatDate(selectedMail.date, true, selectedMail.time)}</span>
         <i className={`mail__main-content-detail-subject-star ${selectedMail?.isStarred ? 'fa-solid fa-star fa-2xs' : 'fa-regular fa-star fa-2xs'}`}
          style={{ color: selectedMail?.isStarred ? '#FFD43B' : 'inherit' }}
          onClick={(e) => {
