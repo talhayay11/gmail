@@ -1,24 +1,111 @@
 const { useState,  useRef , useEffect } = React;
 
 const mailData = {
-  primary: [
-    { id: 1, sender: 'Acme Inc.', subject: 'Insights', description: 'The latest in industrial equipment and tools', date: 'Feb 26, 2024', time: '14:30', isRead: false, to: 'to me' },
-    { id: 2, sender: 'Travel Tales', subject: "Our latest Adventures and Destinations", description: 'Our latest Adventures and Destinations', date: 'March 26, 2024', time: '10:15', isRead: false, to: 'to me' },
-    { id: 3, sender: 'Delta Enterprises', subject: 'Delta Weekly News', description: 'Learn about important safety tips before you fly!', date: 'Jan 26, 2024', time: '09:45', isRead: false, to: 'to me' }
-  ],
-  promotions: [
-    { id: 4, sender: 'Epsilon Solutions', subject: 'Industry trends and best practices', description: 'Insights Industry trends and best practices', date: 'Jan 26, 2024', time: '16:20', isRead: false, to: 'to me' },
-    { id: 5, sender: 'Foodie Finds', subject: 'Recipe Ideas and Restaurant Reviews!', description: 'Our Complete list of Recipe Ideas and Restaurant Reviews!', date: 'Jan 26, 2024', time: '11:05', isRead: false, to: 'to me' },
-    { id: 6, sender: 'Company Name', subject: 'Lorem ipsum dolor sit amet consectetur.', description: 'Ac eget eu eget ullamcorper tellus sem scelerisque sit ante.', date: 'Jan 26, 2024', time: '13:50', isRead: false, to: 'to me' }
-  ],
-  social: [
-    { id: 7, sender: 'Fashion Forward', subject: 'See what\'s Trending at Fashion Forward!', description: 'Style Inspiration and Trends', date: 'Dec 12, 2023', time: '15:00', isRead: false, to: 'to me' },
-    { id: 8, sender: 'Tech Savvy', subject: 'Are you ready this year?', description: 'Check out our Popular Gadgets and Software from last year!', date: 'Dec 12, 2023', time: '17:30', isRead: false, to: 'to me' },
-    { id: 9, sender: 'Company Name', subject: 'Lorem ipsum dolor sit amet consectetur.', description: 'Ac eget eu eget ullamcorper tellus sem scelerisque sit ante.', date: 'Dec 12, 2023', time: '08:10', isRead: false, to: 'to me' }
-  ],
-  starred: [],
-  sent: [],
-  bin: []
+ primary: [
+  {
+   id: 1,
+   sender: 'Acme Inc.',
+   subject: 'Insights',
+   description: 'The latest in industrial equipment and tools',
+   date: 'Feb 26, 2024',
+   time: '14:30',
+   isRead: false,
+   to: 'to me'
+  },
+
+  {
+   id: 2,
+   sender: 'Travel Tales',
+   subject: "Our latest Adventures and Destinations",
+   description: 'Our latest Adventures and Destinations',
+   date: 'March 26, 2024',
+   time: '10:15', isRead: false,
+   to: 'to me'
+  },
+
+  {
+   id: 3,
+   sender: 'Delta Enterprises',
+   subject: 'Delta Weekly News',
+   description: 'Learn about important safety tips before you fly!',
+   date: 'Jan 26, 2024',
+   time: '09:45',
+   isRead: false,
+   to: 'to me'
+  }
+ ],
+
+ promotions: [
+  {
+   id: 4,
+   sender: 'Epsilon Solutions',
+   subject: 'Industry trends and best practices',
+   description: 'Insights Industry trends and best practices',
+   date: 'Jan 26, 2024',
+   time: '16:20',
+   isRead: false,
+   to: 'to me'
+  },
+
+  {
+   id: 5,
+   sender: 'Foodie Finds',
+   subject: 'Recipe Ideas and Restaurant Reviews!',
+   description: 'Our Complete list of Recipe Ideas and Restaurant Reviews!',
+   date: 'Jan 26, 2024',
+   time: '11:05',
+   isRead: false,
+   to: 'to me'
+  },
+
+  {
+   id: 6,
+   sender: 'Company Name',
+   subject: 'Lorem ipsum dolor sit amet consectetur.',
+   description: 'Ac eget eu eget ullamcorper tellus sem scelerisque sit ante.',
+   date: 'Jan 26, 2024',
+   time: '13:50',
+   isRead: false,
+   to: 'to me' 
+  }
+ ],
+ social: [
+  {
+   id: 7,
+   sender: 'Fashion Forward',
+   subject: 'See what\'s Trending at Fashion Forward!',
+   description: 'Style Inspiration and Trends',
+   date: 'Dec 12, 2023',
+   time: '15:00',
+   isRead: false,
+   to: 'to me'
+  },
+
+  {
+   id: 8,
+   sender: 'Tech Savvy',
+   subject: 'Are you ready this year?',
+   description: 'Check out our Popular Gadgets and Software from last year!',
+   date: 'Dec 12, 2023',
+   time: '17:30',
+   isRead: false,
+   to: 'to me'
+  },
+
+  {
+   id: 9,
+   sender: 'Company Name',
+   subject: 'Lorem ipsum dolor sit amet consectetur.',
+   description: 'Ac eget eu eget ullamcorper tellus sem scelerisque sit ante.',
+   date: 'Dec 12, 2023',
+   time: '08:10',
+   isRead: false,
+   to: 'to me'
+  }
+ ],
+ starred: [],
+ sent: [],
+ bin: []
 };
 
 function MailComponent() {
@@ -49,26 +136,24 @@ function MailComponent() {
  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
  const [selectedOption, setSelectedOption] = useState('');
  const [selectedMails, setSelectedMails] = useState([]);
-
  const [unreadCount, setUnreadCount] = useState(0);
 
-useEffect(() => {
+ useEffect(() => {
   const countUnreadMails = () => {
-    const unread = mails.primary.filter((mail) => !mail.isRead).length;
+   const unread = mails.primary.filter((mail) => !mail.isRead).length;
     setUnreadCount(unread);
   };
-
   countUnreadMails();
-}, [mails.primary]);
+ }, [mails.primary]);
 
-const formatDate = (dateString, includeYear = false, timeString = '') => {
-  const options = includeYear
-    ? { year: 'numeric', month: 'short', day: 'numeric' }
-    : { month: 'short', day: 'numeric' };
+ const formatDate = (dateString, includeYear = false, timeString = '') => {
+  const options = includeYear 
+   ? { year: 'numeric', month: 'short', day: 'numeric' }
+   : { month: 'short', day: 'numeric' };
 
-    const datePart = new Date(dateString).toLocaleDateString('en-US', options);
-    return timeString ? `${datePart}, ${timeString}` : datePart;
-};
+  const datePart = new Date(dateString).toLocaleDateString('en-US', options);
+  return timeString ? `${datePart}, ${timeString}` : datePart;
+ };
 
  const [checkboxState, setCheckboxState] = useState({
   all: false,
@@ -81,86 +166,84 @@ const formatDate = (dateString, includeYear = false, timeString = '') => {
 
  const handleOptionSelect = (option) => {
   setSelectedOption(option);
-
   const activeMails = getActiveMails();
   switch (option) {
-    case 'all':
-      setCheckboxState({
-        all: true,
-        none: false,
-        read: false,
-        unread: false,
-        starred: false,
-        unstarred: false,
-      });
-      setSelectedMails(activeMails.map(mail => mail.id));
-      break;
+   case 'all':
+   setCheckboxState({
+    all: true,
+    none: false,
+    read: false,
+    unread: false,
+    starred: false,
+    unstarred: false,
+   });
+   setSelectedMails(activeMails.map(mail => mail.id));
+   break;
 
-    case 'none':
-      setCheckboxState({
-        all: false,
-        none: true,
-        read: false,
-        unread: false,
-        starred: false,
-        unstarred: false,
-      });
-      setSelectedMails([]);
-      break;
+   case 'none':
+   setCheckboxState({
+    all: false,
+    none: true,
+    read: false,
+    unread: false,
+    starred: false,
+    unstarred: false,
+   });
+   setSelectedMails([]);
+   break;
 
-    case 'read':
-      setCheckboxState({
-        all: false,
-        none: false,
-        read: true,
-        unread: false,
-        starred: false,
-        unstarred: false,
-      });
-      setSelectedMails(activeMails.filter(mail => mail.isRead).map(mail => mail.id));
-      break;
+   case 'read':
+   setCheckboxState({
+    all: false,
+    none: false,
+    read: true,
+    unread: false,
+    starred: false,
+    unstarred: false,
+   });
+   setSelectedMails(activeMails.filter(mail => mail.isRead).map(mail => mail.id));
+   break;
 
-    case 'unread':
-      setCheckboxState({
-        all: false,
-        none: false,
-        read: false,
-        unread: true,
-        starred: false,
-        unstarred: false,
-      });
-      setSelectedMails(activeMails.filter(mail => !mail.isRead).map(mail => mail.id));
-      break;
+   case 'unread':
+   setCheckboxState({
+    all: false,
+    none: false,
+    read: false,
+    unread: true,
+    starred: false,
+    unstarred: false,
+   });
+   setSelectedMails(activeMails.filter(mail => !mail.isRead).map(mail => mail.id));
+   break;
 
-    case 'starred':
-      setCheckboxState({
-        all: false,
-        none: false,
-        read: false,
-        unread: false,
-        starred: true,
-        unstarred: false,
-      });
-      setSelectedMails(activeMails.filter(mail => mail.isStarred).map(mail => mail.id));
-      break;
+   case 'starred':
+   setCheckboxState({
+    all: false,
+    none: false,
+    read: false,
+    unread: false,
+    starred: true,
+    unstarred: false,
+   });
+   setSelectedMails(activeMails.filter(mail => mail.isStarred).map(mail => mail.id));
+   break;
 
-    case 'unstarred':
-      setCheckboxState({
-        all: false,
-        none: false,
-        read: false,
-        unread: false,
-        starred: false,
-        unstarred: true,
-      });
-      setSelectedMails(activeMails.filter(mail => !mail.isStarred).map(mail => mail.id));
-      break;
-
-    default:
-      break;
+   case 'unstarred':
+   setCheckboxState({
+    all: false,
+    none: false,
+    read: false,
+    unread: false,
+    starred: false,
+    unstarred: true,
+   });
+   setSelectedMails(activeMails.filter(mail => !mail.isStarred).map(mail => mail.id));
+   break;
+   default:
+   break;
   }
   setIsDropdownOpen(false);
-};
+ };
 
  const toggleDropdown = () => {
   setIsDropdownOpen(!isDropdownOpen);
@@ -169,29 +252,30 @@ const formatDate = (dateString, includeYear = false, timeString = '') => {
  const handleTopCheckboxChange = () => {
   const activeMails = getActiveMails();
   if (selectedMails.length === activeMails.length) {
-    setSelectedMails([]);
+   setSelectedMails([]);
   } else {
-    setSelectedMails(activeMails.map(mail => mail.id));
+   setSelectedMails(activeMails.map(mail => mail.id));
   }
-};
+ };
 
-useEffect(() => {
+ useEffect(() => {
   const handleClickOutside = (event) => {
-    if (!event.target.closest('.mail__main-content-top-left-select-dropdown-menu') && !event.target.closest('.mail__main-content-top-left-select')) {
-      setIsDropdownOpen(false);
-    }
+   if (!event.target.closest('.mail__main-content-top-left-select-dropdown-menu') &&
+   !event.target.closest('.mail__main-content-top-left-select')) {
+    setIsDropdownOpen(false);
+   }
   };
   document.addEventListener('mousedown', handleClickOutside);
 
   return () => {
-    document.removeEventListener('mousedown', handleClickOutside);
+   document.removeEventListener('mousedown', handleClickOutside);
   };
-}, []);
+ }, []);
 
  const handleDrop = (e, droppedOnMailId) => {
   const draggedMailId = e.dataTransfer.getData("mailId");
   if (!draggedMailId) return;
-  
+
   const draggedMailIndex = mails[activeTab].findIndex(mail => mail.id === parseInt(draggedMailId));
   const droppedOnMailIndex = mails[activeTab].findIndex(mail => mail.id === droppedOnMailId);
   if (draggedMailIndex === -1 || droppedOnMailIndex === -1) return;
@@ -204,28 +288,27 @@ useEffect(() => {
   setDraggedMailId(null);
  };
 
-   const handleSearchChange = (e) => {
-    const value = e.target.value.toLowerCase();
-    setSearchValue(value);
+ const handleSearchChange = (e) => {
+  const value = e.target.value.toLowerCase();
+  setSearchValue(value);
+  if (value) {
+   const filtered = Object.keys(mails).reduce((acc, tab) => {
+    acc[tab] = mails[tab].filter((mail) =>
+     mail.sender.toLowerCase().includes(value) ||
+     mail.subject.toLowerCase().includes(value) ||
+     mail.description.toLowerCase().includes(value)
+    );
+    return acc;
+   }, {});
+   setFilteredMails(filtered);
+  } else {
+  setFilteredMails(null);
+  }
+ };
 
-    if (value) {
-      const filtered = Object.keys(mails).reduce((acc, tab) => {
-        acc[tab] = mails[tab].filter((mail) =>
-          mail.sender.toLowerCase().includes(value) ||
-          mail.subject.toLowerCase().includes(value) ||
-          mail.description.toLowerCase().includes(value)
-        );
-        return acc;
-      }, {});
-      setFilteredMails(filtered);
-    } else {
-      setFilteredMails(null);
-    }
-  };
-
-  const toggleMinimizePopup = () => {
-    setIsPopupMinimized(!isPopupMinimized);
-  };
+ const toggleMinimizePopup = () => {
+  setIsPopupMinimized(!isPopupMinimized);
+ };
 
  const handleStarClick = (mailId) => {
   let mailToStar = mails[activeTab].find((mail) => mail.id === mailId) || starredMails.find((mail) => mail.id === mailId);
@@ -233,22 +316,20 @@ useEffect(() => {
 
   const updatedMail = { ...mailToStar, isStarred: !mailToStar.isStarred };
   const updatedOriginalMails = Object.keys(mails).reduce((acc, tab) => {
-    acc[tab] = mails[tab].map((mail) => mail.id === mailId ? updatedMail : mail);
-    return acc;
+   acc[tab] = mails[tab].map((mail) => mail.id === mailId ? updatedMail : mail);
+   return acc;
   }, {});
 
   setMails(updatedOriginalMails);
-
   const updatedStarredMails = updatedMail.isStarred
-    ? [...starredMails, updatedMail]
-    : starredMails.filter((mail) => mail.id !== mailId);
-  
-  setStarredMails(updatedStarredMails);
+   ? [...starredMails, updatedMail]
+   : starredMails.filter((mail) => mail.id !== mailId);
+   setStarredMails(updatedStarredMails);
 
   if (selectedMail?.id === mailId) {
-    setSelectedMail(updatedMail);
+   setSelectedMail(updatedMail);
   }
-};
+ };
 
  const addNewItem = () => {
   if (isFormVisible) {
@@ -269,21 +350,20 @@ useEffect(() => {
 
  useEffect(() => {
   const handleClickOutside = (event) => {
-    if (
-      isFormVisible &&
-      formRef.current &&
-      !formRef.current.contains(event.target) &&
-      buttonRef.current &&
-      !buttonRef.current.contains(event.target)
-    ) {
-      setIsFormVisible(false);
-    }
+   if (
+    isFormVisible &&
+    formRef.current &&
+    !formRef.current.contains(event.target) &&
+    buttonRef.current &&
+    !buttonRef.current.contains(event.target)
+   ) {
+    setIsFormVisible(false);
+   }
   };
-
   document.addEventListener('mousedown', handleClickOutside);
 
   return () => {
-    document.removeEventListener('mousedown', handleClickOutside);
+   document.removeEventListener('mousedown', handleClickOutside);
   };
  }, [isFormVisible]);
 
@@ -303,7 +383,7 @@ useEffect(() => {
   const selectedMail = mails[activeTab].find((mail) => mail.id === mailId) || starredMails.find((mail) => mail.id === mailId);
   
   if (activeTab === 'sent' && selectedMail) {
-    selectedMail.sender = `John Doe <supercoolman@gmail.com>`;
+   selectedMail.sender = `John Doe <supercoolman@gmail.com>`;
   }
   
   setSelectedMail(selectedMail);
@@ -316,7 +396,7 @@ useEffect(() => {
 
  const handleClickOutside = (event) => {
   if (!event.target.closest('.mail__navbar-search')) {
-    setIsSearchClicked(false);
+   setIsSearchClicked(false);
   }
  };
 
@@ -324,26 +404,26 @@ useEffect(() => {
   document.addEventListener('mousedown', handleClickOutside);
 
   return () => {
-    document.removeEventListener('mousedown', handleClickOutside);
+   document.removeEventListener('mousedown', handleClickOutside);
   };
 }, []);
 
  const getActiveMails = () => {
   if (activeTab === 'starred') {
-    if (searchValue) {
-      return starredMails.filter((mail) =>
-        mail.sender.toLowerCase().includes(searchValue) ||
-        mail.subject.toLowerCase().includes(searchValue) ||
-        mail.description.toLowerCase().includes(searchValue)
-      );
-    }
-    return starredMails.filter(mail => mail.isStarred);
+   if (searchValue) {
+    return starredMails.filter((mail) =>
+     mail.sender.toLowerCase().includes(searchValue) ||
+     mail.subject.toLowerCase().includes(searchValue) ||
+     mail.description.toLowerCase().includes(searchValue)
+    );
+   }
+   return starredMails.filter(mail => mail.isStarred);
   } else if (activeTab === 'bin') {
-    return mails.bin;
+   return mails.bin;
   }
   const currentMails = filteredMails ? filteredMails[activeTab] : mails[activeTab];
   return currentMails;
-};
+ };
 
  useEffect(() => {
   const activeMails = getActiveMails();
@@ -384,49 +464,48 @@ useEffect(() => {
 
  const handleToggleRead = (mailId) => {
   const updatedOriginalMails = Object.keys(mails).reduce((acc, tab) => {
-    acc[tab] = mails[tab].map((mail) =>
-      mail.id === mailId ? { ...mail, isRead: !mail.isRead } : mail
-    );
-    return acc;
+   acc[tab] = mails[tab].map((mail) =>
+    mail.id === mailId ? { ...mail, isRead: !mail.isRead } : mail
+   );
+  return acc;
   }, {});
-
   setMails(updatedOriginalMails);
 
   if (selectedMail?.id === mailId) {
-    setSelectedMail({ ...selectedMail, isRead: !selectedMail.isRead });
+   setSelectedMail({ ...selectedMail, isRead: !selectedMail.isRead });
   }
-};
+ };
 
   
-const deleteMail = (id) => {
+ const deleteMail = (id) => {
   let deletedMail = null;
   const updatedOriginalMails = Object.keys(mails).reduce((acc, tab) => {
-    acc[tab] = mails[tab].filter(mail => {
-      if (mail.id === id) {
-        deletedMail = mail;
-        return false;
-      }
-      return true;
-    });
-    return acc;
+   acc[tab] = mails[tab].filter(mail => {
+    if (mail.id === id) {
+     deletedMail = mail;
+     return false;
+    }
+    return true;
+   });
+   return acc;
   }, {});
 
   if (activeTab === 'bin') {
-    setMails(updatedOriginalMails);
+   setMails(updatedOriginalMails);
   } else {
-  if (deletedMail) {
+   if (deletedMail) {
     updatedOriginalMails.bin = [...mails.bin, deletedMail];
+   }
+   setMails(updatedOriginalMails);
   }
-  setMails(updatedOriginalMails);
-}
   const updatedStarredMails = starredMails.filter(mail => mail.id !== id);
   setStarredMails(updatedStarredMails);
-};
+ };
 
  const markAsRead = (id) => {
   const updatedOriginalMails = Object.keys(mails).reduce((acc, tab) => {
-    acc[tab] = mails[tab].map((mail) => mail.id === id ? { ...mail, isRead: true } : mail);
-    return acc;
+   acc[tab] = mails[tab].map((mail) => mail.id === id ? { ...mail, isRead: true } : mail);
+   return acc;
   }, {});
 
   setMails(updatedOriginalMails);
@@ -436,44 +515,45 @@ const deleteMail = (id) => {
   setStarredMails(updatedStarredMails);
   const selectedMail = mails[activeTab].find(mail => mail.id === id);
   setPopup(selectedMail);
-};
+ };
 
-const handleCheckboxClick = (e, id) => {
+ const handleCheckboxClick = (e, id) => {
   e.stopPropagation();
   setSelectedMails((prevSelectedMails) => {
-    if (prevSelectedMails.includes(id)) {
-      return prevSelectedMails.filter((mailId) => mailId !== id);
-    } else {
-      return [...prevSelectedMails, id];
-    }
+   if (prevSelectedMails.includes(id)) {
+    return prevSelectedMails.filter((mailId) => mailId !== id);
+   } else {
+    return [...prevSelectedMails, id];
+   }
   });
-};
+ };
 
  return (
   <div className="mail">
-  <nav className="mail__navbar">
-  <div className="mail__navbar-left">
-    <i className="fa-solid fa-bars mail__navbar-left-menu" onClick={toggleSidebar}></i>
-    <img src="images/gmail-icon.png" alt="Gmail Logo" className="mail__navbar-left-logo" />
-    <span className="mail__navbar-left-text">Gmail</span>
-  </div>
+   <nav className="mail__navbar">
+    <div className="mail__navbar-left">
+     <i className="fa-solid fa-bars mail__navbar-left-menu" onClick={toggleSidebar}></i>
+     <img src="images/gmail-icon.png" alt="Gmail Logo" className="mail__navbar-left-logo" />
+     <span className="mail__navbar-left-text">Gmail</span>
+    </div>
 
-  <div className={`mail__navbar-search ${isSearchClicked ? 'active' : ''}`} onClick={handleSearchClick}>
-    <i className="fa-solid fa-magnifying-glass mail__navbar-search-box--search"></i>
-    <input type="text" placeholder="Search mail" className="mail__navbar-search-box"
-     value={searchValue} onChange={handleSearchChange}/>
-    <i className="fa-solid fa-sliders mail__navbar-search-box--slider"></i>
-  </div>
+    <div className={`mail__navbar-search ${isSearchClicked ? 'active' : ''}`} onClick={handleSearchClick}>
+     <i className="fa-solid fa-magnifying-glass mail__navbar-search-box--search"></i>
+     <input type="text" placeholder="Search mail" className="mail__navbar-search-box"
+      value={searchValue} onChange={handleSearchChange}/>
 
-  <div className="mail__navbar-right">
-    <i className="fa-regular fa-circle-question mail__navbar-right-icon"></i>
-    <i className="fa-solid fa-gear mail__navbar-right-icon"></i>
-    <i className="fa-solid fa-table-cells mail__navbar-right-icon"></i>
-    <img src="images/profile-pic.png" alt="Profile Pic" className="mail__navbar-right-pic" />
-  </div>
-</nav>
+     <i className="fa-solid fa-sliders mail__navbar-search-box--slider"></i>
+    </div>
 
-  <div className="mail__main">
+    <div className="mail__navbar-right">
+     <i className="fa-regular fa-circle-question mail__navbar-right-icon"></i>
+     <i className="fa-solid fa-gear mail__navbar-right-icon"></i>
+     <i className="fa-solid fa-table-cells mail__navbar-right-icon"></i>
+     <img src="images/profile-pic.png" alt="Profile Pic" className="mail__navbar-right-pic" />
+    </div>
+   </nav>
+
+   <div className="mail__main">
    <div className="mail__main-sidebar">
     <button className="mail__main-sidebar-compose" onClick={openComposePopup}>
      <i className="fa-solid fa-pencil mail__main-sidebar-compose-pen"></i>
@@ -502,7 +582,7 @@ const handleCheckboxClick = (e, id) => {
          setSidebarActive('starred');
          setIsMailView(false); }}>
 
-       <i className="fa-regular fa-star mail__main-sidebar-side-box-icon"></i>
+       <i className={`mail__main-sidebar-side-box-icon mail__main-sidebar-side-box-icon--style ${sidebarActive === 'starred' ? 'fa-solid fa-star' : 'fa-regular fa-star'}`}></i>
        <span className="mail__main-sidebar-side-box-text" style={sidebarActive === 'starred' ? { fontWeight: '700' } : {}}>Starred</span>
       </li>
 
@@ -517,17 +597,17 @@ const handleCheckboxClick = (e, id) => {
        setSidebarActive('sent');
        setIsMailView(false); }}>
 
-       <i className="fa-regular fa-paper-plane mail__main-sidebar-side-box-icon"></i>
+       <i className={`mail__main-sidebar-side-box-icon mail__main-sidebar-side-box-icon--style ${sidebarActive === 'sent' ? 'fa-solid fa-paper-plane' : 'fa-regular fa-paper-plane'}`}></i>
        <span className="mail__main-sidebar-side-box-text" style={sidebarActive === 'sent' ? { fontWeight: '700' } : {}}>Sent</span>
       </li>
 
       <li className="mail__main-sidebar-side-box-usage">
-       <i className="fa-regular fa-file mail__main-sidebar-side-box-icon"></i>
+       <i className="fa-regular fa-file mail__main-sidebar-side-box-icon mail__main-sidebar-side-box-icon--draft"></i>
        <span className="mail__main-sidebar-side-box-text">Drafts</span>
       </li>
 
       <li className="mail__main-sidebar-side-box-usage" onClick={toggleMore}>
-       <i className={`fa-solid ${isMoreOpen ? 'fa-angle-up' : 'fa-angle-down'} mail__main-sidebar-side-box-icon`}></i>
+       <i className={`fa-solid ${isMoreOpen ? 'fa-angle-up' : 'fa-angle-down'} mail__main-sidebar-side-box-icon mail__main-sidebar-side-box-icon--draft`}></i>
        <span className="mail__main-sidebar-side-box-text">{isMoreOpen ? 'Less' : 'More'}</span>
       </li>
 
@@ -565,7 +645,7 @@ const handleCheckboxClick = (e, id) => {
           setSidebarActive('bin'); 
           setIsMailView(false);
          }}>
-         <i className="fa-solid fa-trash-can mail__main-sidebar-side-box-icons"></i>
+         <i className={`mail__main-sidebar-side-box-icons ${sidebarActive === 'bin' ? 'fa-solid fa-trash-can' : 'fa-regular fa-trash-can'}`}></i>
          <span className="mail__main-sidebar-side-box-texts" style={sidebarActive === 'bin' ? { fontWeight: '700' } : {}}>Bin</span>
         </li>
 
@@ -641,27 +721,32 @@ const handleCheckboxClick = (e, id) => {
        <li className="mail__main-sidebar-side-down-box-usage">
         <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--first"></div>
         <span className="mail__main-sidebar-side-down-box-text">Categories</span>
+        <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
        </li>
 
-       <li className="mail__main-sidebar-side-down-box-usage">
+{/*    <li className="mail__main-sidebar-side-down-box-usage">
         <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--second"></div>
         <span className="mail__main-sidebar-side-down-box-text">Team</span>
-       </li>
+        <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
+       </li> */}
 
-       <li className="mail__main-sidebar-side-down-box-usage">
+{/*    <li className="mail__main-sidebar-side-down-box-usage">
         <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--third"></div>
         <span className="mail__main-sidebar-side-down-box-text">News</span>
-       </li>
+        <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
+       </li> */}
 
-       <li className="mail__main-sidebar-side-down-box-usage">
+{/*    <li className="mail__main-sidebar-side-down-box-usage">
         <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--fourth"></div>
         <span className="mail__main-sidebar-side-down-box-text">Work</span>
-       </li>
+        <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
+       </li> */}
 
-       <li className="mail__main-sidebar-side-down-box-usage">
+{/*    <li className="mail__main-sidebar-side-down-box-usage">
         <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--fifth"></div>
         <span className="mail__main-sidebar-side-down-box-text">Personal</span>
-       </li>
+        <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
+       </li> */}
 
        {items.map((item) => (
         <li
@@ -669,9 +754,8 @@ const handleCheckboxClick = (e, id) => {
          className="mail__main-sidebar-side-down-box-usage"
         >
          <i className="mail__main-sidebar-side-down-box-icons" style={{ backgroundColor: item.iconColor }}></i>
-         <span className="mail__main-sidebar-side-down-box-text">
-          {item.text}
-         </span>
+         <span className="mail__main-sidebar-side-down-box-text">{item.text}</span>
+         <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
          </li>
        ))}
       </ul>
@@ -686,15 +770,15 @@ const handleCheckboxClick = (e, id) => {
      <div className="mail__main-content-top-left">
       <div className="mail__main-content-top-left-select">
         <input type="checkbox" className="mail__main-content-top-left-select-checkbox" onChange={handleTopCheckboxChange}/>
-        <i className="fa-solid fa-caret-down mail__main-content-top-left-select-down" onClick={toggleDropdown}></i>
+        <i className="fa-solid fa-caret-down fa-xs mail__main-content-top-left-select-down" onClick={toggleDropdown}></i>
       </div>
 
-      <i className="fa-solid fa-arrow-rotate-right"></i>
-      <i className="fa-solid fa-ellipsis-vertical"></i>
+      <i className="fa-solid fa-arrow-rotate-right mail__main-content-top-left-icon-refresh"></i>
+      <i className="fa-solid fa-ellipsis-vertical mail__main-content-top-left-icon"></i>
      </div>
 
      {isDropdownOpen && (
-  <ul className="mail__main-content-top-left-select-dropdown-menu">
+  <ul className="mail__main-content-top-left-select-down-menu">
     <li onClick={() => handleOptionSelect('all')}>All</li>
     <li onClick={() => handleOptionSelect('none')}>None</li>
     <li onClick={() => handleOptionSelect('read')}>Read</li>
@@ -704,7 +788,7 @@ const handleCheckboxClick = (e, id) => {
   </ul>
 )}
 
-     <div className="mail__main-content-top-right">
+     <div className="mail__main-content-top-right" style={{ display: visibleMailsCount > 0 ? 'flex' : 'none' }}>
       <span className="mail__main-content-top-right-number">1-{visibleMailsCount} of {visibleMailsCount}</span>
       <i className="fa-solid fa-angle-left mail__main-content-top-right-angle"></i>
       <i className="fa-solid fa-angle-right mail__main-content-top-right-angle"></i>
@@ -774,7 +858,7 @@ const handleCheckboxClick = (e, id) => {
           onChange={(e) => {}}/>
 
         {activeTab === 'bin' ? (
-          <i className="fa-solid fa-trash-can" onClick={(e) => { e.stopPropagation(); deleteMail(mail.id); }}></i>
+          <i className="fa-regular fa-trash-can" onClick={(e) => { e.stopPropagation(); deleteMail(mail.id); }}></i>
         ) : (
          <i className={`mail__main-content-list-item-star ${mail.isStarred ? 'fa-solid fa-star fa-2xs' : 'fa-regular fa-star fa-2xs'}`} 
           style={{ color: mail.isStarred ? '#FFD43B' : 'inherit' }} 
@@ -801,14 +885,14 @@ const handleCheckboxClick = (e, id) => {
               e.stopPropagation();
             }}}></i>
 
-          <i className={`fa-solid fa-trash-can mail__main-content-list-item-icons-icon ${activeTab === 'bin' ? 'disabled' : ''}`} 
+          <i className={`fa-regular fa-trash-can mail__main-content-list-item-icons-icon ${activeTab === 'bin' ? 'disabled' : ''}`} 
            onClick={(e) => {
             if (activeTab !== 'bin') {
               e.stopPropagation();
               deleteMail(mail.id);
             }}}></i>
           <i
-          className={`mail__main-content-list-item-icons-icon ${mail.isRead ? 'fa-solid fa-envelope-open' : 'fa-regular fa-envelope'}`}
+          className={`mail__main-content-list-item-icons-icon ${mail.isRead ? 'fa-regular fa-envelope' : 'fa-solid fa-envelope-open'}`}
           onClick={(e) => {
           e.stopPropagation();
           handleToggleRead(mail.id);
@@ -964,13 +1048,19 @@ const handleCheckboxClick = (e, id) => {
   </div>
 
    <div className="mail__main-right">
-    <img src="images/calendar-icon.png" alt="Calendar" className="mail__main-right-pic"/>
-    <img src="images/note-icon.png" alt="Note" className="mail__main-right-pic"/>
-    <i className="fa-solid fa-user mail__main-right-pic"></i>
+   <div className="mail__main-right-pic">
+    <img src="images/calendar-icon.png" alt="Calendar"/>
+  </div>
+
+  <div className="mail__main-right-pic">
+    <img src="images/note-icon.png" alt="Note"/>
+  </div>
+
+    <i className="fa-solid fa-user mail__main-right-person"></i>
     <hr className="mail__main-right-divider"/>
     <i className="fa-solid fa-plus mail__main-right-icon"></i>
    </div>
-  </div>
+   </div>
   </div>
  );
 }

@@ -34,6 +34,11 @@ $grey-of-darkness: #a1a3a3;
 $placebo-blue: #ecf2fc;
 $trolley-grey: #828282;
 $blizzard: #e6eaef;
+$wood-charcoal: #444746;
+$bleached-silk: #f2f2f2;
+$vulcanized: #424544;
+$lighthouse: #f4f4f4;
+$chrome-aluminum: #a7abad;
 
 $font-size-10: 0.625rem;
 $font-size-12: 0.75rem;
@@ -75,13 +80,30 @@ $font-family-roboto: 'Roboto', sans-serif;
    gap: 9px;
    display: flex;
    align-items: center;
+   cursor: pointer;
    margin: 34px 86.5px 18px 21px;
 
    &-menu {
     border: none;
     display: flex;
-    cursor: pointer;
-    background: none;
+    z-index: 10;
+
+    &::after {
+     content: '';
+     position: absolute;
+     margin: 8px 0 0 7px;
+     padding: 9px;
+     transform: translate(-50%, -50%) scale(1);
+     border-radius: 50%;
+     background-color: transparent;
+     transition: transform 0.2s ease, background-color 0.2s ease;
+     z-index: -1;
+    }
+    
+    &:hover::after {
+     background-color: $blizzard;
+     transform: translate(-50%, -50%) scale(2.3);
+    }
    }
 
    &-logo {
@@ -105,6 +127,7 @@ $font-family-roboto: 'Roboto', sans-serif;
    justify-content: start;
    margin: 25px 26px 9px 0;
    background-color: $moon-white;
+   z-index: 10;
 
    &.active {
     background-color: $white;
@@ -121,19 +144,58 @@ $font-family-roboto: 'Roboto', sans-serif;
     border: none;
     outline: none;
     border-radius: 20px;
-    padding: 3px 0 0 20px;
+    margin: 2px 0 0 20px;
     background-color: $moon-white;
+    z-index: 0;
 
     &--search {
+      display: flex;
      cursor: pointer;
      color: $thames-dusk;
-     padding: 15px 0 0 20px;
+     margin: 15px 0 0 20px;
+     z-index: 1;
+
+     &::after {
+      content: '';
+      position: absolute;
+      margin: 8px 0 0 8px;
+      padding: 9px;
+      transform: translate(-50%, -50%) scale(1);
+      border-radius: 50%;
+      background-color: transparent;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+      z-index: -1;
+     }
+    
+     &:hover::after {
+      background-color: $blizzard;
+      transform: translate(-50%, -50%) scale(2.3);
+     }
     }
 
     &--slider {
+      display: flex;
      cursor: pointer;
      color: $thames-dusk;
      padding: 14px 15px 14px 10px;
+     z-index: 10;
+
+     &::after {
+      content: '';
+      position: absolute;
+      margin: 8px 0 0 8px;
+      padding: 9px;
+      transform: translate(-50%, -50%) scale(1);
+      border-radius: 50%;
+      background-color: transparent;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+      z-index: -1;
+     }
+    
+     &:hover::after {
+      background-color: $blizzard;
+      transform: translate(-50%, -50%) scale(2.3);
+     }
     }
    }
   }
@@ -142,33 +204,55 @@ $font-family-roboto: 'Roboto', sans-serif;
    display: flex;
    margin: 33.5px 15.5px 17.5px 0;
 
+   &-pic {
+    cursor: pointer;
+   }
+
    &-icon {
     display: flex;
     color: $black-oak;
+    cursor: pointer;
     padding: 8px 22.6px 0 0;
+    z-index: 10;
+
+    &::after {
+     content: '';
+     position: absolute;
+     margin: 9px 0 0 8px;
+     padding: 9px;
+     transform: translate(-50%, -50%) scale(1);
+     border-radius: 50%;
+     background-color: transparent;
+     transition: transform 0.2s ease, background-color 0.2s ease;
+     z-index: -1;
+    }
+    
+    &:hover::after {
+     background-color: $blizzard;
+     transform: translate(-50%, -50%) scale(2.3);
+    }
    }
   }
  }
 
  &__main {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+
+  &-sidebar {
+   background-color: $mā-white;
+   max-width: 228px;
    display: flex;
-   width: 100%;
-   flex-direction: row;
+   flex-direction: column;
 
-   &-sidebar {
-    background-color: $mā-white;
-    max-width: 228px;
-    display: flex;
-    flex-direction: column;
-
-    &.collapsed {
+   &.collapsed {
      width: 65px;
 
      .mail__main-sidebar-side-down-icon {
-      margin: 0;
+      margin: 7px 0 0 0;
 
       &::after {
-       top: 37.25%;
        left: 1.7%;
       }
      }
@@ -188,19 +272,28 @@ $font-family-roboto: 'Roboto', sans-serif;
      }
 
      .mail__main-content-detail-top-third-delete--side {
-      margin: 6px 0 0 7px;
+      margin: 9px 0 0 10px;
      }
   
      .mail__main-sidebar-side-box {
 
       &-usage {
-       width: 30px;
-       margin-left: 20px;
+       width: 35px;
+       height: 35px;
+       margin-left: 15px;
        border-radius: 50%;
       }
 
       &-icon {
-       padding: 5px 0 0 7px;
+       padding: 9px 0 0 10px;
+
+       &--style {
+         padding-left: 9px;
+       }
+
+       &--draft {
+        padding-left: 12px;
+       }
       }
     
       &-text {
@@ -208,13 +301,14 @@ $font-family-roboto: 'Roboto', sans-serif;
       }
 
       &-extra {
-       width: 30px;
-       margin-left: 20px;
-       border-radius: 400px;
+       width: 35px;
+       height: 35px;
+       margin-left: 15px;
+       border-radius: 50%;
       }
 
       &-icons {
-       padding: 5px 0 0 6px;
+       padding: 9px 0 0 10.2px;
       }
 
       &-texts {
@@ -243,14 +337,15 @@ $font-family-roboto: 'Roboto', sans-serif;
        }
 
        &-usage {
-        width: 30px;
-        border-radius: 400px;
-        margin: 0 0 0 18px;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        margin: 0 0 0 14px;
        }
   
        &-icon {
         padding: 3px 0 0 3px;
-        margin: 6px 0 0 7px;
+        margin: 10px 0 0 10px;
        }
       
        &-text {
@@ -262,7 +357,7 @@ $font-family-roboto: 'Roboto', sans-serif;
      .mail__main-content-detail-top-third-delete--down {
       display: none;
      }
-    }
+   }
 
    &-compose {
     margin: 0 93.5px 14px 7.5px;
@@ -291,6 +386,7 @@ $font-family-roboto: 'Roboto', sans-serif;
     &-pen {
      width: 17px;
      height: 16px;
+     color: $black-oak;
     }
 
     &-popup {
@@ -505,7 +601,6 @@ $font-family-roboto: 'Roboto', sans-serif;
    &-side {
     max-width: 213px;
     display: flex;
-    cursor: pointer;
     flex-direction: column;
 
     &-box {
@@ -530,11 +625,12 @@ $font-family-roboto: 'Roboto', sans-serif;
       width: 213px;
       height: 28px;
       display: flex;
+      cursor: pointer;
       gap: 20px;
       flex-direction: row;
 
       &-cat {
-        display: flex;
+       display: flex;
       }
 
       &:hover {
@@ -543,6 +639,7 @@ $font-family-roboto: 'Roboto', sans-serif;
 
       &-icon {
        display: flex;
+       color: $black-oak;
       }
      }
 
@@ -552,7 +649,6 @@ $font-family-roboto: 'Roboto', sans-serif;
       font-weight: $font-weight-400;
       font-family: $font-family-roboto;
       display: flex;
-      cursor: pointer;
       padding-top: 6px;
      }
  
@@ -561,6 +657,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       cursor: pointer;
       max-width: 14px;
       padding: 6px 0 0 23px;
+      color: $black-oak;
      }
 
      &-usage {
@@ -569,6 +666,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       gap: 20px;
       border-radius: 0 17px 17px 0;
       display: flex;
+      cursor: pointer;
       flex-direction: row;
 
       &:hover {
@@ -582,7 +680,6 @@ $font-family-roboto: 'Roboto', sans-serif;
       font-weight: $font-weight-400;
       font-family: $font-family-roboto;
       display: flex;
-      cursor: pointer;
       padding-top: 6px;
      }
 
@@ -590,6 +687,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       display: flex;
       cursor: pointer;
       max-width: 14px;
+      color: $black-oak;
       padding: 6px 0 0 23px;
      }
     }
@@ -605,6 +703,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       font-weight: $font-weight-600;
       font-family: $font-family-open;
       max-height: 20px;
+      cursor: default;
       display: flex;
       flex-direction: row;
       margin: 0 0 18px 23px;
@@ -614,12 +713,14 @@ $font-family-roboto: 'Roboto', sans-serif;
       display: flex;
       justify-content: end;
       margin:4px 0 4px 119px;
+      color: $black-oak;
       z-index: 10;
+      cursor: pointer;
 
       &::after {
        content: '';
        position: absolute;
-       top: 37.81%;
+       margin-top: 7px;
        left: 10.15%;
        width: 18px;
        height: 18px;
@@ -650,10 +751,15 @@ $font-family-roboto: 'Roboto', sans-serif;
        border-radius: 0 17px 17px 0;
        display: flex;
        cursor: pointer;
+       position: relative;
        flex-direction: row;
 
        &:hover {
         background-color: $blizzard;
+
+        .mail__main-sidebar-side-down-box-vertical {
+         display: flex;
+        }
        }
       }
   
@@ -666,6 +772,13 @@ $font-family-roboto: 'Roboto', sans-serif;
        cursor: pointer;
        display: flex;
       }
+
+      &-vertical {
+       display: none;
+       position: absolute;
+       right: 15px;
+       top: 5px;
+      }
   
       &-icon {
        display: flex;
@@ -675,7 +788,7 @@ $font-family-roboto: 'Roboto', sans-serif;
        clip-path: polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%);
 
        &--first {
-        background-color: $thames-dusk;
+        background-color: $wood-charcoal;
        }
 
        &--second {
@@ -846,7 +959,7 @@ $font-family-roboto: 'Roboto', sans-serif;
     color: $carbon;
     display: flex;
     margin-bottom: 10px;
-    padding: 13px 25px 0 18px;
+    padding: 13px 25px 20px 18px;
 
     &-left {
      max-width: 96px;
@@ -858,35 +971,60 @@ $font-family-roboto: 'Roboto', sans-serif;
       white-space: nowrap;
       display: flex;
       gap: 7px;
+      color: $vulcanized;
+      cursor: pointer;
 
-      &-dropdown-menu {
+      &-down {
        display: flex;
-       position: absolute;
-       background-color: $white;
-       border-radius: 5px;
-       flex-direction: column;
-       list-style-type: none;
-       padding: 10px;
-       margin-top: 5px;
-       width: 150px;
-       z-index: 1000;
-       margin-top: 25px;
-       gap: 4px;
-       box-shadow: 0 2px 4px 2px $black;
-      
-       li {
-        font-size: $font-size-13;
-        line-height: $line-height-14;
-        font-weight: $font-weight-400;
-        font-family: $font-family-roboto;
-        padding: 8px 12px;
-        display: flex;
-        justify-content: center;
-        cursor: pointer;
+       margin: 8px 0 0 3px;
+
+       &::after {
+        content: '';
+        position: absolute;
+        margin: 2px 0 0 4.5px;
+        width: 8px;
+        height: 17px;
+        border-radius: 2px;
+        transform: translate(-50%, -50%) scale(1);
+        background-color: transparent;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+        z-index: -1;
+       }
+        
+       &:hover::after {
+        background-color: $bleached-silk;
+        transform: translate(-50%, -50%) scale(2.3);
        }
       
-       li:hover {
-        background-color: $blizzard;
+       &-menu {
+        display: flex;
+        position: absolute;
+        background-color: $white;
+        border-radius: 5px;
+        flex-direction: column;
+        list-style-type: none;
+        padding: 10px;
+        margin-top: 5px;
+        width: 150px;
+        z-index: 1000;
+        margin-top: 25px;
+        gap: 4px;
+        box-shadow: 0 2px 4px 2px $black;
+      
+        li {
+         font-size: $font-size-13;
+         line-height: $line-height-14;
+         font-weight: $font-weight-400;
+         font-family: $font-family-roboto;
+         padding: 8px 12px;
+         display: flex;
+         justify-content: center;
+         cursor: pointer;
+        }
+      
+        li:hover {
+         background-color: $blizzard;
+        }
        }
       }
 
@@ -894,6 +1032,74 @@ $font-family-roboto: 'Roboto', sans-serif;
        margin: 3px 0 0 0;
        width: 13px;
        height: 13px;
+       display: flex;
+       cursor: pointer;
+
+       &::after {
+        content: '';
+        position: absolute;
+        margin: 8px 0 0 6px;
+        width: 13px;
+        height: 17px;
+        border-radius: 2px;
+        transform: translate(-50%, -50%) scale(1);
+        background-color: transparent;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+        z-index: -1;
+       }
+        
+       &:hover::after {
+        background-color: $bleached-silk;
+        transform: translate(-50%, -50%) scale(2.3);
+       }
+      }
+     }
+
+     &-icon {
+      display: flex;
+      cursor: pointer;
+      color: $wood-charcoal;
+
+      &::after {
+       content: '';
+       position: absolute;
+       margin: 8px 0 0 3px;
+       width: 16px;
+       height: 16px;
+       border-radius: 50%;
+       transform: translate(-50%, -50%) scale(1);
+       background-color: transparent;
+       transition: transform 0.2s ease, background-color 0.2s ease;
+       z-index: -1;
+      }
+        
+      &:hover::after {
+       background-color: $bleached-silk;
+       transform: translate(-50%, -50%) scale(2.3);
+      }
+
+      &-refresh {
+       display: flex;
+       cursor: pointer;
+       color: $wood-charcoal;
+
+       &::after {
+        content: '';
+        position: absolute;
+        margin: 8px 0 0 8px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        transform: translate(-50%, -50%) scale(1);
+        background-color: transparent;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+        z-index: -1;
+       }
+         
+       &:hover::after {
+        background-color: $bleached-silk;
+        transform: translate(-50%, -50%) scale(2.3);
+       }
       }
      }
     }
@@ -914,8 +1120,29 @@ $font-family-roboto: 'Roboto', sans-serif;
       font-weight: $font-weight-500;
       font-family: $font-family-roboto;
       white-space: nowrap;
+      display: flex;
+      position: relative;
+      cursor: pointer;
       padding-top: 5px;
       color: $mission-control;
+
+      &::after {
+       content: '';
+       position: absolute;
+       margin: 5px 0 0 20px;
+       width: 30px;
+       height: 12px;
+       transform: translate(-50%, -50%) scale(1);
+       border-radius: 2px;
+       background-color: transparent;
+       transition: transform 0.2s ease, background-color 0.2s ease;
+       z-index: -1;
+      }
+     
+      &:hover::after {
+       background-color: $blizzard;
+       transform: translate(-50%, -50%) scale(2.3);
+      }
      }
 
      &-angle {
@@ -926,21 +1153,25 @@ $font-family-roboto: 'Roboto', sans-serif;
 
    &-tab {
     max-width: 627px;
-    max-height: 33px;
+    max-height: 50px;
     color: $black-oak;
     display: flex;
     flex-direction: row;
-    margin: 20px 0 0 8px;
+    margin: 0 0 0 8px;
 
     &-primary {
      max-width: 209px;
-     padding: 0 127px 18px 8px;
+     padding: 17px 127px 18px 8px;
      gap: 16px;
      display: flex;
      background-color: $white;
      border: none;
      cursor: pointer;
      position: relative;
+
+     &:hover {
+      background-color: $lighthouse;
+     }
 
      &-text {
       font-size: $font-size-13;
@@ -964,24 +1195,32 @@ $font-family-roboto: 'Roboto', sans-serif;
 
     &-promotions {
      max-width: 209px;
-     padding: 0 89px 18px 21.5px;
+     padding: 17px 89px 18px 21.5px;
      gap: 13px;
      display: flex;
      background-color: $white;
      position: relative;
      border: none;
      cursor: pointer;
+
+     &:hover {
+      background-color: $lighthouse;
+     }
     }
 
     &-social {
      max-width: 209px;
-     padding: 0 120px 18px 21.5px;
+     padding: 17px 120px 18px 21.5px;
      gap: 14px;
      display: flex;
      background-color: $white;
      position: relative;
      border: none;
      cursor: pointer;
+
+     &:hover {
+      background-color: $lighthouse;
+     }
     }
    }
 
@@ -1047,7 +1286,7 @@ $font-family-roboto: 'Roboto', sans-serif;
        content: '';
        position: absolute;
        top: 50%;
-       left: 1.3%;
+       left: 1.25%;
        width: 18px;
        height: 18px;
        transform: translate(-50%, -50%) scale(1);
@@ -1163,7 +1402,7 @@ $font-family-roboto: 'Roboto', sans-serif;
        cursor: pointer;
 
        &.disabled {
-        color: $carbon;
+        color: $chrome-aluminum;
         cursor: not-allowed;
         pointer-events: none;
        }
@@ -1186,9 +1425,38 @@ $font-family-roboto: 'Roboto', sans-serif;
        display: none;
       }
   
-      .mail__main-content-list-item-left,
+      .mail__main-content-list-item-left {
+       display: flex;
+      }
+
       .mail__main-content-list-item-icons {
        display: flex;
+       gap: 20px;
+       margin-top: 3px;
+
+       &-icon {
+        display: flex;
+        position: relative;
+
+        &::after {
+         content: '';
+         position: absolute;
+         margin-left: 8px;
+         top: 50%;
+         width: 16px;
+         height: 16px;
+         transform: translate(-50%, -50%) scale(1);
+         border-radius: 50%;
+         background-color: transparent;
+         transition: transform 0.2s ease, background-color 0.2s ease;
+         z-index: -1;
+        }
+     
+        &:hover::after {
+         background-color: $blizzard;
+         transform: translate(-50%, -50%) scale(2.3);
+        }
+       }
       }
      }
     }
@@ -1412,7 +1680,7 @@ $font-family-roboto: 'Roboto', sans-serif;
      &-divider {
       width: 90%;
       margin: 30px 30px 0 0;
-      color: $bái-sè-white;
+      border-bottom: 1px solid $christmas-silver;
      }
   
      &-description {
@@ -1438,13 +1706,79 @@ $font-family-roboto: 'Roboto', sans-serif;
    &-pic {
     padding: 0 15.5px;
     width: 16px;
+    display: flex;
+    cursor: pointer;
+    position: relative;
     color: $maya-blue;
+    z-index: 10;
+
+    &::after {
+     content: '';
+     position: absolute;
+     margin: 9px 0 0 9px;
+     padding: 9px;
+     transform: translate(-50%, -50%) scale(1);
+     border-radius: 50%;
+     background-color: transparent;
+     transition: transform 0.2s ease, background-color 0.2s ease;
+     z-index: -1;
+    }
+     
+    &:hover::after {
+     background-color: $blizzard;
+     transform: translate(-50%, -50%) scale(2.3);
+    }
+   }
+
+   &-person {
+    display: flex;
+    padding: 0 15.5px;
+    cursor: pointer;
+    color: $maya-blue;
+    z-index: 10;
+
+    &::after {
+      content: '';
+      position: absolute;
+      margin: 9px 0 0 7px;
+      padding: 9px;
+      transform: translate(-50%, -50%) scale(1);
+      border-radius: 50%;
+      background-color: transparent;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+      z-index: -1;
+     }
+      
+     &:hover::after {
+      background-color: $blizzard;
+      transform: translate(-50%, -50%) scale(2.3);
+     }
    }
 
    &-icon {
     padding: 0 15.5px;
     width: 16px;
+    display: flex;
+    cursor: pointer;
     color: $shadowed-steel;
+    z-index: 10;
+
+    &::after {
+     content: '';
+     position: absolute;
+     padding: 9px;
+     margin: 7px 0 0 7px;
+     transform: translate(-50%, -50%) scale(1);
+     border-radius: 50%;
+     background-color: transparent;
+     transition: transform 0.2s ease, background-color 0.2s ease;
+     z-index: -1;
+    }
+     
+    &:hover::after {
+     background-color: $blizzard;
+     transform: translate(-50%, -50%) scale(2.3);
+    }
    }
 
    &-divider {
