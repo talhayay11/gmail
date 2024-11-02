@@ -533,14 +533,15 @@ function MailComponent() {
    <nav className="mail__navbar">
     <div className="mail__navbar-left">
      <i className="fa-solid fa-bars mail__navbar-left-menu" onClick={toggleSidebar}></i>
-     <img src="images/gmail-icon.png" alt="Gmail Logo" className="mail__navbar-left-logo" />
+     <img src="images/gmail-icon.png" alt="Gmail Logo" className="mail__navbar-left-logo"/>
      <span className="mail__navbar-left-text">Gmail</span>
     </div>
 
     <div className={`mail__navbar-search ${isSearchClicked ? 'active' : ''}`} onClick={handleSearchClick}>
      <i className="fa-solid fa-magnifying-glass mail__navbar-search-box--search"></i>
      <input type="text" placeholder="Search mail" className="mail__navbar-search-box"
-      value={searchValue} onChange={handleSearchChange}/>
+      value={searchValue} onChange={handleSearchChange}
+     />
 
      <i className="fa-solid fa-sliders mail__navbar-search-box--slider"></i>
     </div>
@@ -554,357 +555,345 @@ function MailComponent() {
    </nav>
 
    <div className="mail__main">
-   <div className="mail__main-sidebar">
-    <button className="mail__main-sidebar-compose" onClick={openComposePopup}>
-     <i className="fa-solid fa-pencil mail__main-sidebar-compose-pen"></i>
-     <span className="mail__main-sidebar-compose-text">Compose</span>
-    </button>
+    <div className="mail__main-sidebar">
+     <button className="mail__main-sidebar-compose" onClick={openComposePopup}>
+      <i className="fa-solid fa-pencil mail__main-sidebar-compose-pen"></i>
+      <span className="mail__main-sidebar-compose-text">Compose</span>
+     </button>
 
-    <div className="mail__main-sidebar-side">
-     <ul className="mail__main-sidebar-side-box">
-      <li className={`mail__main-sidebar-side-box-usage ${sidebarActive === 'inbox' ? 'active' : ''}`} 
-       style={sidebarActive === 'inbox' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}} 
-       onClick={() => { setActiveTab('primary');
-         setSidebarActive('inbox');
-         setIsMailView(false);
-         }}>
+     <div className="mail__main-sidebar-side">
+      <ul className="mail__main-sidebar-side-box">
+       <li className={`mail__main-sidebar-side-box-usage 
+        ${sidebarActive === 'inbox' ? 'active' : ''}`}
+         style={sidebarActive === 'inbox' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}}
+         onClick={() => { setActiveTab('primary'); setSidebarActive('inbox'); setIsMailView(false);}}>
 
-       <i className="fa-solid fa-inbox mail__main-sidebar-side-box-icon"></i>
-       <span className="mail__main-sidebar-side-box-text" style={sidebarActive === 'inbox' ? { fontWeight: '700' } : {}}>Inbox</span>
-       {unreadCount > 0 && (
-     <span className="mail__main-sidebar-side-box-unread-count">{unreadCount}</span>
-   )}
-      </li>
-
-      <li className={`mail__main-sidebar-side-box-usage ${sidebarActive === 'starred' ? 'active' : ''}`}
-       style={sidebarActive === 'starred' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}}
-       onClick={() => { setActiveTab('starred');
-         setSidebarActive('starred');
-         setIsMailView(false); }}>
-
-       <i className={`mail__main-sidebar-side-box-icon mail__main-sidebar-side-box-icon--style ${sidebarActive === 'starred' ? 'fa-solid fa-star' : 'fa-regular fa-star'}`}></i>
-       <span className="mail__main-sidebar-side-box-text" style={sidebarActive === 'starred' ? { fontWeight: '700' } : {}}>Starred</span>
-      </li>
-
-      <li className="mail__main-sidebar-side-box-usage">
-       <i className="fa-regular fa-clock mail__main-sidebar-side-box-icon"></i>
-       <span className="mail__main-sidebar-side-box-text">Snoozed</span>
-      </li>
-
-      <li className={`mail__main-sidebar-side-box-usage ${sidebarActive === 'sent' ? 'active' : ''}`} 
-       style={sidebarActive === 'sent' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}} 
-       onClick={() => { setActiveTab('sent');
-       setSidebarActive('sent');
-       setIsMailView(false); }}>
-
-       <i className={`mail__main-sidebar-side-box-icon mail__main-sidebar-side-box-icon--style ${sidebarActive === 'sent' ? 'fa-solid fa-paper-plane' : 'fa-regular fa-paper-plane'}`}></i>
-       <span className="mail__main-sidebar-side-box-text" style={sidebarActive === 'sent' ? { fontWeight: '700' } : {}}>Sent</span>
-      </li>
-
-      <li className="mail__main-sidebar-side-box-usage">
-       <i className="fa-regular fa-file mail__main-sidebar-side-box-icon mail__main-sidebar-side-box-icon--draft"></i>
-       <span className="mail__main-sidebar-side-box-text">Drafts</span>
-      </li>
-
-      <li className="mail__main-sidebar-side-box-usage" onClick={toggleMore}>
-       <i className={`fa-solid ${isMoreOpen ? 'fa-angle-up' : 'fa-angle-down'} mail__main-sidebar-side-box-icon mail__main-sidebar-side-box-icon--draft`}></i>
-       <span className="mail__main-sidebar-side-box-text">{isMoreOpen ? 'Less' : 'More'}</span>
-      </li>
-
-      {isMoreOpen && (
-       <div className="mail__main-sidebar-side-box">
-        <li className="mail__main-sidebar-side-box-extra">
-        <i className="fa-solid fa-file-import mail__main-sidebar-side-box-icons"></i>
-         <span className="mail__main-sidebar-side-box-texts">Important</span>
-        </li>
-
-        <li className="mail__main-sidebar-side-box-extra">
-         <i className="fa-regular fa-message mail__main-sidebar-side-box-icons"></i>
-         <span className="mail__main-sidebar-side-box-texts">Chats</span>
-        </li>
-
-        <li className="mail__main-sidebar-side-box-extra">
-        <i className="fa-solid fa-paper-plane mail__main-sidebar-side-box-icons"></i>
-         <span className="mail__main-sidebar-side-box-texts">Scheduled</span>
-        </li>
-
-        <li className="mail__main-sidebar-side-box-extra">
-         <i className="fa-solid fa-envelope mail__main-sidebar-side-box-icons"></i>
-         <span className="mail__main-sidebar-side-box-texts">All Mail</span>
-        </li>
-
-        <li className="mail__main-sidebar-side-box-extra">
-         <i className="fa-solid fa-circle-exclamation mail__main-sidebar-side-box-icons"></i>
-         <span className="mail__main-sidebar-side-box-texts">Spam</span>
-        </li>
-
-        <li className={`mail__main-sidebar-side-box-extra ${sidebarActive === 'bin' ? 'active' : ''}`}
-         style={sidebarActive === 'bin' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}}
-         onClick={() => { 
-          setActiveTab('bin'); 
-          setSidebarActive('bin'); 
-          setIsMailView(false);
-         }}>
-         <i className={`mail__main-sidebar-side-box-icons ${sidebarActive === 'bin' ? 'fa-solid fa-trash-can' : 'fa-regular fa-trash-can'}`}></i>
-         <span className="mail__main-sidebar-side-box-texts" style={sidebarActive === 'bin' ? { fontWeight: '700' } : {}}>Bin</span>
-        </li>
-
-        <li className="mail__main-sidebar-side-box-extra">
-         <div className="mail__main-sidebar-side-box-extra-cat">
-          <i className="fa-solid fa-caret-right fa-2xs mail__main-content-detail-top-third-delete--down"></i>
-          <div className="mail__main-content-detail-top-third-delete mail__main-content-detail-top-third-delete--side">
-           <div className="mail__main-content-detail-top-third-delete-inner"></div>
-          </div>
-         </div>
-
-         <span className="mail__main-sidebar-side-box-texts">Categories</span>
-        </li>
-
-        <li className="mail__main-sidebar-side-box-extra">
-         <i className="fa-solid fa-gear mail__main-sidebar-side-box-icons"></i>
-         <span className="mail__main-sidebar-side-box-texts">Manage labels</span>
-        </li>
-
-        <li className={`mail__main-sidebar-side-box-extra ${newItemText ? 'active' : 'disabled'}`}
-          onClick={addNewItem}
-          disabled={!newItemText}>
-         <i className="fa-solid fa-plus mail__main-sidebar-side-box-icons"></i>
-         <span className="mail__main-sidebar-side-box-texts">Create new label</span>
-        </li>
-       </div>
-      )}
-     </ul>
-
-     <div className="mail__main-sidebar-side-down">
-      <div className="mail__main-sidebar-side-down-title">
-       <span className="mail__main-sidebar-side-down-title-text">Labels</span>
-       <i className="fa-solid fa-plus mail__main-sidebar-side-down-icon" onClick={addNewItem} ref={buttonRef}></i>
-       
-       {isFormVisible && (
-         <div className="mail__main-sidebar-side-down-overlay">
-          <div className="mail__main-sidebar-side-down-form" ref={formRef}>
-          <h3 className="mail__main-sidebar-side-down-form-title">Add New Label</h3>
-
-          <label>Add Text:</label>
-            <input
-              type="text"
-              placeholder="New item text"
-              value={newItemText}
-              onChange={(e) => setNewItemText(e.target.value)}
-            />
-            <label>Choose Icon Color:</label>
-            <input
-              type="color"
-              value={newIconColor}
-              onChange={(e) => setNewIconColor(e.target.value)}
-            />
-
-          <div className="mail__main-sidebar-side-down-form-button">
-          <button
-        className="mail__main-sidebar-side-down-form-button-cancel"
-        onClick={() => setIsFormVisible(false)}
-       >
-        Cancel
-       </button>
-            <button className={`mail__main-sidebar-side-down-form-button-add ${newItemText ? 'active' : 'disabled'}`}
-          onClick={addNewItem}
-        disabled={!newItemText}>Add Item</button>
-
-
-       </div>
-          </div>
-          </div>
-        )}
-      </div>
-
-      <ul className="mail__main-sidebar-side-down-box">
-       <li className="mail__main-sidebar-side-down-box-usage">
-        <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--first"></div>
-        <span className="mail__main-sidebar-side-down-box-text">Categories</span>
-        <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
+        <i className="fa-solid fa-inbox mail__main-sidebar-side-box-icon"></i>
+        <span className="mail__main-sidebar-side-box-text"
+         style={sidebarActive === 'inbox' ? { fontWeight: '700' } : {}}>Inbox</span>
+         { unreadCount > 0 && ( <span className="mail__main-sidebar-side-box-unread-count">{unreadCount}</span> )}
        </li>
 
-{/*    <li className="mail__main-sidebar-side-down-box-usage">
-        <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--second"></div>
-        <span className="mail__main-sidebar-side-down-box-text">Team</span>
-        <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
-       </li> */}
+       <li className={`mail__main-sidebar-side-box-usage ${sidebarActive === 'starred' ? 'active' : ''}`}
+        style={sidebarActive === 'starred' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}}
+        onClick={() => { setActiveTab('starred'); setSidebarActive('starred'); setIsMailView(false); }}>
 
-{/*    <li className="mail__main-sidebar-side-down-box-usage">
-        <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--third"></div>
-        <span className="mail__main-sidebar-side-down-box-text">News</span>
-        <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
-       </li> */}
+        <i className={`mail__main-sidebar-side-box-icon mail__main-sidebar-side-box-icon--style ${sidebarActive === 'starred' ? 'fa-solid fa-star' : 'fa-regular fa-star'}`}></i>
+        <span className="mail__main-sidebar-side-box-text"
+         style={sidebarActive === 'starred' ? { fontWeight: '700' } : {}}>Starred
+        </span>
+       </li>
 
-{/*    <li className="mail__main-sidebar-side-down-box-usage">
-        <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--fourth"></div>
-        <span className="mail__main-sidebar-side-down-box-text">Work</span>
-        <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
-       </li> */}
+       <li className="mail__main-sidebar-side-box-usage">
+        <i className="fa-regular fa-clock mail__main-sidebar-side-box-icon"></i>
+        <span className="mail__main-sidebar-side-box-text">Snoozed</span>
+       </li>
 
-{/*    <li className="mail__main-sidebar-side-down-box-usage">
-        <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--fifth"></div>
-        <span className="mail__main-sidebar-side-down-box-text">Personal</span>
-        <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
-       </li> */}
+       <li className={`mail__main-sidebar-side-box-usage ${sidebarActive === 'sent' ? 'active' : ''}`} 
+        style={sidebarActive === 'sent' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}} 
+        onClick={() => { setActiveTab('sent'); setSidebarActive('sent'); setIsMailView(false); }}>
 
-       {items.map((item) => (
-        <li
-         key={item.id}
-         className="mail__main-sidebar-side-down-box-usage"
-        >
-         <i className="mail__main-sidebar-side-down-box-icons" style={{ backgroundColor: item.iconColor }}></i>
-         <span className="mail__main-sidebar-side-down-box-text">{item.text}</span>
-         <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
+        <i className={`mail__main-sidebar-side-box-icon mail__main-sidebar-side-box-icon--style ${sidebarActive === 'sent' ? 'fa-solid fa-paper-plane' : 'fa-regular fa-paper-plane'}`}></i>
+        <span className="mail__main-sidebar-side-box-text"
+         style={sidebarActive === 'sent' ? { fontWeight: '700' } : {}}>Sent
+        </span>
+       </li>
+
+       <li className="mail__main-sidebar-side-box-usage">
+        <i className="fa-regular fa-file mail__main-sidebar-side-box-icon mail__main-sidebar-side-box-icon--draft"></i>
+        <span className="mail__main-sidebar-side-box-text">Drafts</span>
+       </li>
+
+       <li className="mail__main-sidebar-side-box-usage" onClick={toggleMore}>
+        <i className={`fa-solid ${isMoreOpen ? 'fa-angle-up' : 'fa-angle-down'} mail__main-sidebar-side-box-icon mail__main-sidebar-side-box-icon--draft`}></i>
+        <span className="mail__main-sidebar-side-box-text">{isMoreOpen ? 'Less' : 'More'}</span>
+       </li>
+
+       {isMoreOpen && (
+        <div className="mail__main-sidebar-side-box">
+         <li className="mail__main-sidebar-side-box-extra">
+          <i className="fa-solid fa-file-import mail__main-sidebar-side-box-icons"></i>
+          <span className="mail__main-sidebar-side-box-texts">Important</span>
          </li>
-       ))}
-      </ul>
-     </div>
-    </div>
-   </div>    
 
-   <div className="mail__main-content">
-   {!isMailView && (
-    <>
-    <div className="mail__main-content-top">
-     <div className="mail__main-content-top-left">
-      <div className="mail__main-content-top-left-select">
-        <input type="checkbox" className="mail__main-content-top-left-select-checkbox" onChange={handleTopCheckboxChange}/>
-        <i className="fa-solid fa-caret-down fa-xs mail__main-content-top-left-select-down" onClick={toggleDropdown}></i>
+         <li className="mail__main-sidebar-side-box-extra">
+          <i className="fa-regular fa-message mail__main-sidebar-side-box-icons"></i>
+          <span className="mail__main-sidebar-side-box-texts">Chats</span>
+         </li>
+
+         <li className="mail__main-sidebar-side-box-extra">
+          <i className="fa-solid fa-paper-plane mail__main-sidebar-side-box-icons"></i>
+          <span className="mail__main-sidebar-side-box-texts">Scheduled</span>
+         </li>
+
+         <li className="mail__main-sidebar-side-box-extra">
+          <i className="fa-solid fa-envelope mail__main-sidebar-side-box-icons"></i>
+          <span className="mail__main-sidebar-side-box-texts">All Mail</span>
+         </li>
+
+         <li className="mail__main-sidebar-side-box-extra">
+          <i className="fa-solid fa-circle-exclamation mail__main-sidebar-side-box-icons"></i>
+          <span className="mail__main-sidebar-side-box-texts">Spam</span>
+         </li>
+
+         <li className={`mail__main-sidebar-side-box-extra ${sidebarActive === 'bin' ? 'active' : ''}`}
+          style={sidebarActive === 'bin' ? { backgroundColor: '#d3e3fd', color: '#333333' } : {}}
+          onClick={() => { setActiveTab('bin'); setSidebarActive('bin'); setIsMailView(false);}}>
+
+          <i className={`mail__main-sidebar-side-box-icons ${sidebarActive === 'bin' ? 'fa-solid fa-trash-can' : 'fa-regular fa-trash-can'}`}></i>
+          <span className="mail__main-sidebar-side-box-texts" style={sidebarActive === 'bin' ? { fontWeight: '700' } : {}}>Bin</span>
+         </li>
+
+         <li className="mail__main-sidebar-side-box-extra">
+          <div className="mail__main-sidebar-side-box-extra-cat">
+           <i className="fa-solid fa-caret-right fa-2xs mail__main-content-detail-top-third-delete--down"></i>
+           <div className="mail__main-content-detail-top-third-delete mail__main-content-detail-top-third-delete--side">
+            <div className="mail__main-content-detail-top-third-delete-inner"></div>
+           </div>
+          </div>
+
+         <span className="mail__main-sidebar-side-box-texts">Categories</span>
+         </li>
+
+         <li className="mail__main-sidebar-side-box-extra">
+          <i className="fa-solid fa-gear mail__main-sidebar-side-box-icons"></i>
+          <span className="mail__main-sidebar-side-box-texts">Manage labels</span>
+         </li>
+
+         <li className={`mail__main-sidebar-side-box-extra ${newItemText ? 'active' : 'disabled'}`}
+          onClick={addNewItem}
+          disabled={!newItemText}>
+
+          <i className="fa-solid fa-plus mail__main-sidebar-side-box-icons"></i>
+          <span className="mail__main-sidebar-side-box-texts">Create new label</span>
+         </li>
+        </div>
+       )}
+      </ul>
+
+      <div className="mail__main-sidebar-side-down">
+       <div className="mail__main-sidebar-side-down-title">
+        <span className="mail__main-sidebar-side-down-title-text">Labels</span>
+        <i className="fa-solid fa-plus mail__main-sidebar-side-down-icon"
+         onClick={addNewItem} ref={buttonRef}>
+        </i>
+       
+        {isFormVisible && (
+         <div className="mail__main-sidebar-side-down-overlay">
+          <div className="mail__main-sidebar-side-down-form" ref={formRef}>
+           <h3 className="mail__main-sidebar-side-down-form-title">Add New Label</h3>
+           <label>Add Text:</label>
+           <input
+            type="text"
+            placeholder="New item text"
+            value={newItemText}
+            onChange={(e) => setNewItemText(e.target.value)}
+           />
+          
+           <label>Choose Icon Color:</label>
+           <input type="color" value={newIconColor} onChange={(e) => setNewIconColor(e.target.value)}/>
+
+           <div className="mail__main-sidebar-side-down-form-button">
+            <button className="mail__main-sidebar-side-down-form-button-cancel"
+             onClick={() => setIsFormVisible(false)}>Cancel
+            </button>
+
+            <button className={`mail__main-sidebar-side-down-form-button-add ${newItemText ? 'active' : 'disabled'}`}
+             onClick={addNewItem}
+             disabled={!newItemText}>Add Item
+            </button>
+           </div>
+          </div>
+         </div>
+        )}
+       </div>
+
+       <ul className="mail__main-sidebar-side-down-box">
+        <li className="mail__main-sidebar-side-down-box-usage">
+         <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--first"></div>
+         <span className="mail__main-sidebar-side-down-box-text">Categories</span>
+         <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
+        </li>
+
+     {/*<li className="mail__main-sidebar-side-down-box-usage">
+         <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--second"></div>
+         <span className="mail__main-sidebar-side-down-box-text">Team</span>
+         <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
+        </li> */}
+
+     {/*<li className="mail__main-sidebar-side-down-box-usage">
+         <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--third"></div>
+         <span className="mail__main-sidebar-side-down-box-text">News</span>
+         <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
+        </li> */}
+
+     {/*<li className="mail__main-sidebar-side-down-box-usage">
+         <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--fourth"></div>
+         <span className="mail__main-sidebar-side-down-box-text">Work</span>
+         <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
+        </li> */}
+
+     {/*<li className="mail__main-sidebar-side-down-box-usage">
+         <div className="mail__main-sidebar-side-down-box-icon mail__main-sidebar-side-down-box-icon--fifth"></div>
+         <span className="mail__main-sidebar-side-down-box-text">Personal</span>
+         <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
+        </li> */}
+
+        {items.map((item) => (
+         <li key={item.id} className="mail__main-sidebar-side-down-box-usage">
+          <i className="mail__main-sidebar-side-down-box-icons" style={{ backgroundColor: item.iconColor }}></i>
+          <span className="mail__main-sidebar-side-down-box-text">{item.text}</span>
+          <i className="fa-solid fa-ellipsis-vertical mail__main-sidebar-side-down-box-vertical"></i>
+         </li>
+        ))}
+       </ul>
+      </div>
+     </div>
+    </div>    
+
+    <div className="mail__main-content">
+     {!isMailView && (
+      <>
+      <div className="mail__main-content-top">
+       <div className="mail__main-content-top-left">
+        <div className="mail__main-content-top-left-select">
+         <input type="checkbox" className="mail__main-content-top-left-select-checkbox" onChange={handleTopCheckboxChange}/>
+         <i className="fa-solid fa-caret-down fa-xs mail__main-content-top-left-select-down" onClick={toggleDropdown}></i>
+        </div>
+
+        <i className="fa-solid fa-arrow-rotate-right mail__main-content-top-left-icon-refresh"></i>
+        <i className="fa-solid fa-ellipsis-vertical mail__main-content-top-left-icon"></i>
+       </div>
+
+       {isDropdownOpen && (
+        <ul className="mail__main-content-top-left-select-down-menu">
+         <li onClick={() => handleOptionSelect('all')}>All</li>
+         <li onClick={() => handleOptionSelect('none')}>None</li>
+         <li onClick={() => handleOptionSelect('read')}>Read</li>
+         <li onClick={() => handleOptionSelect('unread')}>Unread</li>
+         <li onClick={() => handleOptionSelect('starred')}>Starred</li>
+         <li onClick={() => handleOptionSelect('unstarred')}>Unstarred</li>
+        </ul>
+       )}
+
+       <div className="mail__main-content-top-right" style={{ display: visibleMailsCount > 0 ? 'flex' : 'none' }}>
+        <span className="mail__main-content-top-right-number">1-{visibleMailsCount} of {visibleMailsCount}</span>
+        <i className="fa-solid fa-angle-left mail__main-content-top-right-angle"></i>
+        <i className="fa-solid fa-angle-right mail__main-content-top-right-angle"></i>
+       </div>
       </div>
 
-      <i className="fa-solid fa-arrow-rotate-right mail__main-content-top-left-icon-refresh"></i>
-      <i className="fa-solid fa-ellipsis-vertical mail__main-content-top-left-icon"></i>
-     </div>
+      {(activeTab === 'primary' || activeTab === 'promotions' || activeTab === 'social') && (
+       <div className="mail__main-content-tab">
+        <button className={`mail__main-content-tab-primary ${activeTab === 'primary' ? 'active' : ''}`} 
+         onClick={() => setActiveTab('primary')} 
+         style={activeTab === 'primary' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}>
 
-     {isDropdownOpen && (
-  <ul className="mail__main-content-top-left-select-down-menu">
-    <li onClick={() => handleOptionSelect('all')}>All</li>
-    <li onClick={() => handleOptionSelect('none')}>None</li>
-    <li onClick={() => handleOptionSelect('read')}>Read</li>
-    <li onClick={() => handleOptionSelect('unread')}>Unread</li>
-    <li onClick={() => handleOptionSelect('starred')}>Starred</li>
-    <li onClick={() => handleOptionSelect('unstarred')}>Unstarred</li>
-  </ul>
-)}
+         <i className={`fa-solid fa-inbox mail__main-content-tab-primary-pr`}
+          style={activeTab === 'primary' ? { color: '#2f80ed' } : {}}>
+         </i>
 
-     <div className="mail__main-content-top-right" style={{ display: visibleMailsCount > 0 ? 'flex' : 'none' }}>
-      <span className="mail__main-content-top-right-number">1-{visibleMailsCount} of {visibleMailsCount}</span>
-      <i className="fa-solid fa-angle-left mail__main-content-top-right-angle"></i>
-      <i className="fa-solid fa-angle-right mail__main-content-top-right-angle"></i>
-     </div>
-    </div>
+         <span className={`mail__main-content-tab-primary-text`}
+          style={activeTab === 'primary' ? {  color: '#2f80ed' } : {}}>Primary
+         </span>
+        </button>
 
-     {(activeTab === 'primary' || activeTab === 'promotions' || activeTab === 'social') && (
-  <div className="mail__main-content-tab">
-    <button className={`mail__main-content-tab-primary ${activeTab === 'primary' ? 'active' : ''}`} 
-      onClick={() => setActiveTab('primary')} 
-      style={activeTab === 'primary' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}>
+        <button className={`mail__main-content-tab-promotions ${activeTab === 'promotions' ? 'active' : ''}`} 
+         onClick={() => setActiveTab('promotions')} 
+         style={activeTab === 'promotions' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}>
 
-      <i className={`fa-solid fa-inbox mail__main-content-tab-primary-pr`}
-       style={activeTab === 'primary' ? { color: '#2f80ed' } : {}}></i>
+         <i className={`fa-solid fa-tag fa-lg mail__main-content-tab-primary-icon`}
+          style={activeTab === 'promotions' ? { color: '#2f80ed' } : {}}>
+         </i>
 
-      <span className={`mail__main-content-tab-primary-text`}
-       style={activeTab === 'primary' ? {  color: '#2f80ed' } : {}}>Primary</span>
-    </button>
+         <span className={`mail__main-content-tab-primary-text`}
+          style={activeTab === 'promotions' ? { color: '#2f80ed' } : {}}>Promotions</span>
+        </button>
 
-    <button className={`mail__main-content-tab-promotions ${activeTab === 'promotions' ? 'active' : ''}`} 
-      onClick={() => setActiveTab('promotions')} 
-      style={activeTab === 'promotions' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}>
+        <button className={`mail__main-content-tab-social ${activeTab === 'social' ? 'active' : ''}`} 
+         onClick={() => setActiveTab('social')} 
+         style={activeTab === 'social' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}>
 
-      <i className={`fa-solid fa-tag fa-lg mail__main-content-tab-primary-icon`}
-       style={activeTab === 'promotions' ? { color: '#2f80ed' } : {}}></i>
-
-      <span className={`mail__main-content-tab-primary-text`}
-       style={activeTab === 'promotions' ? { color: '#2f80ed' } : {}}>Promotions</span>
-    </button>
-
-    <button className={`mail__main-content-tab-social ${activeTab === 'social' ? 'active' : ''}`} 
-      onClick={() => setActiveTab('social')} 
-      style={activeTab === 'social' ? { borderBottom: '2px solid #2f80ed', color: '#2f80ed' } : {}}>
-
-      <i className={`fa-solid fa-user-group fa-sm mail__main-content-tab-primary-icon`}
-       style={activeTab === 'social' ? { color: '#2f80ed' } : {}}></i>
+         <i className={`fa-solid fa-user-group fa-sm mail__main-content-tab-primary-icon`}
+          style={activeTab === 'social' ? { color: '#2f80ed' } : {}}>
+         </i>
        
-      <span className={`mail__main-content-tab-primary-text`}
-       style={activeTab === 'social' ? { color: '#2f80ed' } : {}}>Social</span>
-     </button>
-     </div>
+         <span className={`mail__main-content-tab-primary-text`}
+          style={activeTab === 'social' ? { color: '#2f80ed' } : {}}>Social
+         </span>
+        </button>
+       </div>
+      )}
+      </>
      )}
-     </>
-    )}
     
-    {!isMailView && (
-    <div className="mail__main-content-list">
-     {getActiveMails() && Array.isArray(getActiveMails()) && getActiveMails().length > 0 && getActiveMails().map((mail) => (
-       mail?.id ? (
-        <div
-         key={mail.id} 
-         className={`mail__main-content-list-item ${mail.isRead ? 'read' : 'unread'}`} 
-         onClick={() => {
-          markAsRead(mail.id);
-          handleMailClick(mail.id);
-        }}
-         draggable
-         onDragStart={(e) => handleDragStart(e, mail.id)}
-         onDragOver={(e) => handleDragOver(e)}
-         onDrop={(e) => handleDrop(e, mail.id)}
-        >
-         <input type="checkbox" className="mail__main-content-list-item-checkbox" checked={selectedMails.includes(mail.id)}
-            onClick={(e) => {
-              e.stopPropagation(); 
-              handleCheckboxClick(e, mail.id);
-            }} 
-          onChange={(e) => {}}/>
+     {!isMailView && (
+      <div className="mail__main-content-list">
+       {getActiveMails() && Array.isArray(getActiveMails()) && getActiveMails().length > 0 && getActiveMails().map((mail) => (
+        mail?.id ? (
+         <div
+          key={mail.id} 
+          className={`mail__main-content-list-item ${mail.isRead ? 'read' : 'unread'}`} 
+          onClick={() => {
+           markAsRead(mail.id);
+           handleMailClick(mail.id);
+          }}
+          draggable
+          onDragStart={(e) => handleDragStart(e, mail.id)}
+          onDragOver={(e) => handleDragOver(e)}
+          onDrop={(e) => handleDrop(e, mail.id)}
+         >
 
-        {activeTab === 'bin' ? (
-          <i className="fa-regular fa-trash-can" onClick={(e) => { e.stopPropagation(); deleteMail(mail.id); }}></i>
-        ) : (
-         <i className={`mail__main-content-list-item-star ${mail.isStarred ? 'fa-solid fa-star fa-2xs' : 'fa-regular fa-star fa-2xs'}`} 
-          style={{ color: mail.isStarred ? '#FFD43B' : 'inherit' }} 
-          onClick={(e) => {e.stopPropagation();  handleStarClick(mail.id); }}></i>
-         )}
+          <input type="checkbox" className="mail__main-content-list-item-checkbox" checked={selectedMails.includes(mail.id)}
+           onClick={(e) => {
+            e.stopPropagation(); 
+            handleCheckboxClick(e, mail.id);
+           }} 
+           onChange={(e) => {}}
+          />
 
-         <span className="mail__main-content-list-item-sender">{mail.sender}</span>
-         <div className="mail__main-content-list-item-middle">
-          <span className="mail__main-content-list-item-subject">{mail.subject} - </span>
-          <span className="mail__main-content-list-item-description">{mail.description}</span>
-         </div>
+          {activeTab === 'bin' ? (
+           <i className="fa-regular fa-trash-can" onClick={(e) => { e.stopPropagation(); deleteMail(mail.id); }}></i>
+           ) : (
+           <i className={`mail__main-content-list-item-star ${mail.isStarred ? 'fa-solid fa-star fa-2xs' : 'fa-regular fa-star fa-2xs'}`} 
+            style={{ color: mail.isStarred ? '#FFD43B' : 'inherit' }} 
+            onClick={(e) => {e.stopPropagation();  handleStarClick(mail.id); }}></i>
+          )}
+
+          <span className="mail__main-content-list-item-sender">{mail.sender}</span>
+          <div className="mail__main-content-list-item-middle">
+           <span className="mail__main-content-list-item-subject">{mail.subject} - </span>
+           <span className="mail__main-content-list-item-description">{mail.description}</span>
+          </div>
          
-         <div className="mail__main-content-list-item-space"></div>
-         <span className="mail__main-content-list-item-date">{formatDate(mail.date)}</span>
-         <div className="mail__main-content-list-item-left">
-          <i className="fa-solid fa-grip-vertical fa-xs mail__main-content-list-item-left-icon"
-           onDragStart={() => handleDragStart(mail.id)}></i>
-         </div>
+          <div className="mail__main-content-list-item-space"></div>
+          <span className="mail__main-content-list-item-date">{formatDate(mail.date)}</span>
+          <div className="mail__main-content-list-item-left">
+           <i className="fa-solid fa-grip-vertical fa-xs mail__main-content-list-item-left-icon"
+            onDragStart={() => handleDragStart(mail.id)}>
+           </i>
+          </div>
 
-         <div className="mail__main-content-list-item-icons">
-          <i className={`fa-solid fa-box-archive mail__main-content-list-item-icons-icon ${activeTab === 'bin' ? 'disabled' : ''}`} 
-           onClick={(e) => {
-            if (activeTab !== 'bin') {
-              e.stopPropagation();
-            }}}></i>
+          <div className="mail__main-content-list-item-icons">
+           <i className={`fa-solid fa-box-archive mail__main-content-list-item-icons-icon ${activeTab === 'bin' ? 'disabled' : ''}`} 
+            onClick={(e) => { if (activeTab !== 'bin') { e.stopPropagation(); }}}>
+           </i>
 
-          <i className={`fa-regular fa-trash-can mail__main-content-list-item-icons-icon ${activeTab === 'bin' ? 'disabled' : ''}`} 
-           onClick={(e) => {
-            if (activeTab !== 'bin') {
-              e.stopPropagation();
-              deleteMail(mail.id);
-            }}}></i>
-          <i
-          className={`mail__main-content-list-item-icons-icon ${mail.isRead ? 'fa-regular fa-envelope' : 'fa-solid fa-envelope-open'}`}
-          onClick={(e) => {
-          e.stopPropagation();
-          handleToggleRead(mail.id);
-       }}
-        ></i>          
-        <i className="fa-regular fa-clock mail__main-content-list-item-icons-icon"></i>
+           <i className={`fa-regular fa-trash-can mail__main-content-list-item-icons-icon ${activeTab === 'bin' ? 'disabled' : ''}`} 
+            onClick={(e) => { if (activeTab !== 'bin') { e.stopPropagation(); deleteMail(mail.id); }}}>
+           </i>
+
+           <i className={`mail__main-content-list-item-icons-icon ${mail.isRead ? 'fa-regular fa-envelope' : 'fa-solid fa-envelope-open'}`}
+            onClick={(e) => { e.stopPropagation(); handleToggleRead(mail.id); }}>
+           </i>
+
+           <i className="fa-regular fa-clock mail__main-content-list-item-icons-icon"></i>
+          </div>
          </div>
-        </div>
-       ) : null
-      ))}
-     </div>
-    )}
+        ) : null
+       ))}
+      </div>
+     )}
 
      {isPopupOpen && (
       <div className={`mail__main-sidebar-compose-popup ${isPopupMinimized ? 'minimized' : ''}`}>
@@ -917,149 +906,166 @@ function MailComponent() {
        </div>
           
        {!isPopupMinimized && (
-       <div className="mail__main-sidebar-compose-popup-body">
-        <div className="mail__main-sidebar-compose-popup-body-from">
-         <label className="mail__main-sidebar-compose-popup-body-from-text">From John Doe &lt;supercoolman@gmail.com&gt;</label>
-         {/* <input className="mail__main-sidebar-compose-popup-body-from-input" type="text" placeholder="sender"/> */}
-        </div>
+        <div className="mail__main-sidebar-compose-popup-body">
+         <div className="mail__main-sidebar-compose-popup-body-from">
+          <label className="mail__main-sidebar-compose-popup-body-from-text">From John Doe &lt;supercoolman@gmail.com&gt;</label>
+          {/* <input className="mail__main-sidebar-compose-popup-body-from-input" type="text" placeholder="sender"/> */}
+         </div>
 
-        <div className="mail__main-sidebar-compose-popup-body-to">
-         <label className="mail__main-sidebar-compose-popup-body-to-text">To</label>
-         <input className="mail__main-sidebar-compose-popup-body-to-input" type="text" placeholder="who"
-         value={toValue}
-         onChange={(e) => setToValue(e.target.value)}/>
-        </div>
+         <div className="mail__main-sidebar-compose-popup-body-to">
+          <label className="mail__main-sidebar-compose-popup-body-to-text">To</label>
+          <input className="mail__main-sidebar-compose-popup-body-to-input"
+           type="text"
+           placeholder="who"
+           value={toValue}
+           onChange={(e) => setToValue(e.target.value)}
+          />
+         </div>
             
-        <div className="mail__main-sidebar-compose-popup-body-subject">
-         <label className="mail__main-sidebar-compose-popup-body-subject-text"></label>
-         <input className="mail__main-sidebar-compose-popup-body-subject-input" type="text" placeholder="Subject"  
-          value={subjectValue}
-          onChange={(e) => setSubjectValue(e.target.value)}/>
+         <div className="mail__main-sidebar-compose-popup-body-subject">
+          <label className="mail__main-sidebar-compose-popup-body-subject-text"></label>
+          <input className="mail__main-sidebar-compose-popup-body-subject-input"
+           type="text"
+           placeholder="Subject"  
+           value={subjectValue}
+           onChange={(e) => setSubjectValue(e.target.value)}
+          />
          </div>
 
          <div className="mail__main-sidebar-compose-popup-body-text">
-          <textarea className="mail__main-sidebar-compose-popup-body-text-inside" placeholder=""
-          value={descriptionValue}
-          onChange={(e) => setDescriptionValue(e.target.value)}></textarea>
+          <textarea className="mail__main-sidebar-compose-popup-body-text-inside"
+           placeholder=""
+           value={descriptionValue}
+           onChange={(e) => setDescriptionValue(e.target.value)}>
+          </textarea>
          </div>
         
 
-        <div className="mail__main-sidebar-compose-popup-footer">
-         <div className="mail__main-sidebar-compose-popup-footer-button" onClick={handleSend}>
-          <span  className="mail__main-sidebar-compose-popup-footer-button-text">Send</span>
-          <button className="fa-solid fa-caret-down fa-xs mail__main-sidebar-compose-popup-footer-button-icon"></button>
+         <div className="mail__main-sidebar-compose-popup-footer">
+          <div className="mail__main-sidebar-compose-popup-footer-button" onClick={handleSend}>
+           <span  className="mail__main-sidebar-compose-popup-footer-button-text">Send</span>
+           <button className="fa-solid fa-caret-down fa-xs mail__main-sidebar-compose-popup-footer-button-icon"></button>
+          </div>
+
+          <div className="mail__main-sidebar-compose-popup-footer-icons">
+           <i className="fa fa-paperclip fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
+           <i className="fa fa-image fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
+           <i className="fa fa-smile fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
+           <i className="fa-brands fa-google-drive fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
+           <i className="fa-regular fa-image fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
+           <i className="fa-solid fa-lock fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
+           <i className="fa-solid fa-pen fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
+           <i className="fa-solid fa-ellipsis-vertical fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
+           <i className="fa-solid fa-trash-can fa-xs mail__main-sidebar-compose-popup-footer-icons-icon--right" onClick={closeComposePopup}></i>
+          </div>
+         </div>
+        </div>
+       )}
+      </div>
+     )}
+
+     {isMailView && selectedMail && (
+      <div className="mail__main-content-detail">
+       <div className="mail__main-content-detail-top">
+        <i className="fa-solid fa-arrow-left mail__main-content-detail-back" onClick={() => setIsMailView(false)}></i>
+        {activeTab === 'bin' ? (
+        <>
+         <div className="mail__main-content-detail-top-bin">
+          <span className="mail__main-content-detail-top-bin-delete"
+           onClick={(e) => { setIsMailView(false); e.stopPropagation(); deleteMail(selectedMail.id); }}>Delete Forever
+          </span>
+
+          <span className="mail__main-content-detail-top-bin-divider"></span>
+          <div className="mail__main-content-detail-top-bin-icons">
+           <i className="fa-solid fa-circle-exclamation"></i>
+           <i className="fa-regular fa-envelope"></i>
+           <i className="fa-regular fa-folder"></i>
+           <i className="fa-solid fa-ellipsis-vertical"></i>
+          </div>
+         </div>
+        </>
+        ) : (
+        <>
+         <div className="mail__main-content-detail-top-first">
+          <i className="fa-regular fa-folder-open"></i>
+          <i className="fa-solid fa-circle-exclamation"></i>
+          <i className="fa-solid fa-trash-can"
+           onClick={() => {setIsMailView(false); deleteMail(selectedMail.id); }}>
+          </i>
          </div>
 
-         <div className="mail__main-sidebar-compose-popup-footer-icons">
-          <i className="fa fa-paperclip fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
-          <i className="fa fa-image fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
-          <i className="fa fa-smile fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
-          <i className="fa-brands fa-google-drive fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
-          <i className="fa-regular fa-image fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
-          <i className="fa-solid fa-lock fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
-          <i className="fa-solid fa-pen fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
-          <i className="fa-solid fa-ellipsis-vertical fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
-          <i className="fa-solid fa-trash-can fa-xs mail__main-sidebar-compose-popup-footer-icons-icon--right" onClick={closeComposePopup}></i>
+         <div className="mail__main-content-detail-top-second">
+          <i className="fa-regular fa-envelope"></i>
+          <i className="fa-regular fa-clock"></i>
+          <i className="fa-regular fa-circle-check"></i>
          </div>
-        </div>
-        </div>
+
+         <div className="mail__main-content-detail-top-third">
+          <i className="fa-regular fa-folder"></i>
+          <div className="mail__main-content-detail-top-third-delete">
+           <div className="mail__main-content-detail-top-third-delete-inner"></div>
+          </div>
+
+          <i className="fa-solid fa-ellipsis-vertical"></i>
+         </div>
+        </>
         )}
        </div>
-      )}
 
-   {isMailView && selectedMail && (
-    <div className="mail__main-content-detail">
-      <div className="mail__main-content-detail-top">
-       <i className="fa-solid fa-arrow-left mail__main-content-detail-back" onClick={() => setIsMailView(false)}></i>
-       {activeTab === 'bin' ? (
-    <>
-      <div className="mail__main-content-detail-top-bin">
-        <span className="mail__main-content-detail-top-bin-delete" onClick={(e) => { setIsMailView(false); e.stopPropagation(); deleteMail(selectedMail.id); }}>Delete Forever</span>
-        <span className="mail__main-content-detail-top-bin-divider"></span>
-        <div className="mail__main-content-detail-top-bin-icons">
-          <i className="fa-solid fa-circle-exclamation"></i>
-          <i className="fa-regular fa-envelope"></i>
-          <i className="fa-regular fa-folder"></i>
-          <i className="fa-solid fa-ellipsis-vertical"></i>
+       <div className="mail__main-content-detail-subject">
+        <span className="mail__main-content-detail-subject-title">{selectedMail.subject}</span>
+        <div className="mail__main-content-detail-subject-icons">
+         <i className="fa-solid fa-print fa-2xs"></i>
+         <i className="fa-solid fa-square-check fa-2xs"></i>
         </div>
-      </div>
-    </>
-  ) : (
-    <>
-      <div className="mail__main-content-detail-top-first">
-        <i className="fa-regular fa-folder-open"></i>
-        <i className="fa-solid fa-circle-exclamation"></i>
-        <i className="fa-solid fa-trash-can" onClick={() => {setIsMailView(false); deleteMail(selectedMail.id);}}></i>
-      </div>
-      <div className="mail__main-content-detail-top-second">
-        <i className="fa-regular fa-envelope"></i>
-        <i className="fa-regular fa-clock"></i>
-        <i className="fa-regular fa-circle-check"></i>
-      </div>
-      <div className="mail__main-content-detail-top-third">
-        <i className="fa-regular fa-folder"></i>
-        <div className="mail__main-content-detail-top-third-delete">
-          <div className="mail__main-content-detail-top-third-delete-inner"></div>
-        </div>
-        <i className="fa-solid fa-ellipsis-vertical"></i>
-      </div>
-    </>
-  )}
-</div>
-
-      <div className="mail__main-content-detail-subject">
-       <span className="mail__main-content-detail-subject-title">{selectedMail.subject}</span>
-       <div className="mail__main-content-detail-subject-icons">
-        <i className="fa-solid fa-print fa-2xs"></i>
-        <i className="fa-solid fa-square-check fa-2xs"></i>
-       </div>
     
-      <div className="mail__main-content-detail-subject-header">
-       <div className="mail__main-content-detail-subject-header-left">
-        <img src="images/profile-pic.png" alt="Profile Pic mail" className="mail__main-content-detail-subject-header-left-pic"/>
-        <div className="mail__main-content-detail-subject-header-left-person">
-         <span className="mail__main-content-detail-subject-header-left-person-sender">{selectedMail.sender}</span>
-         <span className="mail__main-content-detail-subject-header-left-person-to">{selectedMail.to}
-          <i className="fa-solid fa-caret-down mail__main-content-detail-subject-header-left-person-to-sign"></i>
-         </span>
+        <div className="mail__main-content-detail-subject-header">
+         <div className="mail__main-content-detail-subject-header-left">
+          <img src="images/profile-pic.png" alt="Profile Pic mail" className="mail__main-content-detail-subject-header-left-pic"/>
+          <div className="mail__main-content-detail-subject-header-left-person">
+           <span className="mail__main-content-detail-subject-header-left-person-sender">{selectedMail.sender}</span>
+           <span className="mail__main-content-detail-subject-header-left-person-to">{selectedMail.to}
+            <i className="fa-solid fa-caret-down mail__main-content-detail-subject-header-left-person-to-sign"></i>
+           </span>
+          </div>
+         </div>
+
+         <div className="mail__main-content-detail-subject-header-right">
+          <span className="mail__main-content-detail-subject-date">{formatDate(selectedMail.date, true, selectedMail.time)}</span>
+          <i className={`mail__main-content-detail-subject-star ${selectedMail?.isStarred ? 'fa-solid fa-star fa-2xs' : 'fa-regular fa-star fa-2xs'}`}
+           style={{ color: selectedMail?.isStarred ? '#FFD43B' : 'inherit' }}
+           onClick={(e) => {
+            e.stopPropagation();
+            handleStarClick(selectedMail.id);
+           }}>
+          </i>
+
+          <i className="fa-solid fa-arrow-turn-up fa-rotate-270 fa-2xs"></i>
+          <i className="fa-solid fa-ellipsis-vertical fa-2xs"></i>
+         </div>
+        </div>
+
+        <div className="mail__main-content-detail-subject-description">{selectedMail.description}
+         <hr className="mail__main-content-detail-subject-divider"/>
         </div>
        </div>
-
-       <div className="mail__main-content-detail-subject-header-right">
-        <span className="mail__main-content-detail-subject-date">{formatDate(selectedMail.date, true, selectedMail.time)}</span>
-        <i className={`mail__main-content-detail-subject-star ${selectedMail?.isStarred ? 'fa-solid fa-star fa-2xs' : 'fa-regular fa-star fa-2xs'}`}
-         style={{ color: selectedMail?.isStarred ? '#FFD43B' : 'inherit' }}
-         onClick={(e) => {
-         e.stopPropagation();
-         handleStarClick(selectedMail.id);
-        }}
-        ></i>        
-        <i className="fa-solid fa-arrow-turn-up fa-rotate-270 fa-2xs"></i>
-        <i className="fa-solid fa-ellipsis-vertical fa-2xs"></i>
-       </div>
       </div>
-
-      <div className="mail__main-content-detail-subject-description">{selectedMail.description}
-       <hr className="mail__main-content-detail-subject-divider"/>
-      </div>
-     </div>
+     )}
     </div>
-   )}
-  </div>
 
-   <div className="mail__main-right">
-   <div className="mail__main-right-pic">
-    <img src="images/calendar-icon.png" alt="Calendar"/>
-  </div>
+    <div className="mail__main-right">
+     <div className="mail__main-right-pic">
+      <img src="images/calendar-icon.png" alt="Calendar"/>
+     </div>
 
-  <div className="mail__main-right-pic">
-    <img src="images/note-icon.png" alt="Note"/>
-  </div>
+     <div className="mail__main-right-pic">
+      <img src="images/note-icon.png" alt="Note"/>
+     </div>
 
-    <i className="fa-solid fa-user mail__main-right-person"></i>
-    <hr className="mail__main-right-divider"/>
-    <i className="fa-solid fa-plus mail__main-right-icon"></i>
-   </div>
+     <i className="fa-solid fa-user mail__main-right-person"></i>
+     <hr className="mail__main-right-divider"/>
+     <i className="fa-solid fa-plus mail__main-right-icon"></i>
+    </div>
    </div>
   </div>
  );
