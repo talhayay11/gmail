@@ -99,7 +99,7 @@ $font-family-roboto: 'Roboto', sans-serif;
      transition: transform 0.2s ease, background-color 0.2s ease;
      z-index: -1;
     }
-    
+
     &:hover::after {
      background-color: $blizzard;
      transform: translate(-50%, -50%) scale(2.3);
@@ -247,116 +247,116 @@ $font-family-roboto: 'Roboto', sans-serif;
    flex-direction: column;
 
    &.collapsed {
-     width: 65px;
+    width: 65px;
 
-     .mail__main-sidebar-side-down-icon {
-      margin: 7px 0 0 0;
+    .mail__main-sidebar-side-down-icon {
+     margin: 7px 0 0 0;
 
-      &::after {
-       left: 1.7%;
-      }
+     &::after {
+      left: 1.7%;
+     }
+    }
+
+    .mail__main-sidebar-compose {
+     width: 31px;
+     margin: 0 8px 14px 8px;
+     padding-right: 30px;
+
+     &-text {
+      display: none;
      }
 
-     .mail__main-sidebar-compose {
-      width: 31px;
-      margin: 0 8px 14px 8px;
-      padding-right: 30px;
+     &-pen {
+      margin-right: 3px;
+     }
+    }
 
+    .mail__main-content-detail-top-third-delete--side {
+     margin: 9px 0 0 10px;
+    }
+
+    .mail__main-sidebar-side-box {
+
+     &-usage {
+      width: 35px;
+      height: 35px;
+      margin-left: 15px;
+      border-radius: 50%;
+     }
+
+     &-icon {
+      padding: 9px 0 0 10px;
+
+      &--style {
+       padding-left: 9px;
+      }
+
+      &--draft {
+       padding-left: 12px;
+      }
+     }
+    
+     &-text {
+      display: none;
+     }
+
+     &-extra {
+      width: 35px;
+      height: 35px;
+      margin-left: 15px;
+      border-radius: 50%;
+     }
+
+     &-icons {
+      padding: 9px 0 0 10.2px;
+     }
+
+     &-texts {
+      display: none;
+     }
+    }
+
+    .mail__main-sidebar-side-down {
+
+     &-title {
+     
       &-text {
        display: none;
       }
+     }
 
-      &-pen {
-       margin-right: 3px;
+     &-icon {
+      padding: 0 0 0 3px;
+     }
+    
+     &-box {
+
+      &-icons {
+       padding: 3px 0 0 3px;
+       margin: 6px 0 0 7px;
       }
-     }
-
-     .mail__main-content-detail-top-third-delete--side {
-      margin: 9px 0 0 10px;
-     }
-  
-     .mail__main-sidebar-side-box {
 
       &-usage {
        width: 35px;
        height: 35px;
-       margin-left: 15px;
        border-radius: 50%;
+       margin: 0 0 0 14px;
       }
-
+  
       &-icon {
-       padding: 9px 0 0 10px;
-
-       &--style {
-         padding-left: 9px;
-       }
-
-       &--draft {
-        padding-left: 12px;
-       }
+       padding: 3px 0 0 3px;
+       margin: 10px 0 0 10px;
       }
-    
+      
       &-text {
        display: none;
       }
-
-      &-extra {
-       width: 35px;
-       height: 35px;
-       margin-left: 15px;
-       border-radius: 50%;
-      }
-
-      &-icons {
-       padding: 9px 0 0 10.2px;
-      }
-
-      &-texts {
-       display: none;
-      }
      }
+    }
 
-     .mail__main-sidebar-side-down {
-
-      &-title {
-     
-       &-text {
-        display: none;
-       }
-      }
-
-      &-icon {
-       padding: 0 0 0 3px;
-      }
-    
-      &-box {
-
-       &-icons {
-        padding: 3px 0 0 3px;
-        margin: 6px 0 0 7px;
-       }
-
-       &-usage {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        margin: 0 0 0 14px;
-       }
-  
-       &-icon {
-        padding: 3px 0 0 3px;
-        margin: 10px 0 0 10px;
-       }
-      
-       &-text {
-        display: none;
-       }  
-      }
-     }
-
-     .mail__main-content-detail-top-third-delete--down {
-      display: none;
-     }
+    .mail__main-content-detail-top-third-delete--down {
+     display: none;
+    }
    }
 
    &-compose {
@@ -424,7 +424,7 @@ $font-family-roboto: 'Roboto', sans-serif;
        max-height: 14px;
        margin: 0;
       }
-  
+
       &-button {
 
        &-down {
@@ -447,7 +447,7 @@ $font-family-roboto: 'Roboto', sans-serif;
 
      &-body {
       padding: 16px;
-    
+
       &-from {
 
        &-text {
@@ -762,7 +762,7 @@ $font-family-roboto: 'Roboto', sans-serif;
         }
        }
       }
-  
+
       &-text {
        font-size: $font-size-13;
        line-height: $line-height-15;
@@ -779,7 +779,7 @@ $font-family-roboto: 'Roboto', sans-serif;
        right: 15px;
        top: 5px;
       }
-  
+
       &-icon {
        display: flex;
        width: 14px;
@@ -968,6 +968,9 @@ $font-family-roboto: 'Roboto', sans-serif;
      gap: 27.5px;
 
      &-select {
+      width: 35px;
+      height: 30px;
+      padding: 10px 7px 0 7px;
       white-space: nowrap;
       display: flex;
       gap: 7px;
@@ -990,12 +993,12 @@ $font-family-roboto: 'Roboto', sans-serif;
         transition: transform 0.2s ease, background-color 0.2s ease;
         z-index: -1;
        }
-        
+
        &:hover::after {
         background-color: $bleached-silk;
         transform: translate(-50%, -50%) scale(2.3);
        }
-      
+
        &-menu {
         display: flex;
         position: absolute;
@@ -1010,7 +1013,7 @@ $font-family-roboto: 'Roboto', sans-serif;
         margin-top: 25px;
         gap: 4px;
         box-shadow: 0 2px 4px 2px $black;
-      
+
         li {
          font-size: $font-size-13;
          line-height: $line-height-14;
@@ -1021,7 +1024,7 @@ $font-family-roboto: 'Roboto', sans-serif;
          justify-content: center;
          cursor: pointer;
         }
-      
+
         li:hover {
          background-color: $blizzard;
         }
@@ -1047,7 +1050,7 @@ $font-family-roboto: 'Roboto', sans-serif;
         transition: transform 0.2s ease, background-color 0.2s ease;
         z-index: -1;
        }
-        
+
        &:hover::after {
         background-color: $bleached-silk;
         transform: translate(-50%, -50%) scale(2.3);
@@ -1059,6 +1062,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       display: flex;
       cursor: pointer;
       color: $wood-charcoal;
+      padding-top: 10px;
 
       &::after {
        content: '';
@@ -1072,7 +1076,7 @@ $font-family-roboto: 'Roboto', sans-serif;
        transition: transform 0.2s ease, background-color 0.2s ease;
        z-index: -1;
       }
-        
+
       &:hover::after {
        background-color: $bleached-silk;
        transform: translate(-50%, -50%) scale(2.3);
@@ -1082,6 +1086,7 @@ $font-family-roboto: 'Roboto', sans-serif;
        display: flex;
        cursor: pointer;
        color: $wood-charcoal;
+       padding-top: 12px;
 
        &::after {
         content: '';
@@ -1095,7 +1100,7 @@ $font-family-roboto: 'Roboto', sans-serif;
         transition: transform 0.2s ease, background-color 0.2s ease;
         z-index: -1;
        }
-         
+
        &:hover::after {
         background-color: $bleached-silk;
         transform: translate(-50%, -50%) scale(2.3);
@@ -1103,7 +1108,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       }
      }
     }
-  
+
     &-right {
      max-width: 133px;
      max-height: 22px;
@@ -1157,7 +1162,7 @@ $font-family-roboto: 'Roboto', sans-serif;
     color: $black-oak;
     display: flex;
     flex-direction: row;
-    margin: 0 0 0 8px;
+    margin: 6px 0 0 8px;
 
     &-primary {
      max-width: 209px;
@@ -1239,7 +1244,7 @@ $font-family-roboto: 'Roboto', sans-serif;
      cursor: pointer;
      border-top: 1px solid $christmas-silver;
      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    
+
      &.unread {
       font-weight: $font-weight-700;
       background-color: $white;
@@ -1295,7 +1300,7 @@ $font-family-roboto: 'Roboto', sans-serif;
        transition: transform 0.2s ease, background-color 0.2s ease;
        z-index: -1;
       }
-    
+
       &:hover::after {
        background-color: $blizzard;
        transform: translate(-50%, -50%) scale(2.3);
@@ -1307,7 +1312,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       height: 13px;
       padding-top: 9px;
       position: relative;
-    
+
       &::after {
        content: '';
        position: absolute;
@@ -1321,7 +1326,7 @@ $font-family-roboto: 'Roboto', sans-serif;
        transition: transform 0.2s ease, background-color 0.2s ease;
        z-index: -1;
       }
-    
+
       &:hover::after {
        background-color: $blizzard;
        transform: translate(-50%, -50%) scale(2.3);
@@ -1384,7 +1389,7 @@ $font-family-roboto: 'Roboto', sans-serif;
      &-left {
       display: none;
       position: absolute;
- 
+
       &-icon {
        padding: 8.5px 0 0 4px;
        cursor: pointer;
@@ -1424,7 +1429,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       .mail__main-content-list-item-date {
        display: none;
       }
-  
+
       .mail__main-content-list-item-left {
        display: flex;
       }
@@ -1451,7 +1456,7 @@ $font-family-roboto: 'Roboto', sans-serif;
          transition: transform 0.2s ease, background-color 0.2s ease;
          z-index: -1;
         }
-     
+
         &:hover::after {
          background-color: $blizzard;
          transform: translate(-50%, -50%) scale(2.3);
@@ -1586,7 +1591,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       }
      }
     }
-  
+
     &-subject {
      display: flex;
      justify-content: space-between;
@@ -1605,7 +1610,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       left: 57px;
       top: 74px;
      }
-  
+
      &-icons {
       position: absolute;
       right: 23px;
@@ -1622,7 +1627,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       max-width: 106px;
       max-height: 12px;
      }
-   
+
      &-header {
       display: flex;
       justify-content: space-between;
@@ -1676,13 +1681,13 @@ $font-family-roboto: 'Roboto', sans-serif;
        gap: 20px;
       }
      }
-  
+
      &-divider {
       width: 90%;
       margin: 30px 30px 0 0;
       border-bottom: 1px solid $christmas-silver;
      }
-  
+
      &-description {
       font-size: $font-size-14;
       line-height: $line-height-19;
@@ -1723,7 +1728,7 @@ $font-family-roboto: 'Roboto', sans-serif;
      transition: transform 0.2s ease, background-color 0.2s ease;
      z-index: -1;
     }
-     
+
     &:hover::after {
      background-color: $blizzard;
      transform: translate(-50%, -50%) scale(2.3);
@@ -1748,7 +1753,7 @@ $font-family-roboto: 'Roboto', sans-serif;
       transition: transform 0.2s ease, background-color 0.2s ease;
       z-index: -1;
      }
-      
+
      &:hover::after {
       background-color: $blizzard;
       transform: translate(-50%, -50%) scale(2.3);
@@ -1774,7 +1779,7 @@ $font-family-roboto: 'Roboto', sans-serif;
      transition: transform 0.2s ease, background-color 0.2s ease;
      z-index: -1;
     }
-     
+
     &:hover::after {
      background-color: $blizzard;
      transform: translate(-50%, -50%) scale(2.3);

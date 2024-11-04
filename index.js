@@ -69,6 +69,7 @@ const mailData = {
    to: 'to me' 
   }
  ],
+
  social: [
   {
    id: 7,
@@ -110,6 +111,9 @@ const mailData = {
 
 function MailComponent() {
  const [activeTab, setActiveTab] = useState('primary');
+ const [isActive, setIsActive] = useState(false);
+ const [isChecked, setIsChecked] = useState(false);
+ const selectRef = useRef(null);
  const [mails, setMails] = useState(mailData);
  const [filteredMails, setFilteredMails] = useState(null);
  const [searchValue, setSearchValue] = useState('');
@@ -248,6 +252,19 @@ function MailComponent() {
  const toggleDropdown = () => {
   setIsDropdownOpen(!isDropdownOpen);
  };
+
+ const handleSelectClick = (e) => {
+  e.stopPropagation();
+  setIsActive(true);
+ };
+
+ useEffect(() => {
+  document.addEventListener('mousedown', handleClickOutside);
+
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+ }, []);
 
  const handleTopCheckboxChange = () => {
   const activeMails = getActiveMails();
@@ -398,6 +415,18 @@ function MailComponent() {
   if (!event.target.closest('.mail__navbar-search')) {
    setIsSearchClicked(false);
   }
+
+  if (selectRef.current && !selectRef.current.contains(event.target)) {
+   setIsActive(false);
+   setIsChecked(false);
+  }
+ };
+
+ const handleCheckboxChange = (e) => {
+  e.stopPropagation();
+  setIsChecked(e.target.checked);
+  handleSelectClick(e);
+  handleTopCheckboxChange();
  };
 
  useEffect(() => {
@@ -440,7 +469,7 @@ function MailComponent() {
   setToValue('');
   setSubjectValue('');
  };
-  
+
  const handleSend = () => {
   const now = new Date();
   const newMail = {
@@ -476,7 +505,6 @@ function MailComponent() {
   }
  };
 
-  
  const deleteMail = (id) => {
   let deletedMail = null;
   const updatedOriginalMails = Object.keys(mails).reduce((acc, tab) => {
@@ -749,16 +777,33 @@ function MailComponent() {
        </ul>
       </div>
      </div>
-    </div>    
+    </div>
 
     <div className="mail__main-content">
      {!isMailView && (
       <>
       <div className="mail__main-content-top">
        <div className="mail__main-content-top-left">
-        <div className="mail__main-content-top-left-select">
-         <input type="checkbox" className="mail__main-content-top-left-select-checkbox" onChange={handleTopCheckboxChange}/>
-         <i className="fa-solid fa-caret-down fa-xs mail__main-content-top-left-select-down" onClick={toggleDropdown}></i>
+        <div className="mail__main-content-top-left-select"
+          ref={selectRef}
+          onClick={handleSelectClick}
+          style={isActive ? { backgroundColor: '#E4E4E4', borderRadius: '8px' } : {}}
+          >
+
+         <input type="checkbox" className="mail__main-content-top-left-select-checkbox"
+           style={isActive ? { backgroundColor: '#D9D9D9', borderRadius: '8px' } : {}}
+           onChange={(e) => {
+            e.stopPropagation();
+            handleCheckboxChange;
+            handleTopCheckboxChange();
+           }}/>
+
+         <i className="fa-solid fa-caret-down fa-xs mail__main-content-top-left-select-down"
+          onClick={(e) => {
+           e.stopPropagation();
+           handleSelectClick(e);
+           toggleDropdown();
+          }}></i>
         </div>
 
         <i className="fa-solid fa-arrow-rotate-right mail__main-content-top-left-icon-refresh"></i>
@@ -833,7 +878,7 @@ function MailComponent() {
         mail?.id ? (
          <div
           key={mail.id} 
-          className={`mail__main-content-list-item ${mail.isRead ? 'read' : 'unread'}`} 
+          className={`mail__main-content-list-item ${mail.isRead ? 'read' : 'unread'}`}
           onClick={() => {
            markAsRead(mail.id);
            handleMailClick(mail.id);
@@ -855,7 +900,7 @@ function MailComponent() {
           {activeTab === 'bin' ? (
            <i className="fa-regular fa-trash-can" onClick={(e) => { e.stopPropagation(); deleteMail(mail.id); }}></i>
            ) : (
-           <i className={`mail__main-content-list-item-star ${mail.isStarred ? 'fa-solid fa-star fa-2xs' : 'fa-regular fa-star fa-2xs'}`} 
+           <i className={`mail__main-content-list-item-star ${mail.isStarred ? 'fa-solid fa-star fa-2xs' : 'fa-regular fa-star fa-2xs'}`}
             style={{ color: mail.isStarred ? '#FFD43B' : 'inherit' }} 
             onClick={(e) => {e.stopPropagation();  handleStarClick(mail.id); }}></i>
           )}
@@ -926,7 +971,7 @@ function MailComponent() {
           <label className="mail__main-sidebar-compose-popup-body-subject-text"></label>
           <input className="mail__main-sidebar-compose-popup-body-subject-input"
            type="text"
-           placeholder="Subject"  
+           placeholder="Subject"
            value={subjectValue}
            onChange={(e) => setSubjectValue(e.target.value)}
           />
@@ -989,13 +1034,13 @@ function MailComponent() {
          <div className="mail__main-content-detail-top-first">
           <i className="fa-regular fa-folder-open"></i>
           <i className="fa-solid fa-circle-exclamation"></i>
-          <i className="fa-solid fa-trash-can"
+          <i className="fa-regular fa-trash-can"
            onClick={() => {setIsMailView(false); deleteMail(selectedMail.id); }}>
           </i>
          </div>
 
          <div className="mail__main-content-detail-top-second">
-          <i className="fa-regular fa-envelope"></i>
+          <i className="fa-regular fa-envelope" onClick={(e) => { e.stopPropagation(); handleToggleRead(selectedMail.id); setIsMailView(false)}}></i>
           <i className="fa-regular fa-clock"></i>
           <i className="fa-regular fa-circle-check"></i>
          </div>

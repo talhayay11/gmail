@@ -767,6 +767,9 @@
   gap: 27.5px;
 }
 .mail__main-content-top-left-select {
+  width: 35px;
+  height: 30px;
+  padding: 10px 7px 0 7px;
   white-space: nowrap;
   display: flex;
   gap: 7px;
@@ -848,6 +851,7 @@
   display: flex;
   cursor: pointer;
   color: #444746;
+  padding-top: 10px;
 }
 .mail__main-content-top-left-icon::after {
   content: "";
@@ -869,6 +873,7 @@
   display: flex;
   cursor: pointer;
   color: #444746;
+  padding-top: 12px;
 }
 .mail__main-content-top-left-icon-refresh::after {
   content: "";
@@ -933,7 +938,7 @@
   color: #4f4f4f;
   display: flex;
   flex-direction: row;
-  margin: 0 0 0 8px;
+  margin: 6px 0 0 8px;
 }
 .mail__main-content-tab-primary {
   max-width: 209px;
