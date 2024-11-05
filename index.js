@@ -141,6 +141,17 @@ function MailComponent() {
  const [selectedOption, setSelectedOption] = useState('');
  const [selectedMails, setSelectedMails] = useState([]);
  const [unreadCount, setUnreadCount] = useState(0);
+ const notificationSound = useRef(null);
+ const [isMissingRecipient, setIsMissingRecipient] = useState(false);
+ const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
+ const optionsMenuRef = useRef(null);
+ const missingRecipientRef = useRef(null);
+ const [isCaretTooltipVisible, setIsCaretTooltipVisible] = useState(false);
+ const [isDownTooltipVisible, setIsDownTooltipVisible] = useState(false);
+ const showCaretTooltip = () => setIsCaretTooltipVisible(true);
+ const hideCaretTooltip = () => setIsCaretTooltipVisible(false);
+ const showDownTooltip = () => setIsDownTooltipVisible(true);
+ const hideDownTooltip = () => setIsDownTooltipVisible(false);
 
  useEffect(() => {
   const countUnreadMails = () => {
@@ -149,6 +160,26 @@ function MailComponent() {
   };
   countUnreadMails();
  }, [mails.primary]);
+
+ const toggleOptionsMenu = () => {
+  setIsOptionsMenuOpen(!isOptionsMenuOpen);
+ };
+
+ useEffect(() => {
+  const handleClickOutside = (event) => {
+   if (isOptionsMenuOpen && optionsMenuRef.current && !optionsMenuRef.current.contains(event.target)) {
+    setIsOptionsMenuOpen(false);
+   }
+   if (isMissingRecipient && missingRecipientRef.current && !missingRecipientRef.current.contains(event.target)) {
+    setIsMissingRecipient(false);
+   }
+  };
+
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => {
+   document.removeEventListener('mousedown', handleClickOutside);
+  };
+ }, [isOptionsMenuOpen, isMissingRecipient]);
 
  const formatDate = (dateString, includeYear = false, timeString = '') => {
   const options = includeYear 
@@ -471,16 +502,21 @@ function MailComponent() {
  };
 
  const handleSend = () => {
+  if (!toValue.trim()) {
+   setIsMissingRecipient(true);
+   return;
+  }
+
   const now = new Date();
   const newMail = {
    id: Date.now(),
-   sender: `receiver: ${toValue}`,
+   sender: `To: ${toValue}`,
    subject: subjectValue,
    description: descriptionValue,    
    date: now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
    time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
    isRead: false,
-   to: `Receiver: ${toValue}`
+   to: `To: ${toValue}`
   };
 
   setMails(prevState => ({
@@ -489,6 +525,14 @@ function MailComponent() {
   }));
   setDescriptionValue('');
   closeComposePopup();
+
+  if (notificationSound.current) {
+   notificationSound.current.play();
+  }
+ };
+
+ const closeMissingRecipientForm = () => {
+  setIsMissingRecipient(false);
  };
 
  const handleToggleRead = (mailId) => {
@@ -558,6 +602,7 @@ function MailComponent() {
 
  return (
   <div className="mail">
+   <audio ref={notificationSound} src="/no.mp3"/>
    <nav className="mail__navbar">
     <div className="mail__navbar-left">
      <i className="fa-solid fa-bars mail__navbar-left-menu" onClick={toggleSidebar}></i>
@@ -992,6 +1037,16 @@ function MailComponent() {
            <button className="fa-solid fa-caret-down fa-xs mail__main-sidebar-compose-popup-footer-button-icon"></button>
           </div>
 
+          {isMissingRecipient && (
+           <div className="mail__main-sidebar-side-down-overlay">
+            <div className="mail__main-sidebar-compose-popup-footer-button-form" ref={missingRecipientRef}>
+             <h3>Error</h3>
+             <p>Please specify at least one recipient.</p>
+             <button onClick={closeMissingRecipientForm}>OK</button>
+            </div>
+           </div>
+          )}
+
           <div className="mail__main-sidebar-compose-popup-footer-icons">
            <i className="fa fa-paperclip fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
            <i className="fa fa-image fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
@@ -1000,8 +1055,78 @@ function MailComponent() {
            <i className="fa-regular fa-image fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
            <i className="fa-solid fa-lock fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
            <i className="fa-solid fa-pen fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
-           <i className="fa-solid fa-ellipsis-vertical fa-xs mail__main-sidebar-compose-popup-footer-icons-icon"></i>
+           <i className="fa-solid fa-ellipsis-vertical fa-xs mail__main-sidebar-compose-popup-footer-icons-icon--left" onClick={toggleOptionsMenu}></i>
            <i className="fa-solid fa-trash-can fa-xs mail__main-sidebar-compose-popup-footer-icons-icon--right" onClick={closeComposePopup}></i>
+          
+           {isOptionsMenuOpen && (
+            <div className="mail__main-sidebar-compose-popup-footer-icons-icon-options" ref={optionsMenuRef}>
+             <ul>
+              <li className="mail__main-sidebar-compose-popup-footer-icons-icon-options-bottom">Default to full screen</li>
+              <li className="mail__main-sidebar-compose-popup-footer-icons-icon-options-caret"
+               onMouseOver={showCaretTooltip}
+               onMouseOut={hideCaretTooltip}>Label
+
+               {isCaretTooltipVisible && (
+                <div className="mail__main-sidebar-compose-popup-footer-icons-icon-options-caret-tooltip">
+                 <div className="mail__main-sidebar-compose-popup-footer-icons-icon-options-caret-tooltip-header">
+                  <span>Label as:</span>
+                 </div>
+
+                 <div className="mail__main-sidebar-compose-popup-footer-icons-icon-options-caret-tooltip-search">
+                  <input
+                   type="text"
+                   placeholder=""
+                   />
+                   
+                  <i className="fa fa-search"></i>
+                 </div>
+      
+                 <ul className="mail__main-sidebar-compose-popup-footer-icons-icon-options-caret-tooltip-options">
+                  <li><input type="checkbox" /> Notes</li>
+                  <li><input type="checkbox" /> Social</li>
+                  <li><input type="checkbox" /> Updates</li>
+                  <li><input type="checkbox" /> Forums</li>
+                  <li><input type="checkbox" /> Promotions</li>
+                 </ul>
+
+                 <hr/>
+                 <div className="mail__main-sidebar-compose-popup-footer-icons-icon-options-caret-tooltip-footer">
+                  <div className="fa-regular fa-star mail__main-sidebar-compose-popup-footer-icons-icon-options-caret-tooltip-footer-star">
+                    <span>Add star</span>
+                  </div>
+
+                  <div className="mail__main-sidebar-compose-popup-footer-icons-icon-options-caret-tooltip-footer-text">Create new</div>
+                  <div className="mail__main-sidebar-compose-popup-footer-icons-icon-options-caret-tooltip-footer-text">Manage labels</div>
+                 </div>
+                </div>
+               )}
+               <i className="fa-solid fa-caret-right"></i>
+              </li>
+
+              <li className="mail__main-sidebar-compose-popup-footer-icons-icon-options-bottom">Plain text mode</li>
+              <li className="mail__main-sidebar-compose-popup-footer-icons-icon-options-li">Print</li>
+              <li className="mail__main-sidebar-compose-popup-footer-icons-icon-options-bottom">Check spelling</li>
+              <li className="mail__main-sidebar-compose-popup-footer-icons-icon-options-down"
+               onMouseOver={showDownTooltip}
+               onMouseOut={hideDownTooltip}>
+
+               {isDownTooltipVisible && (
+                <div className="mail__main-sidebar-compose-popup-footer-icons-icon-options-caret-down">
+                 <ul>
+                  <li className="mail__main-sidebar-compose-popup-footer-icons-icon-options-caret-down-li">Offer times you're free</li>
+                  <li className="mail__main-sidebar-compose-popup-footer-icons-icon-options-caret-down-li">Create an event</li>
+                 </ul>
+                </div>
+               )}
+
+               <i className="fa-solid fa-calendar mail__main-sidebar-compose-popup-footer-icons-icon-options-icon"></i>
+               <span className="mail__main-sidebar-compose-popup-footer-icons-icon-options-text">Set up a time to meet</span>
+               <span className="mail__main-sidebar-compose-popup-footer-icons-icon-options-dot"></span>
+                <i className="fa-solid fa-caret-right"></i>
+              </li>
+             </ul>
+            </div>
+           )}
           </div>
          </div>
         </div>
