@@ -153,7 +153,7 @@ function MailComponent() {
  const showDownTooltip = () => setIsDownTooltipVisible(true);
  const hideDownTooltip = () => setIsDownTooltipVisible(false);
 
- useEffect(() => {
+ useEffect (() => {
   const countUnreadMails = () => {
    const unread = mails.primary.filter((mail) => !mail.isRead).length;
     setUnreadCount(unread);
@@ -165,7 +165,7 @@ function MailComponent() {
   setIsOptionsMenuOpen(!isOptionsMenuOpen);
  };
 
- useEffect(() => {
+ useEffect (() => {
   const handleClickOutside = (event) => {
    if (isOptionsMenuOpen && optionsMenuRef.current && !optionsMenuRef.current.contains(event.target)) {
     setIsOptionsMenuOpen(false);
@@ -175,9 +175,9 @@ function MailComponent() {
    }
   };
 
-  document.addEventListener('mousedown', handleClickOutside);
+  document.addEventListener ('mousedown', handleClickOutside);
   return () => {
-   document.removeEventListener('mousedown', handleClickOutside);
+   document.removeEventListener ('mousedown', handleClickOutside);
   };
  }, [isOptionsMenuOpen, isMissingRecipient]);
 
@@ -190,7 +190,7 @@ function MailComponent() {
   return timeString ? `${datePart}, ${timeString}` : datePart;
  };
 
- const [checkboxState, setCheckboxState] = useState({
+ const [checkboxState, setCheckboxState] = useState ({
   all: false,
   none: false,
   read: false,
@@ -204,7 +204,7 @@ function MailComponent() {
   const activeMails = getActiveMails();
   switch (option) {
    case 'all':
-   setCheckboxState({
+   setCheckboxState ({
     all: true,
     none: false,
     read: false,
@@ -216,7 +216,7 @@ function MailComponent() {
    break;
 
    case 'none':
-   setCheckboxState({
+   setCheckboxState ({
     all: false,
     none: true,
     read: false,
@@ -228,7 +228,7 @@ function MailComponent() {
    break;
 
    case 'read':
-   setCheckboxState({
+   setCheckboxState ({
     all: false,
     none: false,
     read: true,
@@ -240,7 +240,7 @@ function MailComponent() {
    break;
 
    case 'unread':
-   setCheckboxState({
+   setCheckboxState ({
     all: false,
     none: false,
     read: false,
@@ -252,7 +252,7 @@ function MailComponent() {
    break;
 
    case 'starred':
-   setCheckboxState({
+   setCheckboxState ({
     all: false,
     none: false,
     read: false,
@@ -264,7 +264,7 @@ function MailComponent() {
    break;
 
    case 'unstarred':
-   setCheckboxState({
+   setCheckboxState ({
     all: false,
     none: false,
     read: false,
@@ -289,7 +289,7 @@ function MailComponent() {
   setIsActive(true);
  };
 
- useEffect(() => {
+ useEffect (() => {
   document.addEventListener('mousedown', handleClickOutside);
 
   return () => {
@@ -306,7 +306,7 @@ function MailComponent() {
   }
  };
 
- useEffect(() => {
+ useEffect (() => {
   const handleClickOutside = (event) => {
    if (!event.target.closest('.mail__main-content-top-left-select-dropdown-menu') &&
    !event.target.closest('.mail__main-content-top-left-select')) {
@@ -396,7 +396,7 @@ function MailComponent() {
   }
  };
 
- useEffect(() => {
+ useEffect (() => {
   const handleClickOutside = (event) => {
    if (
     isFormVisible &&
@@ -460,7 +460,7 @@ function MailComponent() {
   handleTopCheckboxChange();
  };
 
- useEffect(() => {
+ useEffect (() => {
   document.addEventListener('mousedown', handleClickOutside);
 
   return () => {
@@ -485,7 +485,7 @@ function MailComponent() {
   return currentMails;
  };
 
- useEffect(() => {
+ useEffect (() => {
   const activeMails = getActiveMails();
   setVisibleMailsCount(activeMails.length);
   }, [activeTab, mails]);
@@ -848,7 +848,8 @@ function MailComponent() {
            e.stopPropagation();
            handleSelectClick(e);
            toggleDropdown();
-          }}></i>
+          }}>
+         </i>
         </div>
 
         <i className="fa-solid fa-arrow-rotate-right mail__main-content-top-left-icon-refresh"></i>
